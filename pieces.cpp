@@ -7,6 +7,8 @@ using namespace std;
 
 class Piece {
     static bool* board[400];
+    void down();
+
 };
 
 class Square: public Piece {
@@ -25,9 +27,27 @@ class Square: public Piece {
             set();
         }
     }
+    void drop() {
+        int min_dist = 400;
+        int n = pos - 10;
+        int dist = 0;
+        while (n > 0 || !(*board)[n] && !(*board)[n+1]) {
+            n -= 10;
+            dist += 10;
+        }
+        pos = n + 10;
+        set();
+        return;
+    }
+    void draw() {
+        // todo
+        return;
+    }
     void set() {
-        // TODO
-        
+        (*board)[pos] = true;
+        (*board)[pos + 1] = true;
+        draw();
+        delete this;
     }
 };
 
@@ -135,9 +155,34 @@ class LBlockL: public Piece {
             set();
         }
     }
-    void set() {
-        // TODO
+    void drop() {
+        int min_dist = 400;
+        for (int n : blocks) {
+            n -= 10;
+            int dist = 0;
+            while (n > 0 || !(*board)[n]) {
+                n -= 10;
+                dist += 10;
+            }
+            min_dist = min(min_dist, dist);
+        }
+        for (int i = 0; i < 4; ++i) {
+            blocks[i] -= min_dist;
+        }
+        set();
         return;
+    }
+    void draw() {
+        // todo
+        return;
+    }
+    void set() {
+        (*board)[blocks[0]] = true;
+        (*board)[blocks[1]] = true;
+        (*board)[blocks[2]] = true;
+        (*board)[blocks[3]] = true;
+        draw();
+        delete this;
     }
 };
 
@@ -179,7 +224,33 @@ class LBlockR: public Piece {
             set();
         }
     }
-    void set() {
+    void drop() {
+        int min_dist = 400;
+        for (int n : blocks) {
+            n -= 10;
+            int dist = 0;
+            while (n > 0 || !(*board)[n]) {
+                n -= 10;
+                dist += 10;
+            }
+            min_dist = min(min_dist, dist);
+        }
+        for (int i = 0; i < 4; ++i) {
+            blocks[i] -= min_dist;
+        }
+        set();
         return;
+    }
+    void draw() {
+        // todo
+        return;
+    }
+    void set() {
+        (*board)[blocks[0]] = true;
+        (*board)[blocks[1]] = true;
+        (*board)[blocks[2]] = true;
+        (*board)[blocks[3]] = true;
+        draw();
+        delete this;
     }
 };
