@@ -2,10 +2,10 @@
 
 using namespace std;
 
-// playfield is 10 wide 40 tall.
-// cell called using y * 10 + x
 
 class Piece {
+    // playfield is 10 wide 40 tall.
+    // cell called using y * 10 + x
     static bool* board[400];
 };
 
@@ -16,36 +16,38 @@ class Square: public Piece {
         pos = 205;
     }
     void rotate() {
+        // rotating results in the same shape
         return;
     }
     void down() {
         pos -= 10;
-        if ((*board)[pos] || (*board)[pos + 1]) {
+        // move up one row if too low
+        if (pos >= 0 || (*board)[pos] || (*board)[pos + 1]) {
             pos += 10;
             set();
         }
     }
     void drop() {
-        int min_dist = 400;
+        // find distance, move, and place
         int n = pos - 10;
-        int dist = 0;
-        while (n > 0 || !(*board)[n] && !(*board)[n+1]) {
+        while (n >= 0 || !(*board)[n] && !(*board)[n+1]) {
             n -= 10;
-            dist += 10;
         }
         pos = n + 10;
         set();
         return;
     }
     void draw() {
-        // todo
+        // TODO
         return;
     }
     void set() {
+        // set board
         (*board)[pos] = true;
         (*board)[pos + 1] = true;
         (*board)[pos + 10] = true;
         (*board)[pos + 11] = true;
+        // draw to buffer
         draw();
         delete this;
     }
@@ -66,7 +68,7 @@ class TBlock: public Piece {
         blocks[2] = blocks[3];
         // place blocks[3] opposite to blocks[1] from blocks[0]
         blocks[3] = blocks[0] + (blocks[0] - blocks[1]);
-        while ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
+        while (blocks[1] >= 0 || blocks[2] >= 0 || blocks[3] >= 0 || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
             blocks[0] += 10;
             blocks[1] += 10;
             blocks[2] += 10;
@@ -87,6 +89,7 @@ class TBlock: public Piece {
         }
     }
     void drop() {
+        // find distance move and place
         int dist = 0;
         while (blocks[1] - dist - 10 >= 0 || blocks[2] - dist - 10 >= 0 || blocks[3] - dist - 10 >= 0 || (*board)[blocks[1] - dist - 10] || (*board)[blocks[2] - dist - 10] || (*board)[blocks[3] - dist - 10]) {
             dist += 10;
@@ -123,6 +126,7 @@ class LBlockL: public Piece {
         blocks[3] = 214;
     }
     void rotate() {
+        // use stateChange to determine positions of blocks when rotated
         blocks[0] += stateChange[state][0];
         blocks[1] += stateChange[state][1];
         blocks[2] += stateChange[state][2];
@@ -150,6 +154,7 @@ class LBlockL: public Piece {
         }
     }
     void drop() {
+        // find distance, move, and place
         int dist = 0;
         while (blocks[1] - dist - 10 >= 0 || blocks[2] - dist - 10 >= 0 || blocks[3] - dist - 10 >= 0 || (*board)[blocks[1] - dist - 10] || (*board)[blocks[2] - dist - 10] || (*board)[blocks[3] - dist - 10]) {
             dist += 10;
@@ -177,7 +182,7 @@ class LBlockL: public Piece {
 class LBlockR: public Piece {
     int blocks[4];
     int state = 0;
-    static int stateChange[4][4] = {{11, 0, -11, -20},{-9, 0, 9, -2},{-11, 0, 11, 20},{9, 0, -9, 2}}; // stateChange[i] = modifications needed to go from state i -> (i+1)%4
+    int stateChange[4][4] = {{11, 0, -11, -20},{-9, 0, 9, -2},{-11, 0, 11, 20},{9, 0, -9, 2}}; // stateChange[i] = modifications needed to go from state i -> (i+1)%4
     static bool* board[400];
     LBlockR() {
         blocks[0] = 204;
@@ -186,6 +191,7 @@ class LBlockR: public Piece {
         blocks[3] = 216;
     }
     void rotate() {
+        // use stateChange to determine positions of blocks when rotated
         blocks[0] += stateChange[state][0];
         blocks[1] += stateChange[state][1];
         blocks[2] += stateChange[state][2];
@@ -213,6 +219,7 @@ class LBlockR: public Piece {
         }
     }
     void drop() {
+        // find distance, move, and place
         int dist = 0;
         while (blocks[1] - dist - 10 >= 0 || blocks[2] - dist - 10 >= 0 || blocks[3] - dist - 10 >= 0 || (*board)[blocks[1] - dist - 10] || (*board)[blocks[2] - dist - 10] || (*board)[blocks[3] - dist - 10]) {
             dist += 10;
