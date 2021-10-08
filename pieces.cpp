@@ -1,3 +1,7 @@
+#include <algorithm>
+
+using namespace std;
+
 // playfield is 10 wide 40 tall.
 // cell called using y * 10 + x
 
@@ -16,7 +20,7 @@ class Square: public Piece {
     }
     void down() {
         pos -= 10;
-        if (board[pos] || board[pos + 1]) {
+        if ((*board)[pos] || (*board)[pos + 1]) {
             pos += 10;
             set();
         }
@@ -42,7 +46,7 @@ class TBlock: public Piece {
         blocks[2] = blocks[3];
         // place blocks[3] opposite to blocks[1] from blocks[0]
         blocks[3] = blocks[0] + (blocks[0] - blocks[1]);
-        while (board[blocks[0]] || board[blocks[1]] || board[blocks[2]] || board[blocks[3]]) {
+        while ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
             blocks[0] += 10;
             blocks[1] += 10;
             blocks[2] += 10;
@@ -54,7 +58,7 @@ class TBlock: public Piece {
         blocks[1] -= 10;
         blocks[2] -= 10;
         blocks[3] -= 10;
-        if (board[blocks[0]] || board[blocks[1]] || board[blocks[2]] || board[blocks[3]]) {
+        if (blocks[1] > 0 || blocks[2] > 0 || blocks[3] > 0 || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
             blocks[0] += 10;
             blocks[1] += 10;
             blocks[2] += 10;
@@ -62,9 +66,34 @@ class TBlock: public Piece {
             set();
         }
     }
-    void set() {
-        // TODO;
+    void drop() {
+        int min_dist = 400;
+        for (int n : blocks) {
+            n -= 10;
+            int dist = 0;
+            while (n > 0 || !(*board)[n]) {
+                n -= 10;
+                dist += 10;
+            }
+            min_dist = min(min_dist, dist);
+        }
+        for (int i = 0; i < 4; ++i) {
+            blocks[i] -= min_dist;
+        }
+        set();
         return;
+    }
+    void draw() {
+        // todo
+        return;
+    }
+    void set() {
+        (*board)[blocks[0]] = true;
+        (*board)[blocks[1]] = true;
+        (*board)[blocks[2]] = true;
+        (*board)[blocks[3]] = true;
+        draw();
+        delete this;
     }
 };
 
@@ -86,7 +115,7 @@ class LBlockL: public Piece {
         blocks[3] += stateChange[state][3];
         ++state;
         state %= 4;
-        while (board[blocks[0]] || board[blocks[1]] || board[blocks[2]] || board[blocks[3]]) {
+        while ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
             blocks[0] += 10;
             blocks[1] += 10;
             blocks[2] += 10;
@@ -98,7 +127,7 @@ class LBlockL: public Piece {
         blocks[1] -= 10;
         blocks[2] -= 10;
         blocks[3] -= 10;
-        if (board[blocks[0]] || board[blocks[1]] || board[blocks[2]] || board[blocks[3]]) {
+        if ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
             blocks[0] += 10;
             blocks[1] += 10;
             blocks[2] += 10;
@@ -130,7 +159,7 @@ class LBlockR: public Piece {
         blocks[3] += stateChange[state][3];
         ++state;
         state %= 4;
-        while (board[blocks[0]] || board[blocks[1]] || board[blocks[2]] || board[blocks[3]]) {
+        while ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
             blocks[0] += 10;
             blocks[1] += 10;
             blocks[2] += 10;
@@ -142,7 +171,7 @@ class LBlockR: public Piece {
         blocks[1] -= 10;
         blocks[2] -= 10;
         blocks[3] -= 10;
-        if (board[blocks[0]] || board[blocks[1]] || board[blocks[2]] || board[blocks[3]]) {
+        if ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
             blocks[0] += 10;
             blocks[1] += 10;
             blocks[2] += 10;
@@ -151,7 +180,6 @@ class LBlockR: public Piece {
         }
     }
     void set() {
-        // TODO;
         return;
     }
 };
