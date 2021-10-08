@@ -150,18 +150,12 @@ class LBlockL: public Piece {
         }
     }
     void drop() {
-        int min_dist = 400;
-        for (int n : blocks) {
-            n -= 10;
-            int dist = 0;
-            while (n > 0 || !(*board)[n]) {
-                n -= 10;
-                dist += 10;
-            }
-            min_dist = min(min_dist, dist);
+        int dist = 0;
+        while (blocks[1] - dist - 10 >= 0 || blocks[2] - dist - 10 >= 0 || blocks[3] - dist - 10 >= 0 || (*board)[blocks[1] - dist - 10] || (*board)[blocks[2] - dist - 10] || (*board)[blocks[3] - dist - 10]) {
+            dist += 10;
         }
         for (int i = 0; i < 4; ++i) {
-            blocks[i] -= min_dist;
+            blocks[i] -= dist;
         }
         set();
         return;
@@ -183,7 +177,7 @@ class LBlockL: public Piece {
 class LBlockR: public Piece {
     int blocks[4];
     int state = 0;
-    static const int stateChange[4][4] = {{11, 0, -11, -20},{-9, 0, 9, -2},{-11, 0, 11, 20},{9, 0, -9, 2}}; // stateChange[i] = modifications needed to go from state i -> (i+1)%4
+    static int stateChange[4][4] = {{11, 0, -11, -20},{-9, 0, 9, -2},{-11, 0, 11, 20},{9, 0, -9, 2}}; // stateChange[i] = modifications needed to go from state i -> (i+1)%4
     static bool* board[400];
     LBlockR() {
         blocks[0] = 204;
@@ -219,18 +213,12 @@ class LBlockR: public Piece {
         }
     }
     void drop() {
-        int min_dist = 400;
-        for (int n : blocks) {
-            n -= 10;
-            int dist = 0;
-            while (n > 0 || !(*board)[n]) {
-                n -= 10;
-                dist += 10;
-            }
-            min_dist = min(min_dist, dist);
+        int dist = 0;
+        while (blocks[1] - dist - 10 >= 0 || blocks[2] - dist - 10 >= 0 || blocks[3] - dist - 10 >= 0 || (*board)[blocks[1] - dist - 10] || (*board)[blocks[2] - dist - 10] || (*board)[blocks[3] - dist - 10]) {
+            dist += 10;
         }
         for (int i = 0; i < 4; ++i) {
-            blocks[i] -= min_dist;
+            blocks[i] -= dist;
         }
         set();
         return;
