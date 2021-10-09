@@ -144,9 +144,9 @@ LBlockL::LBlockL() {
 
 void LBlockL::rotate() {
     // use stateChange to determine positions of blocks when rotated
-    blocks[1] = blocks[0] + stateChange[state++];
-    blocks[2] = blocks[0] + stateChange[state++];
-    blocks[3] = blocks[0] + stateChange[state++];
+    blocks[1] = blocks[0] + stateChange[offset++];
+    blocks[2] = blocks[0] + stateChange[offset++];
+    blocks[3] = blocks[0] + stateChange[offset++];
     state %= 12;
     while ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
         blocks[0] += 10;
