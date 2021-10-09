@@ -28,8 +28,6 @@ class Square : public Piece {
 
     void drop();
 
-    void draw();
-
     void set();
 };
 
@@ -41,6 +39,10 @@ class TBlock : public Piece {
     void rotate();
 
     void down();
+
+    void left();
+
+    void right();
 
     void drop();
 
