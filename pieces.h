@@ -22,6 +22,10 @@ class Square : public Piece {
 
     void down();
 
+    void left();
+
+    void right();
+
     void drop();
 
     void draw();
@@ -46,9 +50,9 @@ class TBlock : public Piece {
 };
 
 class LBlockL : public Piece {
-    bool blocks[4] = {};
+    int blocks[4] = { 215, 214, 216, 206 };
     int state = 0;
-    int stateChange[4][4] = { {11, 0, -11, 2},{-9, 0, 9, -20},{-11, 0, 11, -2},{9, 0, -9, 20} }; // stateChange[i] = modifications needed to go from state i -> (i+1)%4
+    static const int stateChange[12] = { -1, 1, -9, 10, -10, -11, 1, -1, 9, -10, 10, 11 }; // position of pieces relative to centre piece
 
     LBlockL();
 
@@ -64,9 +68,9 @@ class LBlockL : public Piece {
 };
 
 class LBlockR : public Piece {
-    int blocks[4];
-    int state = 0;
-    int stateChange[4][4] = { {11, 0, -11, -20}, {-9, 0, 9, -2}, {-11, 0, 11, 20}, {9, 0, -9, 2} }; // stateChange[i] = modifications needed to go from state i -> (i+1)%4
+    int blocks[4] = { 205, 204, 206, 216 };
+    int offset = 3;
+    const int stateChange[12] = { -1, 1, 11, 10, -10, -9, 1, -1, -11, -10, 10, 9 }; // position of pieces relative to centre piece block[0]
 
     LBlockR();
 
