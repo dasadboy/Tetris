@@ -52,7 +52,7 @@ class TBlock : public Piece {
 };
 
 class LBlockL : public Piece {
-    int blocks[4] = { 215, 214, 216, 206 };
+    int blocks[4];
     int state = 0;
     static const int stateChange[12] = { -1, 1, -9, 10, -10, -11, 1, -1, 9, -10, 10, 11 }; // position of pieces relative to centre piece
 
@@ -70,7 +70,7 @@ class LBlockL : public Piece {
 };
 
 class LBlockR : public Piece {
-    int blocks[4] = { 205, 204, 206, 216 };
+    int blocks[4];
     int offset = 3;
     const int stateChange[12] = { -1, 1, 11, 10, -10, -9, 1, -1, -11, -10, 10, 9 }; // position of pieces relative to centre piece block[0]
 
