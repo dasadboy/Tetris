@@ -14,12 +14,12 @@ void Square::rotate() {
 }
 
 void Square::down() {
+    if (pos >= 0 || (*board)[pos - 10] || (*board)[pos - 9]) {
+        set();
+        return;
+    }
     pos -= 10;
     // move up one row if too low
-    if (pos >= 0 || (*board)[pos] || (*board)[pos + 1]) {
-        pos += 10;
-        set();
-    }
 }
 
 void Square::left() {
@@ -111,7 +111,10 @@ void TBlock::right() {
 void TBlock::drop() {
     // find distance move and place
     int dist = 0;
-    while (blocks[1] - dist - 10 >= 0 || blocks[2] - dist - 10 >= 0 || blocks[3] - dist - 10 >= 0 || (*board)[blocks[1] - dist - 10] || (*board)[blocks[2] - dist - 10] || (*board)[blocks[3] - dist - 10]) {
+    while (blocks[1] - dist - 10 >= 0 || blocks[2] - dist - 10 >= 0
+        || blocks[3] - dist - 10 >= 0 || (*board)[blocks[0] - dist - 10]
+        || (*board)[blocks[1] - dist - 10] || (*board)[blocks[2] - dist - 10]
+        || (*board)[blocks[3] - dist - 10]) {
         dist += 10;
     }
     for (int i = 0; i < 4; ++i) {
