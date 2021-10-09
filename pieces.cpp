@@ -140,10 +140,10 @@ void TBlock::set() {
 
 
 LBlockL::LBlockL() {
-    blocks[0] = 204;
-    blocks[1] = 205;
-    blocks[2] = 206;
-    blocks[3] = 214;
+    blocks[0] = 215;
+    blocks[1] = 214;
+    blocks[2] = 216;
+    blocks[3] = 206;
 }
 
 void LBlockL::rotate() {
@@ -216,7 +216,7 @@ void LBlockR::rotate() {
     blocks[2] += stateChange[offset][2];
     blocks[3] += stateChange[offset][3];
     ++offset;
-    offfset %= 4;
+    offset %= 4;
     while ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
         blocks[0] += 10;
         blocks[1] += 10;
