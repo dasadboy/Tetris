@@ -147,7 +147,7 @@ void LBlockL::rotate() {
     blocks[1] = blocks[0] + stateChange[offset++];
     blocks[2] = blocks[0] + stateChange[offset++];
     blocks[3] = blocks[0] + stateChange[offset++];
-    state %= 12;
+    offset %= 12;
     while ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
         blocks[0] += 10;
         blocks[1] += 10;
@@ -199,13 +199,12 @@ LBlockR::LBlockR() {
 
 void LBlockR::rotate() {
     // use stateChange to determine positions of blocks when rotated
-    blocks[0] += stateChange[offset][0];
-    blocks[1] += stateChange[offset][1];
-    blocks[2] += stateChange[offset][2];
-    blocks[3] += stateChange[offset][3];
+    blocks[1] = blocks[0] + stateChange[offset++];
+    blocks[2] = blocks[0] + stateChange[offset++];
+    blocks[3] = blocks[0] + stateChange[offset++];
     ++offset;
     offset %= 4;
-    while ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
+    while (blocks[1] < 0 || blocks[3] < 0 || (*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
         blocks[0] += 10;
         blocks[1] += 10;
         blocks[2] += 10;
