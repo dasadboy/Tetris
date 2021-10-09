@@ -46,8 +46,6 @@ class TBlock : public Piece {
 
     void drop();
 
-    void draw();
-
     void set();
 };
 
@@ -62,9 +60,9 @@ class LBlockL : public Piece {
 
     void down();
 
-    void drop();
 
-    void draw();
+
+    void drop();
 
     void set();
 };

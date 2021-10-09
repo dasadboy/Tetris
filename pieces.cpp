@@ -124,17 +124,12 @@ void TBlock::drop() {
     return;
 }
 
-void TBlock::draw() {
-    // todo
-    return;
-}
-
 void TBlock::set() {
     (*board)[blocks[0]] = true;
     (*board)[blocks[1]] = true;
     (*board)[blocks[2]] = true;
     (*board)[blocks[3]] = true;
-    draw();
+    // draw
     delete this;
 }
 
