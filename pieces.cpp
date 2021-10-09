@@ -22,6 +22,11 @@ void Square::down() {
     }
 }
 
+void Square::left() {
+    if (pos % 10 > 0)
+        pos -= 1;
+}
+
 void Square::drop() {
     // find distance, move, and place
     int n = pos - 10;
@@ -50,6 +55,7 @@ void Square::set() {
 }
 
 
+// TBlock
 TBlock::TBlock() {
     blocks[0] = 205;
     blocks[1] = 204;
@@ -122,12 +128,10 @@ LBlockL::LBlockL() {
 
 void LBlockL::rotate() {
     // use stateChange to determine positions of blocks when rotated
-    blocks[0] += stateChange[state][0];
-    blocks[1] += stateChange[state][1];
-    blocks[2] += stateChange[state][2];
-    blocks[3] += stateChange[state][3];
-    ++state;
-    state %= 4;
+    blocks[1] = blocks[0] + stateChange[state++];
+    blocks[2] = blocks[0] + stateChange[state++];
+    blocks[3] = blocks[0] + stateChange[state++];
+    state %= 12;
     while ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
         blocks[0] += 10;
         blocks[1] += 10;
@@ -162,10 +166,12 @@ void LBlockL::drop() {
     set();
     return;
 }
+
 void LBlockL::draw() {
     // todo
     return;
 }
+
 void LBlockL::set() {
     (*board)[blocks[0]] = true;
     (*board)[blocks[1]] = true;
@@ -185,12 +191,12 @@ LBlockR::LBlockR() {
 
 void LBlockR::rotate() {
     // use stateChange to determine positions of blocks when rotated
-    blocks[0] += stateChange[state][0];
-    blocks[1] += stateChange[state][1];
-    blocks[2] += stateChange[state][2];
-    blocks[3] += stateChange[state][3];
-    ++state;
-    state %= 4;
+    blocks[0] += stateChange[offset][0];
+    blocks[1] += stateChange[offset][1];
+    blocks[2] += stateChange[offset][2];
+    blocks[3] += stateChange[offset][3];
+    ++offset;
+    offfset %= 4;
     while ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
         blocks[0] += 10;
         blocks[1] += 10;
