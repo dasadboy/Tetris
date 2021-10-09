@@ -185,17 +185,12 @@ void LBlockL::drop() {
     return;
 }
 
-void LBlockL::draw() {
-    // todo
-    return;
-}
-
 void LBlockL::set() {
     (*board)[blocks[0]] = true;
     (*board)[blocks[1]] = true;
     (*board)[blocks[2]] = true;
     (*board)[blocks[3]] = true;
-    draw();
+    // draw
     delete this;
 }
 
