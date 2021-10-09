@@ -139,6 +139,7 @@ void TBlock::set() {
 }
 
 
+// LBlockL
 LBlockL::LBlockL() {
     blocks[0] = 215;
     blocks[1] = 214;
@@ -161,23 +162,20 @@ void LBlockL::rotate() {
 }
 
 void LBlockL::down() {
+    if ((*board)[blocks[1]] - 10 > 0 || (*board)[blocks[3]] - 10 > 0 || (*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
+        set();
+        return;
+    }
     blocks[0] -= 10;
     blocks[1] -= 10;
     blocks[2] -= 10;
     blocks[3] -= 10;
-    if ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
-        blocks[0] += 10;
-        blocks[1] += 10;
-        blocks[2] += 10;
-        blocks[3] += 10;
-        set();
-    }
 }
 
 void LBlockL::drop() {
     // find distance, move, and place
     int dist = 0;
-    while (blocks[1] - dist - 10 >= 0 || blocks[2] - dist - 10 >= 0 || blocks[3] - dist - 10 >= 0 || (*board)[blocks[1] - dist - 10] || (*board)[blocks[2] - dist - 10] || (*board)[blocks[3] - dist - 10]) {
+    while (blocks[0] - dist - 10 >= 0 || blocks[2] - dist - 10 >= 0 || blocks[3] - dist - 10 >= 0 || (*board)[blocks[1] - dist - 10] || (*board)[blocks[2] - dist - 10] || (*board)[blocks[3] - dist - 10]) {
         dist += 10;
     }
     for (int i = 0; i < 4; ++i) {
