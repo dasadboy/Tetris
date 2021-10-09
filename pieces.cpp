@@ -27,6 +27,11 @@ void Square::left() {
         pos -= 1;
 }
 
+void Square::right() {
+    if (pos % 10 < 8)
+        pos += 1;
+}
+
 void Square::drop() {
     // find distance, move, and place
     int n = pos - 10;
@@ -38,19 +43,13 @@ void Square::drop() {
     return;
 }
 
-void Square::draw() {
-    // TODO
-    return;
-}
-
 void Square::set() {
     // set board
     (*board)[pos] = true;
     (*board)[pos + 1] = true;
     (*board)[pos + 10] = true;
     (*board)[pos + 11] = true;
-    // draw to buffer
-    draw();
+    // draw
     delete this;
 }
 
@@ -88,6 +87,24 @@ void TBlock::down() {
         blocks[2] += 10;
         blocks[3] += 10;
         set();
+    }
+}
+
+void TBlock::left() {
+    if (blocks[1] % 10 > 0 || blocks[2] % 10 > 0 || blocks[3] % 10 > 0) {
+        blocks[0] -= 1;
+        blocks[1] -= 1;
+        blocks[2] -= 1;
+        blocks[3] -= 1;
+    }
+}
+
+void TBlock::right() {
+    if (blocks[1] % 10 < 8 || blocks[2] % 10 < 8 || blocks[3] % 10 < 8) {
+        blocks[0] += 1;
+        blocks[1] += 1;
+        blocks[2] += 1;
+        blocks[3] += 1;
     }
 }
 
