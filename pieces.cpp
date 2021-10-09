@@ -68,7 +68,7 @@ void TBlock::rotate() {
     blocks[2] = blocks[3];
     // place blocks[3] opposite to blocks[1] from blocks[0]
     blocks[3] = blocks[0] + (blocks[0] - blocks[1]);
-    while (blocks[1] >= 0 || blocks[2] >= 0 || blocks[3] >= 0 || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
+    while (blocks[1] >= 0 || blocks[2] >= 0 || blocks[3] >= 0 || (*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
         blocks[0] += 10;
         blocks[1] += 10;
         blocks[2] += 10;
