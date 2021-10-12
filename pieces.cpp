@@ -139,6 +139,7 @@ void TBlock::set() {
 const int LBlockL::stateChange[12] = { -1, 1, -9, 10, -10, -11, 1, -1, 9, -10, 10, 11 };
 
 LBlockL::LBlockL() {
+    offset = 3;
     blocks[0] = 215;
     blocks[1] = 214;
     blocks[2] = 216;
