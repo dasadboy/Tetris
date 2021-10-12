@@ -136,7 +136,7 @@ void TBlock::set() {
 
 // LBlockL
 
-const int LBlockL::stateChange = { -1, 1, -9, 10, -10, -11, 1, -1, 9, -10, 10, 11 };
+const int LBlockL::stateChange[12] = { -1, 1, -9, 10, -10, -11, 1, -1, 9, -10, 10, 11 };
 
 LBlockL::LBlockL() {
     blocks[0] = 215;
@@ -195,7 +195,7 @@ void LBlockL::set() {
 
 // LBlockR
 
-const int LBlockR::stateChange = { -1, 1, 11, 10, -10, -9, 1, -1, -11, -10, 10, 9 };
+const int LBlockR::stateChange[12] = { -1, 1, 11, 10, -10, -9, 1, -1, -11, -10, 10, 9 };
 
 LBlockR::LBlockR() {
     blocks[0] = 204;
