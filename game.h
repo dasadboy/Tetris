@@ -1,13 +1,22 @@
+#include <iostream>
+#include <initializer_list>
+#include <vector>
+
 class Board {
     bool board[400];
+    int offset;
 
-    bool get(bool rowCol);
+    Board();
 
-    bool get(bool row, bool col);
+    bool get(int rowCol);
 
-    bool set(bool rowCol, bool val);
+    bool get(int row, int col);
 
-    bool set(bool row, bool col, bool val);
+    void set(int rowCol, bool val);
+
+    void set(int row, int col, bool val);
+
+    void removeRows(std::initializer_list<int> rows);
 };
 
 class Game {
