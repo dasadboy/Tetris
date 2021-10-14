@@ -3,18 +3,14 @@
 #include <vector>
 
 class Board {
-    bool board[400];
+    std::vector<int> board;
     int offset;
 
     Board();
 
-    bool get(int rowCol);
+    int& get(int rowCol);
 
-    bool get(int row, int col);
-
-    void set(int rowCol, bool val);
-
-    void set(int row, int col, bool val);
+    int& get(int row, int col);
 
     void removeRows(std::initializer_list<int> rows);
 };

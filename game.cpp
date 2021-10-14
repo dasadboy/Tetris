@@ -4,24 +4,16 @@
 
 
 Board::Board() {
-	board[0] = false;
+	board = std::vector<int>(400, 0);
 	offset = 0;
 }
 
-bool Board::get(int rowCol) {
+int& Board::get(int rowCol) {
 	return board[rowCol];
 }
 
-bool Board::get(int row, int col) {
-	return board[row * 10 + col];
-}
-
-void Board::set(int rowCol, bool val) {
-	board[rowCol] = val;
-}
-
-void Board::set(int row, int col, bool val) {
-	board[row * 10 + col];
+int& Board::get(int row, int col) {
+	return board[(row * 10) + col];
 }
 
 void Board::removeRows(std::initializer_list<int> rows) {
