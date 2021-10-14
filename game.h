@@ -16,7 +16,7 @@ class Board {
 };
 
 class Game {
-    bool board[400] = { false }; // single dimension array representing 40x10 board;
-    int maxHeight = 0;
+    Board board;
+    int maxHeight;
     Game();
 };
