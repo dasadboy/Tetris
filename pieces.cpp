@@ -54,6 +54,7 @@ void Square::set() {
 }
 
 
+
 // TBlock
 TBlock::TBlock() {
     blocks[0] = 205;
