@@ -3,14 +3,14 @@
 #include <vector>
 
 class Board {
-    bool board[400];
+    std::vector<int> board;
     int offset;
 
     Board();
 
-    bool get(int rowCol);
+    int get(int rowCol);
 
-    bool get(int row, int col);
+    int get(int row, int col);
 
     void set(int rowCol, bool val);
 
