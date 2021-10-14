@@ -8,20 +8,12 @@ Board::Board() {
 	offset = 0;
 }
 
-int Board::get(int rowCol) {
+int& Board::get(int rowCol) {
 	return board[rowCol];
 }
 
-int Board::get(int row, int col) {
+int& Board::get(int row, int col) {
 	return board[(row * 10) + col];
-}
-
-void Board::set(int rowCol, bool val) {
-	board[rowCol] = val;
-}
-
-void Board::set(int row, int col, bool val) {
-	board[(row * 10) + col];
 }
 
 void Board::removeRows(std::initializer_list<int> rows) {

@@ -8,13 +8,9 @@ class Board {
 
     Board();
 
-    int get(int rowCol);
+    int& get(int rowCol);
 
-    int get(int row, int col);
-
-    void set(int rowCol, bool val);
-
-    void set(int row, int col, bool val);
+    int& get(int row, int col);
 
     void removeRows(std::initializer_list<int> rows);
 };
