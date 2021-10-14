@@ -2,15 +2,19 @@
 #include <initializer_list>
 #include <vector>
 
+struct indices {
+    std::size_t i, j;
+};
+
 class Board {
     std::vector<int> board;
     int offset;
 
     Board();
 
-    int& get(int rowCol);
+    int& operator[](int rowCol);
 
-    int& get(int row, int col);
+    int& operator[](indices rowCol); // called with board({row, col})
 
     void removeRows(std::initializer_list<int> rows);
 };
