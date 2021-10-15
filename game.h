@@ -7,8 +7,12 @@ struct indices {
 };
 
 class Board {
+private:
     std::vector<int> board;
-    int offset;
+    std::vector<int> rowPop;
+    int currHeight;
+
+public:
 
     Board();
 
@@ -16,7 +20,7 @@ class Board {
 
     int& operator[](indices rowCol); // called with board({row, col})
 
-    void removeRows(std::initializer_list<int> rows);
+    void removeRows(int rowStart, int rowEnd); // remove filled rows
 };
 
 class Game {
