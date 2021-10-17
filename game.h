@@ -1,3 +1,6 @@
+#ifndef Game_H
+#define Game_H
+
 #include <iostream>
 #include <initializer_list>
 #include <vector>
@@ -26,8 +29,10 @@ public:
     void set(int b0, int b1, int b2, int b3, int color);
 };
 
-class Game {
-    Board board;
-    int maxHeight;
-    Game();
-};
+//class Game {
+//    Board board;
+//    int maxHeight;
+//    Game();
+//};
+
+#endif
