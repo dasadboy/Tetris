@@ -20,7 +20,7 @@ public:
 
     int& operator[](indices rowCol); // called with board({row, col})
 
-    void removeRows(int rowStart, int rowEnd); // remove filled rows
+    void removeRows(int rowStart); // remove filled rows
 };
 
 class Game {

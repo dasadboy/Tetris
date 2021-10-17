@@ -5,7 +5,8 @@
 
 Board::Board() {
 	board = std::vector<int>(400, 0);
-	offset = 0;
+	rowPop = std::vector<int>(40);
+	currHeight = 0;
 }
 
 int& Board::operator[] (int rowCol){
@@ -16,23 +17,17 @@ int& Board::operator[] (indices rowCol) {
 	return board[rowCol.i * 10 + rowCol.j];
 }
 
-void Board::removeRows(std::initializer_list<int> rows) {
-	auto it = begin(rows);
-	int src = 10 * ( *it + 1 ), target = *it * 10;
-	++it;
-	for (auto e = end(rows); it != e; ++it) {
-		while (src < *it * 10) {
-			board[target++] = board[src++];
+void Board::removeRows(int rowStart) {
+	for (int curr = rowStart * 10, src = rowStart; src < currHeight;) {
+		if (rowPop[src / 10] == 10) {
+			src += 10;
 		}
-		src += 10;
-	}
-	// replace rows until we encounter an empty row
-	bool blockExists = true;
-	while (blockExists) {
-		blockExists = false;
-		while (src % 10) {
-			blockExists &= board[target];
-			board[target++] = board[src++];
+		else {
+			rowPop[curr / 10] = rowPop[src / 10];
+			board[curr++] = board[src++];
+			while (curr % 10) {
+				board[curr++] = board[src++];
+			}
 		}
 	}
 }
