@@ -1,7 +1,5 @@
-#include "game.h"
+#include "board.h"
 #include "pieces.h"
-#include <vector>
-#include <initializer_list>
 
 
 Board::Board() {
