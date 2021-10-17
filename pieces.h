@@ -85,22 +85,23 @@ class LBlockR : public Piece {
     void set();
 };
 
-class StraightBlock : public Piece {
-    int blocks[4];
-    int state = 0;
-    int stateChange[4][4];
-    
-    StraightBlock();
-    
-    void rotate();
-
-    void down();
-    
-    void drop();
-
-    void draw();
-
-    void set();
-};
+// TODO
+//class StraightBlock : public Piece {
+//    int blocks[4];
+//    int state = 0;
+//    int stateChange[4][4];
+//    
+//    StraightBlock();
+//    
+//    void rotate();
+//
+//    void down();
+//    
+//    void drop();
+//
+//    void draw();
+//
+//    void set();
+//};
 
 #endif
