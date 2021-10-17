@@ -1,4 +1,5 @@
 #include "game.h"
+#include "pieces.h"
 #include <vector>
 #include <initializer_list>
 
@@ -30,4 +31,15 @@ void Board::removeRows(int rowStart) {
 			}
 		}
 	}
+}
+
+void Board::set(int b0, int b1, int b2, int b3, int color) {
+	board[b0] = color;
+	++rowPop[b0];
+	board[b1] = color;
+	++rowPop[b1];
+	board[b2] = color;
+	++rowPop[b2];
+	board[b3] = color;
+	++rowPop[b3];
 }
