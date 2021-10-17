@@ -23,7 +23,7 @@ public:
 
     void removeRows(int rowStart); // remove filled rows
 
-    void set(Piece P);
+    void set(int b0, int b1, int b2, int b3, int color);
 };
 
 class Game {
