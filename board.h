@@ -1,5 +1,5 @@
-#ifndef Game_H
-#define Game_H
+#ifndef Board_Class_H
+#define Board_Class_H
 
 #include <iostream>
 #include <initializer_list>
@@ -28,11 +28,5 @@ public:
 
     void set(int b0, int b1, int b2, int b3, int color);
 };
-
-//class Game {
-//    Board board;
-//    int maxHeight;
-//    Game();
-//};
 
 #endif
