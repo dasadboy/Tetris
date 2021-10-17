@@ -200,6 +200,7 @@ void LBlockL::set() {
 const int LBlockR::stateChange[12] = { -1, 1, 11, 10, -10, -9, 1, -1, -11, -10, 10, 9 };
 
 LBlockR::LBlockR() {
+    offset = 3;
     blocks[0] = 204;
     blocks[1] = 205;
     blocks[2] = 206;
