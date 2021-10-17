@@ -1,6 +1,7 @@
 #include <iostream>
 #include <initializer_list>
 #include <vector>
+#include "pieces.h"
 
 struct indices {
     std::size_t i, j;
@@ -21,6 +22,8 @@ public:
     int& operator[](indices rowCol); // called with board({row, col})
 
     void removeRows(int rowStart); // remove filled rows
+
+    void set(Piece P);
 };
 
 class Game {
