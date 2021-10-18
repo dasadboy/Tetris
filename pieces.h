@@ -2,15 +2,13 @@
 #define Piece_Class_H
 
 #include <algorithm>
-
-using namespace std;
-
+#include "board.h"
 
 class Piece {
 public:
     // playfield is 10 wide 40 tall.
     // cell called using y * 10 + x
-    static bool* board[400];
+    static Board board;
 };
 
 class Square : public Piece {

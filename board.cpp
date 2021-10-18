@@ -1,5 +1,5 @@
+#include <vector>
 #include "board.h"
-#include "pieces.h"
 
 
 Board::Board() {
