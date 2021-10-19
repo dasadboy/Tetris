@@ -20,16 +20,18 @@ int& Board::operator[] (indices rowCol) {
 }
 
 void Board::removeRows(int rowStart) {
-	for (int curr = rowStart * 10, src = rowStart; src < currHeight;) {
-		if (rowPop[src / 10] == 10) {
-			src += 10;
+	for (int curr = rowStart, src = rowStart; src < currHeight;) {
+		if (rowPop[src] == 10) {
+			++src;
 		}
 		else {
-			rowPop[curr / 10] = rowPop[src / 10];
-			board[curr++] = board[src++];
-			while (curr % 10) {
-				board[curr++] = board[src++];
+			rowPop[curr] = rowPop[src];
+			for (int curr_i = curr * 10, src_i = src *10, curr_e = curr_i + 10, src_e = src_i + 10;
+				curr_i < curr_e;
+				++curr_i) {
+				board[curr_i] = board[src_i];
 			}
+			++curr, ++src;
 		}
 	}
 }
@@ -37,10 +39,13 @@ void Board::removeRows(int rowStart) {
 void Board::set() {
 	board[(*currPiecePos)[0]] = currPiece->color;
 	++rowPop[(*currPiecePos)[0]];
+
 	board[(*currPiecePos)[1]] = currPiece->color;
 	++rowPop[(*currPiecePos)[1]];
+
 	board[(*currPiecePos)[2]] = currPiece->color;
 	++rowPop[(*currPiecePos)[2]];
+
 	board[(*currPiecePos)[3]] = currPiece->color;
 	++rowPop[(*currPiecePos)[3]];
 }
@@ -72,3 +77,12 @@ void Board::pieceLeft() {
 		*it -= (!cantMove) * 10;
 	}
 }
+
+
+
+void Board::pieceRight() {};
+
+void Board::pieceRotate() {};
+
+void Board::pieceDrop() {};
+
