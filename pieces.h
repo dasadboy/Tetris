@@ -2,12 +2,19 @@
 #define Piece_Class_H
 
 #include <algorithm>
+#include <vector>
 
-class Piece {};
+class Piece {
+public:
+    std::vector<int> pos;
+    int color;
+
+    void rotate();
+};
 
 class Square : public Piece {
 public:
-    int pos;
+    std::vector<int> pos;
 
     Square();
 
@@ -16,7 +23,7 @@ public:
 
 class TBlock : public Piece {
 public:
-    int blocks[4];
+    std::vector<int> pos;
 
     TBlock();
 
@@ -25,7 +32,7 @@ public:
 
 class LBlockL : public Piece {
 public:
-    int blocks[4];
+    std::vector<int> pos;
     int offset;
     static const int stateChange[12]; // position of pieces relative to centre piece
 
@@ -36,7 +43,7 @@ public:
 
 class LBlockR : public Piece {
 public:
-    int blocks[4];
+    std::vector<int> pos;
     int offset;
     static const int stateChange[12]; // position of pieces relative to centre piece block[0]
 
