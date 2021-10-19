@@ -9,14 +9,21 @@ struct indices {
     std::size_t i, j;
 };
 
+template <typename T>
+Piece* Create() { return new T(); }
+
+typedef Piece* (*CreateFn)();
+
+
 class Board {
 private:
     // playfield is 10 wide 40 tall.
     // cell called using y * 10 + x
     std::vector<int> board;
     std::vector<int> rowPop;
-    std::vector<Piece> pieceNames;
-    Piece currPiece;
+    static const std::vector<CreateFn> pieceNames;
+    Piece* currPiece;
+    std::vector<int>* currPiecePos;
     int currHeight;
 
 public:
@@ -29,9 +36,9 @@ public:
 
     void removeRows(int rowStart); // remove filled rows
 
-    void set(int b0, int b1, int b2, int b3, int color);
+    void set();
 
-    void pieceDown();
+    bool pieceDown();
 
     void pieceLeft();
 
@@ -40,6 +47,10 @@ public:
     void pieceRotate();
 
     void pieceDrop();
+
+    ~Board() {
+        delete currPiece;
+    }
 };
 
 #endif
