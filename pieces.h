@@ -6,15 +6,22 @@
 
 class Piece {
 public:
-    std::vector<int> pos;
+    int refpoint = 205;
+    int offset;
     int color;
+    static const std::vector<int> state_x;
+    static const std::vector<int> state_y;
 
-    void rotate();
+    virtual void rotate() {};
+
+    virtual ~Piece() {}
 };
 
 class Square : public Piece {
 public:
-    std::vector<int> pos;
+    // position of pieces relative to refpoint
+    static const std::vector<int> state_x;
+    static const std::vector<int> state_y;
 
     Square();
 
@@ -22,8 +29,10 @@ public:
 };
 
 class TBlock : public Piece {
-public:
-    std::vector<int> pos;
+public: 
+    // position of pieces relative to refpoint
+    static const std::vector<int> state_x; 
+    static const std::vector<int> state_y;
 
     TBlock();
 
@@ -32,9 +41,9 @@ public:
 
 class LBlockL : public Piece {
 public:
-    std::vector<int> pos;
-    int offset;
-    static const int stateChange[12]; // position of pieces relative to centre piece
+    // position of pieces relative to refpoint
+    static const std::vector<int> state_x;
+    static const std::vector<int> state_y;
 
     LBlockL();
 
@@ -43,9 +52,9 @@ public:
 
 class LBlockR : public Piece {
 public:
-    std::vector<int> pos;
-    int offset;
-    static const int stateChange[12]; // position of pieces relative to centre piece block[0]
+    // position of pieces relative to refpoint
+    static const std::vector<int> state_x;
+    static const std::vector<int> state_y;
 
     LBlockR();
 

@@ -79,41 +79,8 @@ void Board::pieceRight() {
 };
 
 void Board::pieceRotate() {
-	int prevMin = std::min({ (*currPiecePos)[0] % 10, (*currPiecePos)[1] % 10, (*currPiecePos)[2] % 10, (*currPiecePos)[3] % 10 }),
-		prevMax = std::min({ (*currPiecePos)[0] % 10, (*currPiecePos)[1] % 10, (*currPiecePos)[2] % 10, (*currPiecePos)[3] % 10 });
-
-	currPiece->rotate();
-
-	int newMin = std::min({ (*currPiecePos)[0] % 10, (*currPiecePos)[1] % 10, (*currPiecePos)[2] % 10, (*currPiecePos)[3] % 10 }),
-		newMax = std::min({ (*currPiecePos)[0] % 10, (*currPiecePos)[1] % 10, (*currPiecePos)[2] % 10, (*currPiecePos)[3] % 10 });
 	
-	if (prevMin <= 1 && newMax >= 8) {
-		(*currPiecePos)[0] += 10 - newMax;
-		(*currPiecePos)[0] %= 10;
-
-		(*currPiecePos)[1] += 10 - newMax;
-		(*currPiecePos)[1] %= 10;
-
-		(*currPiecePos)[2] += 10 - newMax;
-		(*currPiecePos)[2] %= 10;
-
-		(*currPiecePos)[3] += 10 - newMax;
-		(*currPiecePos)[3] %= 10;
-	}
-
-	if (newMin <= 1 && prevMax >= 8) {
-		(*currPiecePos)[0] -= newMin;
-		(*currPiecePos)[0] %= 10;
-
-		(*currPiecePos)[1] -= newMin;
-		(*currPiecePos)[1] %= 10;
-
-		(*currPiecePos)[2] -= newMin;
-		(*currPiecePos)[2] %= 10;
-
-		(*currPiecePos)[3] -= newMin;
-		(*currPiecePos)[3] %= 10;
-	}
+	currPiece->rotate();
 
 	while (checkOverlap(0)) {
 		(*currPiecePos)[0] += 10;
