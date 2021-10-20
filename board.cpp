@@ -51,38 +51,84 @@ void Board::set() {
 }
 
 bool Board::pieceDown() {
-	bool cantFall = false;
+	bool canFall = !(checkOverlap(-10) & checkBlockedDown());
 
 	for (auto it = begin((*currPiecePos)), e = end((*currPiecePos)); it != e; ++it) {
-		cantFall &= (board[ (*it) - 10] != 0);
+		*it -= canFall * 10;
 	}
 
-	for (auto it = begin((*currPiecePos)), e = end((*currPiecePos)); it != e; ++it) {
-		*it -= (!cantFall)*10;
-	}
+	if (!canFall) set();
 
-	if (cantFall) set();
-
-	return cantFall;
+	return canFall;
 }
 
 void Board::pieceLeft() {
-	bool cantMove = false;
+	bool canMove = !(checkOverlap(-1) & checkBlockedLeft());
 
 	for (auto it = begin((*currPiecePos)), e = end((*currPiecePos)); it != e; ++it) {
-		cantMove &= (board[ (*it) - 10 ] != 0);
-	}
-
-	for (auto it = begin((*currPiecePos)), e = end((*currPiecePos)); it != e; ++it) {
-		*it -= (!cantMove) * 10;
+		*it -= canMove;
 	}
 }
 
+void Board::pieceRight() {
+	bool canMove = !(checkOverlap(1) & checkBlockedRight());
 
+	for (auto it = begin((*currPiecePos)), e = end((*currPiecePos)); it != e; ++it) {
+		*it += canMove;
+	}
+};
 
-void Board::pieceRight() {};
+void Board::pieceRotate() {
+	int prevMin = std::min({ (*currPiecePos)[0] % 10, (*currPiecePos)[1] % 10, (*currPiecePos)[2] % 10, (*currPiecePos)[3] % 10 }),
+		prevMax = std::min({ (*currPiecePos)[0] % 10, (*currPiecePos)[1] % 10, (*currPiecePos)[2] % 10, (*currPiecePos)[3] % 10 });
 
-void Board::pieceRotate() {};
+	currPiece->rotate();
 
-void Board::pieceDrop() {};
+	int newMin = std::min({ (*currPiecePos)[0] % 10, (*currPiecePos)[1] % 10, (*currPiecePos)[2] % 10, (*currPiecePos)[3] % 10 }),
+		newMax = std::min({ (*currPiecePos)[0] % 10, (*currPiecePos)[1] % 10, (*currPiecePos)[2] % 10, (*currPiecePos)[3] % 10 });
+	
+	if (prevMin <= 1 && newMax >= 8) {
+		(*currPiecePos)[0] += 10 - newMax;
+		(*currPiecePos)[0] %= 10;
+
+		(*currPiecePos)[1] += 10 - newMax;
+		(*currPiecePos)[1] %= 10;
+
+		(*currPiecePos)[2] += 10 - newMax;
+		(*currPiecePos)[2] %= 10;
+
+		(*currPiecePos)[3] += 10 - newMax;
+		(*currPiecePos)[3] %= 10;
+	}
+
+	if (newMin <= 1 && prevMax >= 8) {
+		(*currPiecePos)[0] -= newMin;
+		(*currPiecePos)[0] %= 10;
+
+		(*currPiecePos)[1] -= newMin;
+		(*currPiecePos)[1] %= 10;
+
+		(*currPiecePos)[2] -= newMin;
+		(*currPiecePos)[2] %= 10;
+
+		(*currPiecePos)[3] -= newMin;
+		(*currPiecePos)[3] %= 10;
+	}
+
+	while (checkOverlap(0)) {
+		(*currPiecePos)[0] += 10;
+		(*currPiecePos)[1] += 10;
+		(*currPiecePos)[2] += 10;
+		(*currPiecePos)[3] += 10;
+	}
+};
+
+void Board::pieceDrop() {
+	while (!checkOverlap(-10) && !checkBlockedDown()) {
+		(*currPiecePos)[0] -= 10;
+		(*currPiecePos)[1] -= 10;
+		(*currPiecePos)[2] -= 10;
+		(*currPiecePos)[3] -= 10;
+	}
+};
 

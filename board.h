@@ -34,6 +34,34 @@ public:
 
     int& operator[](indices rowCol); // called with board({row, col})
 
+    inline bool checkOverlap(int offset) {
+        return (board[(*currPiecePos)[0] + offset] != 0)
+            & (board[(*currPiecePos)[1] + offset] != 0)
+            & (board[(*currPiecePos)[2] + offset] != 0)
+            & (board[(*currPiecePos)[3] + offset] != 0);
+    }
+
+    inline bool checkBlockedRight() {
+        return ((*currPiecePos)[0] % 10 == 9)
+            & ((*currPiecePos)[1] % 10 == 9)
+            & ((*currPiecePos)[2] % 10 == 9)
+            & ((*currPiecePos)[3] % 10 == 9);
+    }
+
+    inline bool checkBlockedLeft() {
+        return ((*currPiecePos)[0] % 10 == 0)
+            & ((*currPiecePos)[1] % 10 == 0)
+            & ((*currPiecePos)[2] % 10 == 0)
+            & ((*currPiecePos)[3] % 10 == 0);
+    }
+
+    inline bool checkBlockedDown() {
+        return ((*currPiecePos)[0] - 10 < 0)
+            & ((*currPiecePos)[1] - 10 < 0)
+            & ((*currPiecePos)[2] - 10 < 0)
+            & ((*currPiecePos)[3] - 10 < 0);
+    }
+
     void removeRows(int rowStart); // remove filled rows
 
     void set();
@@ -48,9 +76,7 @@ public:
 
     void pieceDrop();
 
-    ~Board() {
-        delete currPiece;
-    }
+    ~Board() { delete currPiece; }
 };
 
 #endif
