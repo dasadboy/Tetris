@@ -2,6 +2,7 @@
 #define Board_Class_H
 
 #include <iostream>
+#include <algorithm>
 #include <vector>
 #include "pieces.h"
 
@@ -23,8 +24,6 @@ private:
     std::vector<int> rowPop;
     static const std::vector<CreateFn> pieceNames;
     Piece* currPiece;
-    std::vector<int> currState_x;
-    std::vector<int> currState_y;
     int refpoint;
     int offset;
     int currHeight;
@@ -40,19 +39,20 @@ public:
     void newPiece();
 
     inline int get_x(int i) {
-        return (refpoint % 10) + currState_x[offset + i];
+        return (refpoint % 10) + currPiece->state_x[offset + i];
     }
 
     inline int get_y(int i) {
-        return (refpoint / 10) + currState_y[offset + i];
+        return (refpoint / 10) + currPiece->state_y[offset + i];
     }
 
     inline int get_xy(int i) {
-        return refpoint + currState_x[offset + i] + 10 * currState_y[offset + i];
+        return refpoint + currPiece->state_x[offset + i] + 10 * currPiece->state_y[offset + i];
     }
 
     inline bool checkOverlap(int dir) {
-        return board[get_xy(0) + dir] | board[get_xy(1) + dir] | board[get_xy(2) + dir] | board[get_xy(3) + dir];
+        // check overlap of cell of each block of the piece offset by dir (+/- 10 checks above and below, +/-1 checks left 
+        return (board[((get_xy(0) + dir + 400) % 400)] != 0) | (board[((get_xy(1) + dir + 400) % 400)] != 0) | (board[((get_xy(2) + dir + 400) % 400)] != 0) | (board[((get_xy(3) + dir + 400) % 400)] != 0);
     }
 
     inline bool checkBlockedRight() {
