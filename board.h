@@ -23,6 +23,10 @@ private:
     std::vector<int> rowPop;
     static const std::vector<CreateFn> pieceNames;
     Piece* currPiece;
+    std::vector<int> currState_x;
+    std::vector<int> currState_y;
+    int refpoint;
+    int offset;
     int currHeight;
 
 public:
@@ -33,32 +37,34 @@ public:
 
     int& operator[](indices rowCol); // called with board({row, col})
 
+    void newPiece();
+
+    inline int get_x(int i) {
+        return (refpoint % 10) + currState_x[offset + i];
+    }
+
+    inline int get_y(int i) {
+        return (refpoint / 10) + currState_y[offset + i];
+    }
+
+    inline int get_xy(int i) {
+        return refpoint + currState_x[offset + i] + 10 * currState_y[offset + i];
+    }
+
     inline bool checkOverlap(int dir) {
-        return (board[currPiece->refpoint + currPiece->state_x[currPiece->offset] + 10 * currPiece->state_y[currPiece->offset]] != 0)
-            | (board[currPiece->refpoint + currPiece->state_x[currPiece->offset + 1] + 10 * currPiece->state_y[currPiece->offset + 1]] != 0)
-            | (board[currPiece->refpoint + currPiece->state_x[currPiece->offset + 2] + 10 * currPiece->state_y[currPiece->offset + 2]] != 0)
-            | (board[currPiece->refpoint + currPiece->state_x[currPiece->offset + 3] + 10 * currPiece->state_y[currPiece->offset + 3]] != 0);
+        return board[get_xy(0) + dir] | board[get_xy(1) + dir] | board[get_xy(2) + dir] | board[get_xy(3) + dir];
     }
 
     inline bool checkBlockedRight() {
-        return (currPiece->refpoint % 10) + currPiece->state_x[currPiece->offset] == 9
-            | (currPiece->refpoint % 10) + currPiece->state_x[currPiece->offset + 1] == 9
-            | (currPiece->refpoint % 10) + currPiece->state_x[currPiece->offset + 2] == 9
-            | (currPiece->refpoint % 10) + currPiece->state_x[currPiece->offset + 3] == 9;
+        return (get_x(0) == 9) | (get_x(1) == 9) | (get_x(2) == 9) | (get_x(3) == 9);
     }
 
     inline bool checkBlockedLeft() {
-        return (currPiece->refpoint % 10) + currPiece->state_x[currPiece->offset] == 0
-            | (currPiece->refpoint % 10) + currPiece->state_x[currPiece->offset + 1] == 0
-            | (currPiece->refpoint % 10) + currPiece->state_x[currPiece->offset + 2] == 0
-            | (currPiece->refpoint % 10) + currPiece->state_x[currPiece->offset + 3] == 0;
+        return (get_x(0) == 0) | (get_x(1) == 0) | (get_x(2) == 0) | (get_x(3) == 0);
     }
 
     inline bool checkBlockedDown() {
-        return (currPiece->refpoint % 10) + 10 * currPiece->state_y[currPiece->offset] == 0
-            | (currPiece->refpoint % 10) + 10 * currPiece->state_y[currPiece->offset + 1] == 0
-            | (currPiece->refpoint % 10) + 10 * currPiece->state_y[currPiece->offset + 2] == 0
-            | (currPiece->refpoint % 10) + 10 * currPiece->state_y[currPiece->offset + 3] == 0;
+        return (get_y(0) == 0) | (get_y(1) == 0) | (get_y(2) == 0) | (get_y(3) == 0);
     }
 
     void removeRows(int rowStart); // remove filled rows
