@@ -1,5 +1,4 @@
-#ifndef Board_Class_H
-#define Board_Class_H
+#pragma once
 
 #include <iostream>
 #include <algorithm>
@@ -83,5 +82,3 @@ public:
 
     ~Board() { delete currPiece; }
 };
-
-#endif

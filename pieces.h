@@ -1,5 +1,4 @@
-#ifndef Piece_Class_H
-#define Piece_Class_H
+#pragma once
 
 #include <vector>
 
@@ -69,5 +68,3 @@ public:
     static const std::vector<int> state_y;
     SBlock();
 };
-
-#endif
