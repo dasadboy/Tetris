@@ -20,12 +20,12 @@ private:
     // playfield is 10 wide 40 tall.
     // cell called using y * 10 + x
     std::vector<int> board;
-    std::vector<int> rowPop;
+    std::vector<int> blocksPerRow;
     static const std::vector<CreateFn> pieceNames;
-    Piece* currPiece;
-    int refpoint;
-    int offset;
-    int currHeight;
+    Piece* currentPiece;
+    int positionOfPiece;
+    int rotation;
+    int currentHeight;
 
 public:
 
@@ -35,23 +35,23 @@ public:
 
     int& operator[](indices rowCol); // called with board({row, col})
 
-    void newPiece();
+    void generateNewPiece();
 
     inline int get_x(int i) {
-        return (refpoint % 10) + currPiece->state_x[offset + i];
+        return (positionOfPiece % 10) + currentPiece->relXPositions[rotation + i];
     }
 
     inline int get_y(int i) {
-        return (refpoint / 10) + currPiece->state_y[offset + i];
+        return (positionOfPiece / 10) + currentPiece->relYPositions[rotation + i];
     }
 
     inline int get_xy(int i) {
-        return refpoint + currPiece->state_x[offset + i] + 10 * currPiece->state_y[offset + i];
+        return positionOfPiece + currentPiece->relXPositions[rotation + i] + 10 * currentPiece->relYPositions[rotation + i];
     }
 
-    inline bool checkOverlap(int dir) {
-        // check overlap of cell of each block of the piece offset by dir (+/- 10 checks above and below, +/-1 checks left 
-        return (board[((get_xy(0) + dir + 400) % 400)] != 0) | (board[((get_xy(1) + dir + 400) % 400)] != 0) | (board[((get_xy(2) + dir + 400) % 400)] != 0) | (board[((get_xy(3) + dir + 400) % 400)] != 0);
+    inline bool checkOverlap(int directionOnBoard) {
+        // check overlap of cell of each block of the piece rotation by dir (+/- 10 checks above and below, +/-1 checks left or right
+        return (board[((get_xy(0) + directionOnBoard + 400) % 400)] != 0) | (board[((get_xy(1) + directionOnBoard + 400) % 400)] != 0) | (board[((get_xy(2) + directionOnBoard + 400) % 400)] != 0) | (board[((get_xy(3) + directionOnBoard + 400) % 400)] != 0);
     }
 
     inline bool checkBlockedRight() {
@@ -80,5 +80,5 @@ public:
 
     void pieceDrop();
 
-    ~Board() { delete currPiece; }
+    ~Board() { delete currentPiece; }
 };

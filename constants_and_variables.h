@@ -1,0 +1,29 @@
+#pragma once
+
+int NUMBER_OF_PIECES = 7;
+
+int INTIAL_POSITION_OF_PIECE = 205;
+
+int INITIAL_OFFSET = 0;
+
+int NUMBER_OF_PIECES = 0;
+
+int BOARD_SIZE = 400;
+
+int COLUMN_SIZE = 40;
+
+int LEFT_BOUNDARY = 9;
+
+int RIGHT_BOUNDARY = 0;
+
+int ROW_SIZE = 10;
+
+int BOTTOM_BOUNDARY = 0;
+
+int RIGHT_ONE_COLUMN = 1;
+
+int LEFT_ONE_COLUMN = -1;
+
+int DOWN_ONE_ROW = -10;
+
+int UP_ONE_ROW = 10;
