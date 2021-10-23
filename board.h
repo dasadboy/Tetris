@@ -49,32 +49,31 @@ public:
         return positionOfPiece + currentPiece->relXPositions[rotation + i] + 10 * currentPiece->relYPositions[rotation + i];
     }
 
-    inline bool checkOverlap(int directionOnBoard) {
-        // check overlap of cell of each block of the piece rotation by dir (+/- 10 checks above and below, +/-1 checks left or right
-        return (board[((get_xy(0) + directionOnBoard + 400) % 400)] != 0) | (board[((get_xy(1) + directionOnBoard + 400) % 400)] != 0) | (board[((get_xy(2) + directionOnBoard + 400) % 400)] != 0) | (board[((get_xy(3) + directionOnBoard + 400) % 400)] != 0);
+    inline bool checkPieceOverlaps(int offset) {
+        return (board[((get_xy(0) + offset + 400) % 400)] != 0) | (board[((get_xy(1) + offset + 400) % 400)] != 0) | (board[((get_xy(2) + offset + 400) % 400)] != 0) | (board[((get_xy(3) + offset + 400) % 400)] != 0);
     }
 
-    inline bool checkBlockedRight() {
-        return (get_x(0) == 9) | (get_x(1) == 9) | (get_x(2) == 9) | (get_x(3) == 9);
+    inline bool checkOutOfBoundsRight(int offset) {
+        return (get_x(0) + offset % 10 >= 9) | (get_x(1) + offset % 10 >= 9) | (get_x(2) + offset % 10 >= 9) | (get_x(3) + offset % 10 >= 9);
     }
 
-    inline bool checkBlockedLeft() {
-        return (get_x(0) == 0) | (get_x(1) == 0) | (get_x(2) == 0) | (get_x(3) == 0);
+    inline bool checkOutOfBoundsLeft(int offset) {
+        return (get_x(0) + offset % 10 <= 0) | (get_x(1) + offset % 10 <= 0) | (get_x(2) + offset % 10 <= 0) | (get_x(3) + offset % 10 <= 0);
     }
 
-    inline bool checkBlockedDown() {
-        return (get_y(0) == 0) | (get_y(1) == 0) | (get_y(2) == 0) | (get_y(3) == 0);
+    inline bool checkOutOfBoundsBelow(int offset) {
+        return (get_y(0) + offset / 10 <= 0) | (get_y(1) + offset / 10 <= 0) | (get_y(2) + offset / 10 <= 0) | (get_y(3) + offset % 10 <= 0);
     }
 
     void removeRows(int rowStart); // remove filled rows
 
-    void set();
+    void setPiece();
 
-    bool pieceDown();
+    bool movePieceDown();
 
-    void pieceLeft();
+    void movePieceLeft();
 
-    void pieceRight();
+    void movePieceRight();
 
     void pieceRotate();
 
