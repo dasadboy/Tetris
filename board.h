@@ -54,15 +54,15 @@ public:
     }
 
     inline bool checkOutOfBoundsRight(int offset) {
-        return (get_x(0) + offset % 10 >= 9) | (get_x(1) + offset % 10 >= 9) | (get_x(2) + offset % 10 >= 9) | (get_x(3) + offset % 10 >= 9);
+        return (get_x(0) + offset % 10 > 9) | (get_x(1) + offset % 10 > 9) | (get_x(2) + offset % 10 > 9) | (get_x(3) + offset % 10 > 9);
     }
 
     inline bool checkOutOfBoundsLeft(int offset) {
-        return (get_x(0) + offset % 10 <= 0) | (get_x(1) + offset % 10 <= 0) | (get_x(2) + offset % 10 <= 0) | (get_x(3) + offset % 10 <= 0);
+        return (get_x(0) + offset % 10 < 0) | (get_x(1) + offset % 10 < 0) | (get_x(2) + offset % 10 < 0) | (get_x(3) + offset % 10 < 0);
     }
 
     inline bool checkOutOfBoundsBelow(int offset) {
-        return (get_y(0) + offset / 10 <= 0) | (get_y(1) + offset / 10 <= 0) | (get_y(2) + offset / 10 <= 0) | (get_y(3) + offset % 10 <= 0);
+        return (get_y(0) + offset / 10 < 0) | (get_y(1) + offset / 10 < 0) | (get_y(2) + offset / 10 < 0) | (get_y(3) + offset % 10 < 0);
     }
 
     void removeRows(int rowStart); // remove filled rows
