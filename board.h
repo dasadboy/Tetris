@@ -52,22 +52,22 @@ public:
     }
 
     inline bool checkPieceOverlaps(int offsetX, int offsetY) {
-        return (board[((get_xy(0) + offsetX + ROW_SIZE * offsetY + BOARD_SIZE) % BOARD_SIZE)] != 0)
-            | (board[((get_xy(0) + offsetX + ROW_SIZE * offsetY + BOARD_SIZE) % BOARD_SIZE)] != 0)
-            | (board[((get_xy(0) + offsetX + ROW_SIZE * offsetY + BOARD_SIZE) % BOARD_SIZE)] != 0)
-            | (board[((get_xy(0) + offsetX + ROW_SIZE * offsetY + BOARD_SIZE) % BOARD_SIZE)] != 0);
+        return (board[((get_xy(0) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0)
+            | (board[((get_xy(0) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0)
+            | (board[((get_xy(0) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0)
+            | (board[((get_xy(0) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0);
     }
 
     inline bool checkOutOfBoundsRight(int offsetX) {
-        return (get_x(0) + offsetX > RIGHT_BOUNDARY) | (get_x(1) + offsetX  > RIGHT_BOUNDARY) | (get_x(2) + offsetX > RIGHT_BOUNDARY) | (get_x(3) + offsetX > RIGHT_BOUNDARY);
+        return (get_x(0) + offsetX > BOARD::RIGHT_BOUNDARY) | (get_x(1) + offsetX  > BOARD::RIGHT_BOUNDARY) | (get_x(2) + offsetX > BOARD::RIGHT_BOUNDARY) | (get_x(3) + offsetX > BOARD::RIGHT_BOUNDARY);
     }
 
     inline bool checkOutOfBoundsLeft(int offsetX) {
-        return (get_x(0) + offsetX < LEFT_BOUNDARY) | (get_x(1) + offsetX < LEFT_BOUNDARY) | (get_x(2) + offsetX < LEFT_BOUNDARY) | (get_x(3) + offsetX < LEFT_BOUNDARY);
+        return (get_x(0) + offsetX < BOARD::LEFT_BOUNDARY) | (get_x(1) + offsetX < BOARD::LEFT_BOUNDARY) | (get_x(2) + offsetX < BOARD::LEFT_BOUNDARY) | (get_x(3) + offsetX < BOARD::LEFT_BOUNDARY);
     }
 
     inline bool checkOutOfBoundsBelow(int offsetY) {
-        return (get_y(0) + offsetY < BOTTOM_BOUNDARY) | (get_y(1) + offsetY < BOTTOM_BOUNDARY) | (get_y(2) + offsetY < BOTTOM_BOUNDARY) | (get_y(3) + offsetY < BOTTOM_BOUNDARY);
+        return (get_y(0) + offsetY < BOARD::BOTTOM_BOUNDARY) | (get_y(1) + offsetY < BOARD::BOTTOM_BOUNDARY) | (get_y(2) + offsetY < BOARD::BOTTOM_BOUNDARY) | (get_y(3) + offsetY < BOARD::BOTTOM_BOUNDARY);
     }
 
     void removeRows(int rowStart); // remove filled rows
