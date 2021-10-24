@@ -1,5 +1,6 @@
 #include <vector>
 #include "board.h"
+#include "constants_and_variables.h"
 
 const std::vector<CreateFn> Board::pieceNames = { &Create<Square>, &Create<TBlock>, &Create<LBlockL>, &Create<LBlockR>, &Create<Straight>, &Create<ZBlock>, &Create<SBlock>};
 
@@ -20,7 +21,8 @@ int& Board::operator[] (indices rowCol) {
 
 void Board::generateNewPiece() {
 	currentPiece = pieceNames[rand() % 4]();
-	positionOfPiece = 205;
+	absPiecePositionX = 20;
+	absPiecePositionY = 5;
 	rotation = 0;
 }
 
@@ -41,7 +43,7 @@ void Board::removeRows(int rowStart) {
 	}
 }
 
-void Board::set() {
+void Board::setPiece() {
 	currentHeight = std::max({ get_y(0), get_y(1), get_y(2), get_y(3) });
 
 	board[get_xy(0)] = currentPiece->color;
@@ -57,33 +59,64 @@ void Board::set() {
 	++blocksPerRow[get_xy(3)];
 }
 
-bool Board::pieceDown() {
-	bool canFall = !checkBlockedDown() && !checkOverlap(-10);
+bool Board::movePieceDown() {
+	bool canFall = !checkOutOfBoundsBelow(-1) && !checkPieceOverlaps(0, -1);
 
-	positionOfPiece -= 10;
+	absPiecePositionY += canFall * -1;
 
-	if (!canFall) set();
+	if (!canFall) setPiece();
 
 	return canFall;
 }
 
-void Board::pieceLeft() {
-	bool canMove = !checkOverlap(-1) && !checkBlockedLeft();
+void Board::movePieceLeft() {
+	bool canMove = !checkOutOfBoundsLeft(-1) && !checkPieceOverlaps(-1, 0);
 
-	positionOfPiece -= canMove;
+	absPiecePositionX += canMove * -1;
 }
 
-void Board::pieceRight() {
-	bool canMove = !checkBlockedRight() && !checkOverlap(1);
+void Board::movePieceRight() {
+	bool canMove = !checkOutOfBoundsRight(1) && !checkPieceOverlaps(1, 0);
 
-	positionOfPiece += canMove;
+	absPiecePositionX += canMove * 1;
 };
 
-void Board::pieceRotate() {
+bool Board::pieceRotate() {
+	int oldRotation = rotation, oldPositionX = absPiecePositionX, oldPositionY = absPiecePositionY;
 	rotation = (rotation + 4) % currentPiece->relXPositions.size();
+	absPiecePositionY += UP_ONE_ROW * checkOutOfBoundsBelow(0) + UP_ONE_ROW * checkOutOfBoundsBelow(1);
+	absPiecePositionX += RIGHT_ONE_COLUMN * checkOutOfBoundsLeft(0) + RIGHT_ONE_COLUMN * checkOutOfBoundsLeft(1);
+	absPiecePositionX += LEFT_ONE_COLUMN * checkOutOfBoundsRight(0) + LEFT_ONE_COLUMN * checkOutOfBoundsRight(-1);
+
+	if (!checkPieceOverlaps(0, 0)) {}
+	else if (!checkPieceOverlaps(0, 1)) {
+		absPiecePositionY += 1;
+	}
+	else if (!checkPieceOverlaps(1, 0) && !checkOutOfBoundsRight(1)) {
+		absPiecePositionX += 1;
+	}
+	else if (!checkPieceOverlaps(-1, 0) && !checkOutOfBoundsLeft(-1)) {
+		absPiecePositionX += -1;
+	}
+	else if (!checkPieceOverlaps(0, 2)) {
+		absPiecePositionY += 2;
+	}
+	else if (!checkPieceOverlaps(2, 0) && !checkOutOfBoundsRight(2)) {
+		absPiecePositionX += 2;
+	}
+	else if (!checkPieceOverlaps(-2, 0) && !checkOutOfBoundsLeft(-2)) {
+		absPiecePositionX += -2;
+	}
+	else {
+		rotation = oldRotation;
+		absPiecePositionX = oldPositionX;
+		absPiecePositionY = oldPositionY;
+		return false;
+	}
+	return true;
 };
 
 void Board::pieceDrop() {
-	while (pieceDown());
+	while (movePieceDown());
 };
 

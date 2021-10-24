@@ -23,7 +23,8 @@ private:
     std::vector<int> blocksPerRow;
     static const std::vector<CreateFn> pieceNames;
     Piece* currentPiece;
-    int positionOfPiece;
+    int absPiecePositionX;
+    int absPiecePositionY;
     int rotation;
     int currentHeight;
 
@@ -38,31 +39,34 @@ public:
     void generateNewPiece();
 
     inline int get_x(int i) {
-        return (positionOfPiece % 10) + currentPiece->relXPositions[rotation + i];
+        return absPiecePositionX + currentPiece->relXPositions[rotation + i];
     }
 
     inline int get_y(int i) {
-        return (positionOfPiece / 10) + currentPiece->relYPositions[rotation + i];
+        return absPiecePositionY + currentPiece->relYPositions[rotation + i];
     }
 
     inline int get_xy(int i) {
-        return positionOfPiece + currentPiece->relXPositions[rotation + i] + 10 * currentPiece->relYPositions[rotation + i];
+        return absPiecePositionX + 10 * absPiecePositionY + currentPiece->relXPositions[rotation + i] + 10 * currentPiece->relYPositions[rotation + i];
     }
 
-    inline bool checkPieceOverlaps(int offset) {
-        return (board[((get_xy(0) + offset + 400) % 400)] != 0) | (board[((get_xy(1) + offset + 400) % 400)] != 0) | (board[((get_xy(2) + offset + 400) % 400)] != 0) | (board[((get_xy(3) + offset + 400) % 400)] != 0);
+    inline bool checkPieceOverlaps(int offsetX, int offsetY) {
+        return (board[((get_xy(0) + offsetX + ROW_SIZE * offsetY + BOARD_SIZE) % BOARD_SIZE)] != 0)
+            | (board[((get_xy(0) + offsetX + ROW_SIZE * offsetY + BOARD_SIZE) % BOARD_SIZE)] != 0)
+            | (board[((get_xy(0) + offsetX + ROW_SIZE * offsetY + BOARD_SIZE) % BOARD_SIZE)] != 0)
+            | (board[((get_xy(0) + offsetX + ROW_SIZE * offsetY + BOARD_SIZE) % BOARD_SIZE)] != 0);
     }
 
-    inline bool checkOutOfBoundsRight(int offset) {
-        return (get_x(0) + offset % 10 > 9) | (get_x(1) + offset % 10 > 9) | (get_x(2) + offset % 10 > 9) | (get_x(3) + offset % 10 > 9);
+    inline bool checkOutOfBoundsRight(int offsetX) {
+        return (get_x(0) + offsetX > RIGHT_BOUNDARY) | (get_x(1) + offsetX  > RIGHT_BOUNDARY) | (get_x(2) + offsetX > RIGHT_BOUNDARY) | (get_x(3) + offsetX > RIGHT_BOUNDARY);
     }
 
-    inline bool checkOutOfBoundsLeft(int offset) {
-        return (get_x(0) + offset % 10 < 0) | (get_x(1) + offset % 10 < 0) | (get_x(2) + offset % 10 < 0) | (get_x(3) + offset % 10 < 0);
+    inline bool checkOutOfBoundsLeft(int offsetX) {
+        return (get_x(0) + offsetX < LEFT_BOUNDARY) | (get_x(1) + offsetX < LEFT_BOUNDARY) | (get_x(2) + offsetX < LEFT_BOUNDARY) | (get_x(3) + offsetX < LEFT_BOUNDARY);
     }
 
-    inline bool checkOutOfBoundsBelow(int offset) {
-        return (get_y(0) + offset / 10 < 0) | (get_y(1) + offset / 10 < 0) | (get_y(2) + offset / 10 < 0) | (get_y(3) + offset % 10 < 0);
+    inline bool checkOutOfBoundsBelow(int offsetY) {
+        return (get_y(0) + offsetY < BOTTOM_BOUNDARY) | (get_y(1) + offsetY < BOTTOM_BOUNDARY) | (get_y(2) + offsetY < BOTTOM_BOUNDARY) | (get_y(3) + offsetY < BOTTOM_BOUNDARY);
     }
 
     void removeRows(int rowStart); // remove filled rows
@@ -71,11 +75,11 @@ public:
 
     bool movePieceDown();
 
-    void movePieceLeft();
+    bool movePieceLeft();
 
-    void movePieceRight();
+    bool movePieceRight();
 
-    void pieceRotate();
+    bool pieceRotate();
 
     void pieceDrop();
 
