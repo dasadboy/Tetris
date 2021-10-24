@@ -5,8 +5,8 @@
 const std::vector<CreateFn> Board::pieceNames = { &Create<Square>, &Create<TBlock>, &Create<LBlockL>, &Create<LBlockR>, &Create<Straight>, &Create<ZBlock>, &Create<SBlock>};
 
 Board::Board() {
-	board = std::vector<int>(400, 0);
-	blocksPerRow = std::vector<int>(40, 0);
+	board = std::vector<int>(BOARD_SIZE, 0);
+	blocksPerRow = std::vector<int>(COLUMN_SIZE, 0);
 	currentHeight = 0;
 	generateNewPiece();
 }
@@ -20,10 +20,10 @@ int& Board::operator[] (indices rowCol) {
 }
 
 void Board::generateNewPiece() {
-	currentPiece = pieceNames[rand() % 4]();
-	absPiecePositionX = 20;
-	absPiecePositionY = 5;
-	rotation = 0;
+	currentPiece = pieceNames[rand() % NUMBER_OF_PIECES]();
+	absPiecePositionX = INITIAL_ABS_POSITIONX;
+	absPiecePositionY = INITIAL_ABS_POSITIONY;
+	rotation = INITIAL_ROTATION;
 }
 
 void Board::removeRows(int rowStart) {
@@ -69,13 +69,13 @@ bool Board::movePieceDown() {
 	return canFall;
 }
 
-void Board::movePieceLeft() {
+bool Board::movePieceLeft() {
 	bool canMove = !checkOutOfBoundsLeft(-1) && !checkPieceOverlaps(-1, 0);
 
 	absPiecePositionX += canMove * -1;
 }
 
-void Board::movePieceRight() {
+bool Board::movePieceRight() {
 	bool canMove = !checkOutOfBoundsRight(1) && !checkPieceOverlaps(1, 0);
 
 	absPiecePositionX += canMove * 1;
