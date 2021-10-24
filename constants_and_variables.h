@@ -1,31 +1,44 @@
 #pragma once
+namespace PIECES {
 
-int NUMBER_OF_PIECES = 7;
+	const int NUMBER_OF_PIECES = 7;
 
-int INITIAL_ABS_POSITIONX = 5;
+	const int INITIAL_ABS_POSITION_X = 5;
 
-int INITIAL_ABS_POSITIONY = 20;
+	const int INITIAL_ABS_POSITION_Y = 20;
 
-int INITIAL_ROTATION = 0;
+	const int INITIAL_ROTATION = 0;
 
-int INITIAL_COLOR = 0;
+	const int MOVE_UP = 1;
 
-int BOARD_SIZE = 400;
+	const int MOVE_DOWN = -1;
 
-int COLUMN_SIZE = 40;
+	const int MOVE_LEFT = -1;
 
-int LEFT_BOUNDARY = 0;
+	const int MOVE_RIGHT = 1;
+}
 
-int RIGHT_BOUNDARY = 9;
+namespace COLOR { const int INITIAL_COLOR = 0; }
 
-int ROW_SIZE = 10;
+namespace BOARD {
 
-int BOTTOM_BOUNDARY = 0;
+	const int BOARD_SIZE = 400;
 
-int RIGHT_ONE_COLUMN = 1;
+	const int COLUMN_SIZE = 40;
 
-int LEFT_ONE_COLUMN = -1;
+	const int LEFT_BOUNDARY = 0;
 
-int DOWN_ONE_ROW = -10;
+	const int RIGHT_BOUNDARY = 9;
 
-int UP_ONE_ROW = 10;
+	const int ROW_SIZE = 10;
+
+	const int BOTTOM_BOUNDARY = 0;
+
+	const int RIGHT_ONE_COLUMN = 1;
+
+	const int LEFT_ONE_COLUMN = -1;
+
+	const int DOWN_ONE_ROW = -10;
+
+	const int UP_ONE_ROW = 10;
+}

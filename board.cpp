@@ -3,8 +3,8 @@
 const std::vector<CreateFn> Board::pieceNames = { &Create<Square>, &Create<TBlock>, &Create<LBlockL>, &Create<LBlockR>, &Create<Straight>, &Create<ZBlock>, &Create<SBlock>};
 
 Board::Board() {
-	board = std::vector<int>(BOARD_SIZE, 0);
-	blocksPerRow = std::vector<int>(COLUMN_SIZE, 0);
+	board = std::vector<int>(BOARD::BOARD_SIZE, 0);
+	blocksPerRow = std::vector<int>(BOARD::COLUMN_SIZE, 0);
 	currentHeight = 0;
 	generateNewPiece();
 }
@@ -18,10 +18,10 @@ int& Board::operator[] (indices rowCol) {
 }
 
 void Board::generateNewPiece() {
-	currentPiece = pieceNames[rand() % NUMBER_OF_PIECES]();
-	absPiecePositionX = INITIAL_ABS_POSITIONX;
-	absPiecePositionY = INITIAL_ABS_POSITIONY;
-	rotation = INITIAL_ROTATION;
+	currentPiece = pieceNames[rand() % PIECES::NUMBER_OF_PIECES]();
+	absPiecePositionX = PIECES::INITIAL_ABS_POSITION_X;
+	absPiecePositionY = PIECES::INITIAL_ABS_POSITION_Y;
+	rotation = PIECES::INITIAL_ROTATION;
 }
 
 void Board::removeRows(int rowStart) {
@@ -68,42 +68,46 @@ bool Board::movePieceDown() {
 }
 
 bool Board::movePieceLeft() {
-	bool canMove = !checkOutOfBoundsLeft(-1) && !checkPieceOverlaps(-1, 0);
+	bool canMove = !checkOutOfBoundsLeft(-1) && !checkPieceOverlaps(PIECES::MOVE_LEFT, 0);
 
 	absPiecePositionX += canMove * -1;
+	
+	return canMove;
 }
 
 bool Board::movePieceRight() {
-	bool canMove = !checkOutOfBoundsRight(1) && !checkPieceOverlaps(1, 0);
+	bool canMove = !checkOutOfBoundsRight(1) && !checkPieceOverlaps(PIECES::MOVE_RIGHT, 0);
 
 	absPiecePositionX += canMove * 1;
+
+	return canMove;
 };
 
 bool Board::pieceRotate() {
 	int oldRotation = rotation, oldPositionX = absPiecePositionX, oldPositionY = absPiecePositionY;
 	rotation = (rotation + 4) % currentPiece->relXPositions.size();
-	absPiecePositionY += UP_ONE_ROW * checkOutOfBoundsBelow(0) + UP_ONE_ROW * checkOutOfBoundsBelow(1);
-	absPiecePositionX += RIGHT_ONE_COLUMN * checkOutOfBoundsLeft(0) + RIGHT_ONE_COLUMN * checkOutOfBoundsLeft(1);
-	absPiecePositionX += LEFT_ONE_COLUMN * checkOutOfBoundsRight(0) + LEFT_ONE_COLUMN * checkOutOfBoundsRight(-1);
+	absPiecePositionY += PIECES::MOVE_UP * checkOutOfBoundsBelow(0) + PIECES::MOVE_UP * checkOutOfBoundsBelow(PIECES::MOVE_UP);
+	absPiecePositionX += PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(0) + PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(PIECES::MOVE_RIGHT);
+	absPiecePositionX += PIECES::MOVE_LEFT * checkOutOfBoundsRight(0) + PIECES::MOVE_LEFT * checkOutOfBoundsRight(PIECES::MOVE_LEFT);
 
 	if (!checkPieceOverlaps(0, 0)) {}
-	else if (!checkPieceOverlaps(0, 1)) {
-		absPiecePositionY += 1;
+	else if (!checkPieceOverlaps(0, PIECES::MOVE_UP)) {
+		absPiecePositionY += PIECES::MOVE_UP;
 	}
-	else if (!checkPieceOverlaps(1, 0) && !checkOutOfBoundsRight(1)) {
-		absPiecePositionX += 1;
+	else if (!checkPieceOverlaps(PIECES::MOVE_RIGHT, 0) && !checkOutOfBoundsRight(1)) {
+		absPiecePositionX += PIECES::MOVE_RIGHT;
 	}
-	else if (!checkPieceOverlaps(-1, 0) && !checkOutOfBoundsLeft(-1)) {
-		absPiecePositionX += -1;
+	else if (!checkPieceOverlaps(PIECES::MOVE_LEFT, 0) && !checkOutOfBoundsLeft(-1)) {
+		absPiecePositionX += PIECES::MOVE_LEFT;
 	}
-	else if (!checkPieceOverlaps(0, 2)) {
-		absPiecePositionY += 2;
+	else if (!checkPieceOverlaps(0, PIECES::MOVE_UP * 2)) {
+		absPiecePositionY += PIECES::MOVE_UP * 2;
 	}
-	else if (!checkPieceOverlaps(2, 0) && !checkOutOfBoundsRight(2)) {
-		absPiecePositionX += 2;
+	else if (!checkPieceOverlaps(PIECES::MOVE_RIGHT * 2, 0) && !checkOutOfBoundsRight(PIECES::MOVE_RIGHT * 2)) {
+		absPiecePositionX += PIECES::MOVE_RIGHT * 2;
 	}
-	else if (!checkPieceOverlaps(-2, 0) && !checkOutOfBoundsLeft(-2)) {
-		absPiecePositionX += -2;
+	else if (!checkPieceOverlaps(PIECES::MOVE_LEFT * 2, 0) && !checkOutOfBoundsLeft(PIECES::MOVE_LEFT * 2)) {
+		absPiecePositionX += PIECES::MOVE_LEFT * 2;
 	}
 	else {
 		rotation = oldRotation;
