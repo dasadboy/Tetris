@@ -1,6 +1,4 @@
-#include <vector>
 #include "board.h"
-#include "constants_and_variables.h"
 
 const std::vector<CreateFn> Board::pieceNames = { &Create<Square>, &Create<TBlock>, &Create<LBlockL>, &Create<LBlockR>, &Create<Straight>, &Create<ZBlock>, &Create<SBlock>};
 
