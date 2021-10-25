@@ -24,20 +24,22 @@ void Board::generateNewPiece() {
 	this->rotation = PIECES::INITIAL_ROTATION;
 }
 
-void Board::removeRows(int rowStart) {
-	for (int curr = rowStart, src = rowStart; src < currentHeight;) {
-		if (this->blocksPerRow[src] == BOARD::ROW_SIZE) {
-			++src;
+void Board::removeFilledRows(int rowStart) {
+	// Copy all unfilled rows from rowStart to currentHeight to an unfilled row
+	for (int currRow = rowStart, srcRow = rowStart; srcRow <= currentHeight;) {
+		if (this->blocksPerRow[srcRow] == BOARD::ROW_SIZE) {
+			++srcRow; // Skip this row as it is full and should not be in the result
 		}
 		else {
-			this->blocksPerRow[curr] = this->blocksPerRow[src];
-			for (int curr_i = curr * BOARD::ROW_SIZE, src_i = src * BOARD::ROW_SIZE,
-				curr_e = curr_i + BOARD::ROW_SIZE, src_e = src_i + BOARD::ROW_SIZE;
-				curr_i < curr_e;
-				++curr_i) {
-				this->board[curr_i] = this->board[src_i];
+			// copy srcRow to currRow
+			int currCell = currRow * BOARD::ROW_SIZE, currCellEnd = currRow + BOARD::ROW_SIZE,
+				srcCell = srcRow * BOARD::ROW_SIZE, srcCellEnd = srcCell + BOARD::ROW_SIZE;
+
+			for (; currCell < currCellEnd; ++currCell, ++srcCell) {
+				this->board[currCell] = this->board[srcCell];
 			}
-			++curr, ++src;
+
+			++currRow, ++srcRow;
 		}
 	}
 }
