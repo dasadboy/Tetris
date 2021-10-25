@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "constants_and_variables.h"
+#include "constants.h"
 
 class Piece {
 public:

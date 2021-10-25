@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <vector>
 #include "pieces.h"
-#include "constants_and_variables.h"
+#include "constants.h"
 
 struct indices {
     std::size_t i, j;
