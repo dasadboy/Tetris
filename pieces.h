@@ -1,106 +1,72 @@
-#ifndef Piece_Class_H
-#define Piece_Class_H
+#pragma once
 
-#include <algorithm>
-
-using namespace std;
-
+#include <vector>
+#include "constants.h"
 
 class Piece {
 public:
-    // playfield is 10 wide 40 tall.
-    // cell called using y * 10 + x
-    static bool* board[400];
+    int color;
+    // position of pieces relative to position of piece given in board
+    static const std::vector<int> relXPositions;
+    static const std::vector<int> relYPositions;
+
+    virtual ~Piece() {}
 };
 
 class Square : public Piece {
-    int pos;
-
+public:
+    // position of pieces relative to position of piece given in board
+    static const std::vector<int> relXPositions;
+    static const std::vector<int> relYPositions;
     Square();
-
-    void rotate();
-
-    void down();
-
-    void left();
-
-    void right();
-
-    void drop();
-
-    void set();
 };
 
 class TBlock : public Piece {
-    int blocks[4];
-
+public:
+    // position of pieces relative to position of piece given in board
+    static const std::vector<int> relXPositions; 
+    static const std::vector<int> relYPositions;
     TBlock();
-
-    void rotate();
-
-    void down();
-
-    void left();
-
-    void right();
-
-    void drop();
-
-    void set();
 };
 
 class LBlockL : public Piece {
-    int blocks[4];
-    int offset;
-    static const int stateChange[12]; // position of pieces relative to centre piece
-
+public:
+    // position of pieces relative to position of piece given in board
+    static const std::vector<int> relXPositions;
+    static const std::vector<int> relYPositions;
     LBlockL();
-
-    void rotate();
-
-    void down();
-
-
-
-    void drop();
-
-    void set();
 };
 
 class LBlockR : public Piece {
-    int blocks[4];
-    int offset;
-    static const int stateChange[12]; // position of pieces relative to centre piece block[0]
-
+public:
+    // position of pieces relative to position of piece given in board
+    static const std::vector<int> relXPositions;
+    static const std::vector<int> relYPositions;
     LBlockR();
-
-    void rotate();
-
-    void down();
-
-    void drop();
-
-    void draw();
-
-    void set();
 };
 
-class StraightBlock : public Piece {
-    int blocks[4];
-    int state = 0;
-    int stateChange[4][4];
-    
-    StraightBlock();
-    
-    void rotate();
+// TODO
+class Straight : public Piece {
 
-    void down();
-    
-    void drop();
-
-    void draw();
-
-    void set();
+public:
+    // position of pieces relative to position of piece given in board
+    static const std::vector<int> relXPositions;
+    static const std::vector<int> relYPositions;
+    Straight();
 };
 
-#endif
+class ZBlock : public Piece {
+public:
+    // position of pieces relative to position of piece given in board
+    static const std::vector<int> relXPositions;
+    static const std::vector<int> relYPositions;
+    ZBlock();
+};
+
+class SBlock : public Piece {
+public:
+    // position of pieces relative to position of piece given in board
+    static const std::vector<int> relXPositions;
+    static const std::vector<int> relYPositions;
+    SBlock();
+};

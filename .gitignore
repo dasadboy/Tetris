@@ -4,3 +4,4 @@ tetris.sln
 Tetris.vcxproj
 Tetris.vcxproj.filters
 Tetris.vcxproj.user
+*.ruleset

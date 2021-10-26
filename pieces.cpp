@@ -1,263 +1,66 @@
-#include <algorithm>
 #include "pieces.h"
 
-using namespace std;
+const std::vector<int> Piece::relXPositions = {};
 
+const std::vector<int> Piece::relYPositions = {};
 
-Square::Square() {
-    pos = 205;
-}
+// Square
 
-void Square::rotate() {
-    // rotating results in the same shape
-    return;
-}
+const std::vector<int> Square::relXPositions = { 0, 1, 0, 1 };
 
-void Square::down() {
-    if (pos >= 0 || (*board)[pos - 10] || (*board)[pos - 9]) {
-        set();
-        return;
-    }
-    pos -= 10;
-    // move up one row if too low
-}
+const std::vector<int> Square::relYPositions = { 0, 0, 1, 1 };
 
-void Square::left() {
-    if (pos % 10 > 0)
-        pos -= 1;
-}
-
-void Square::right() {
-    if (pos % 10 < 8)
-        pos += 1;
-}
-
-void Square::drop() {
-    // find distance, move, and place
-    int n = pos - 10;
-    while (n >= 0 || !(*board)[n] && !(*board)[n+1]) {
-        n -= 10;
-    }
-    pos = n + 10;
-    set();
-    return;
-}
-
-void Square::set() {
-    // set board
-    (*board)[pos] = true;
-    (*board)[pos + 1] = true;
-    (*board)[pos + 10] = true;
-    (*board)[pos + 11] = true;
-    // draw
-    delete this;
-}
-
-
+Square::Square() { color = COLOR::INITIAL_COLOR; }
 
 // TBlock
-TBlock::TBlock() {
-    blocks[0] = 205;
-    blocks[1] = 204;
-    blocks[2] = 215;
-    blocks[3] = 206;
-}
 
-void TBlock::rotate() {
-    // blocks[0] is the center that 1, 2, and 3 rotate around;
-    blocks[1] = blocks[2];
-    blocks[2] = blocks[3];
-    // place blocks[3] opposite to blocks[1] from blocks[0]
-    blocks[3] = blocks[0] + (blocks[0] - blocks[1]);
-    while (blocks[1] >= 0 || blocks[2] >= 0 || blocks[3] >= 0 || (*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
-        blocks[0] += 10;
-        blocks[1] += 10;
-        blocks[2] += 10;
-        blocks[3] += 10;
-    }
-}
+const std::vector<int> TBlock::relXPositions = { -1, 0, 1, 0, 0, 0, 0, 1, -1, 0, 1, 0, 0, 0, 0, -1 };
 
-void TBlock::down() {
-    blocks[0] -= 10;
-    blocks[1] -= 10;
-    blocks[2] -= 10;
-    blocks[3] -= 10;
-    if (blocks[1] > 0 || blocks[2] > 0 || blocks[3] > 0 || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
-        blocks[0] += 10;
-        blocks[1] += 10;
-        blocks[2] += 10;
-        blocks[3] += 10;
-        set();
-    }
-}
+const std::vector<int> TBlock::relYPositions = { 0, 0, 0, 1, 1, 0, -1, 0, 0, 0, 0, -1, 1, 0, -1, 0 };
 
-void TBlock::left() {
-    if (blocks[1] % 10 > 0 || blocks[2] % 10 > 0 || blocks[3] % 10 > 0) {
-        blocks[0] -= 1;
-        blocks[1] -= 1;
-        blocks[2] -= 1;
-        blocks[3] -= 1;
-    }
-}
-
-void TBlock::right() {
-    if (blocks[1] % 10 < 8 || blocks[2] % 10 < 8 || blocks[3] % 10 < 8) {
-        blocks[0] += 1;
-        blocks[1] += 1;
-        blocks[2] += 1;
-        blocks[3] += 1;
-    }
-}
-
-void TBlock::drop() {
-    // find distance move and place
-    int dist = 0;
-    while (blocks[1] - dist - 10 >= 0 || blocks[2] - dist - 10 >= 0
-        || blocks[3] - dist - 10 >= 0 || (*board)[blocks[0] - dist - 10]
-        || (*board)[blocks[1] - dist - 10] || (*board)[blocks[2] - dist - 10]
-        || (*board)[blocks[3] - dist - 10]) {
-        dist += 10;
-    }
-    for (int i = 0; i < 4; ++i) {
-        blocks[i] -= dist;
-    }
-    set();
-    return;
-}
-
-void TBlock::set() {
-    (*board)[blocks[0]] = true;
-    (*board)[blocks[1]] = true;
-    (*board)[blocks[2]] = true;
-    (*board)[blocks[3]] = true;
-    // draw
-    delete this;
-}
+TBlock::TBlock() { color = COLOR::INITIAL_COLOR; }
 
 
 // LBlockL
 
-const int LBlockL::stateChange[12] = { -1, 1, -9, 10, -10, -11, 1, -1, 9, -10, 10, 11 };
+const std::vector<int> LBlockL::relXPositions = { -1, 0, 1, 1, 0, 0, 0, 1, -1, 0, 1, -1, 0, 0, 0, -1 };
 
-LBlockL::LBlockL() {
-    offset = 3;
-    blocks[0] = 215;
-    blocks[1] = 214;
-    blocks[2] = 216;
-    blocks[3] = 206;
-}
+const std::vector<int> LBlockL::relYPositions = { 0, 0, 0, 1, 1, 0, -1, -1, 0, 0, 0, -1, -1, 0, 1, 1 };
 
-void LBlockL::rotate() {
-    // use stateChange to determine positions of blocks when rotated
-    blocks[1] = blocks[0] + stateChange[offset++];
-    blocks[2] = blocks[0] + stateChange[offset++];
-    blocks[3] = blocks[0] + stateChange[offset++];
-    offset %= 12;
-    while ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
-        blocks[0] += 10;
-        blocks[1] += 10;
-        blocks[2] += 10;
-        blocks[3] += 10;
-    }
-}
-
-void LBlockL::down() {
-    if ((*board)[blocks[1]] - 10 > 0 || (*board)[blocks[3]] - 10 > 0 || (*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
-        set();
-        return;
-    }
-    blocks[0] -= 10;
-    blocks[1] -= 10;
-    blocks[2] -= 10;
-    blocks[3] -= 10;
-}
-
-void LBlockL::drop() {
-    // find distance, move, and place
-    int dist = 0;
-    while (blocks[1] - dist - 10 >= 0 || blocks[3] - dist - 10 >= 0 || (*board)[blocks[1] - dist - 10] || (*board)[blocks[2] - dist - 10] || (*board)[blocks[3] - dist - 10]) {
-        dist += 10;
-    }
-    for (int i = 0; i < 4; ++i) {
-        blocks[i] -= dist;
-    }
-    set();
-    return;
-}
-
-void LBlockL::set() {
-    (*board)[blocks[0]] = true;
-    (*board)[blocks[1]] = true;
-    (*board)[blocks[2]] = true;
-    (*board)[blocks[3]] = true;
-    // draw
-    delete this;
-}
+LBlockL::LBlockL() { color = COLOR::INITIAL_COLOR; }
 
 
 // LBlockR
 
-const int LBlockR::stateChange[12] = { -1, 1, 11, 10, -10, -9, 1, -1, -11, -10, 10, 9 };
+const std::vector<int> LBlockR::relXPositions = { -1, 0, 1, -1, 0, 0, 0, 1, -1, 0, 1, 1, 0, 0, 0, -1 };
 
-LBlockR::LBlockR() {
-    blocks[0] = 204;
-    blocks[1] = 205;
-    blocks[2] = 206;
-    blocks[3] = 216;
-}
+const std::vector<int> LBlockR::relYPositions = { 0, 0, 0, 1, 1, 0, -1, 1, 0, 0, 0, -1, -1, 0, 1, -1 };
 
-void LBlockR::rotate() {
-    // use stateChange to determine positions of blocks when rotated
-    blocks[1] = blocks[0] + stateChange[offset++];
-    blocks[2] = blocks[0] + stateChange[offset++];
-    blocks[3] = blocks[0] + stateChange[offset++];
-    ++offset;
-    offset %= 4;
-    while (blocks[1] < 0 || blocks[3] < 0 || (*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
-        blocks[0] += 10;
-        blocks[1] += 10;
-        blocks[2] += 10;
-        blocks[3] += 10;
-    }
-}
+LBlockR::LBlockR() { color = COLOR::INITIAL_COLOR; }
 
-void LBlockR::down() {
-    blocks[0] -= 10;
-    blocks[1] -= 10;
-    blocks[2] -= 10;
-    blocks[3] -= 10;
-    if ((*board)[blocks[0]] || (*board)[blocks[1]] || (*board)[blocks[2]] || (*board)[blocks[3]]) {
-        blocks[0] += 10;
-        blocks[1] += 10;
-        blocks[2] += 10;
-        blocks[3] += 10;
-        set();
-    }
-}
 
-void LBlockR::drop() {
-    // find distance, move, and place
-    int dist = 0;
-    while (blocks[1] - dist - 10 >= 0 || blocks[2] - dist - 10 >= 0 || blocks[3] - dist - 10 >= 0 || (*board)[blocks[1] - dist - 10] || (*board)[blocks[2] - dist - 10] || (*board)[blocks[3] - dist - 10]) {
-        dist += 10;
-    }
-    for (int i = 0; i < 4; ++i) {
-        blocks[i] -= dist;
-    }
-    set();
-    return;
-}
+// Straight
 
-void LBlockR::draw() {
-    // todo
-    return;
-}
+const std::vector<int> Straight::relXPositions = { -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2, 0, 0, 0, 0 };
 
-void LBlockR::set() {
-    (*board)[blocks[0]] = true;
-    (*board)[blocks[1]] = true;
-    (*board)[blocks[2]] = true;
-    (*board)[blocks[3]] = true;
-    draw();
-    delete this;
-}
+const std::vector<int> Straight::relYPositions = { 0, 0, 0, 0, -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2 };
+
+Straight::Straight() { color = COLOR::INITIAL_COLOR; }
+
+
+// ZBlock
+
+const std::vector<int> ZBlock::relXPositions = { -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2, 0, 0, 0, 0 };
+
+const std::vector<int> ZBlock::relYPositions = { 0, 0, 0, 0, -1, 0, 1, 2, -1, -1, -1, -1, -1, 0, 1, 2 };
+
+ZBlock::ZBlock() { color = COLOR::INITIAL_COLOR; }
+
+
+// SBlock
+
+const std::vector<int> SBlock::relXPositions = { -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2, 0, 0, 0, 0 };
+
+const std::vector<int> SBlock::relYPositions = { 0, 0, 0, 0, -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2 };
+
+SBlock::SBlock() { color = COLOR::INITIAL_COLOR; }
