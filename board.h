@@ -67,10 +67,10 @@ public:
     }
 
     inline bool checkOutOfBoundsBelow(int offsetY) {
-        return (get_y(0) + offsetY < BOARD::BOTTOM_BOUNDARY) || (get_y(1) + offsetY < BOARD::BOTTOM_BOUNDARY) || (get_y(2) + offsetY < BOARD::BOTTOM_BOUNDARY) || (get_y(3) + offsetY < BOARD::BOTTOM_BOUNDARY);
+        return (get_y(0) + offsetY <= BOARD::BOTTOM_BOUNDARY) || (get_y(1) + offsetY <= BOARD::BOTTOM_BOUNDARY) || (get_y(2) + offsetY <= BOARD::BOTTOM_BOUNDARY) || (get_y(3) + offsetY <= BOARD::BOTTOM_BOUNDARY);
     }
 
-    void removeRows(int rowStart); // remove filled rows
+    void removeFilledRows(int rowStart); // remove filled rows
 
     void setPiece();
 
