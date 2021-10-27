@@ -9,6 +9,13 @@ Board::Board() {
 	generateNewPiece();
 }
 
+Board::Board(Piece& piece) {
+	board = std::vector<int>(BOARD::BOARD_SIZE, 0);
+	blocksPerRow = std::vector<int>(BOARD::COLUMN_SIZE, 0);
+	currentHeight = 0;
+	generateNewPiece(piece);
+}
+
 int& Board::operator[] (int rowCol){
 	return board[rowCol];
 }
@@ -22,6 +29,14 @@ void Board::generateNewPiece() {
 	this->absPiecePositionX = PIECES::INITIAL_ABS_POSITION_X;
 	this->absPiecePositionY = PIECES::INITIAL_ABS_POSITION_Y;
 	this->rotation = PIECES::INITIAL_ROTATION;
+}
+
+void Board::generateNewPiece(Piece& piece) {
+	this->currentPiece = &piece;
+	this->absPiecePositionX = PIECES::INITIAL_ABS_POSITION_X;
+	this->absPiecePositionY = PIECES::INITIAL_ABS_POSITION_Y;
+	this->rotation = PIECES::INITIAL_ROTATION;
+
 }
 
 void Board::removeFilledRows(int rowStart) {

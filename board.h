@@ -33,11 +33,15 @@ public:
 
     Board();
 
+    Board(Piece& piece);
+
     int& operator[](int rowCol);
 
     int& operator[](indices rowCol); // called with board({row, col})
 
     void generateNewPiece();
+
+    void generateNewPiece(Piece& piece);
 
     inline int get_x(int i) {
         return this->absPiecePositionX + this->currentPiece->relXPositions[rotation + i];
