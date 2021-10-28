@@ -23,13 +23,13 @@ private:
     std::vector<int> board;
     std::vector<int> blocksPerRow;
     static const std::vector<CreateFn> pieceNames;
+public:
     Piece* currentPiece;
     int absPiecePositionRow;
     int absPiecePositionCol;
     int rotation;
     int currentHeight;
 
-public:
 
     Board();
 
