@@ -26,15 +26,15 @@ int& Board::operator[] (indices rowCol) {
 
 void Board::generateNewPiece() {
 	this->currentPiece = this->pieceNames[rand() % PIECES::NUMBER_OF_PIECES]();
-	this->absPiecePositionX = PIECES::INITIAL_ABS_POSITION_X;
-	this->absPiecePositionY = PIECES::INITIAL_ABS_POSITION_Y;
+	this->absPiecePositionCol = PIECES::INITIAL_ABS_POSITION_X;
+	this->absPiecePositionRow = PIECES::INITIAL_ABS_POSITION_Y;
 	this->rotation = PIECES::INITIAL_ROTATION;
 }
 
 void Board::generateNewPiece(Piece& piece) {
 	this->currentPiece = &piece;
-	this->absPiecePositionX = PIECES::INITIAL_ABS_POSITION_X;
-	this->absPiecePositionY = PIECES::INITIAL_ABS_POSITION_Y;
+	this->absPiecePositionCol = PIECES::INITIAL_ABS_POSITION_X;
+	this->absPiecePositionRow = PIECES::INITIAL_ABS_POSITION_Y;
 	this->rotation = PIECES::INITIAL_ROTATION;
 
 }
@@ -78,7 +78,7 @@ void Board::setPiece() {
 bool Board::movePieceDown() {
 	bool canFall = !checkOutOfBoundsBelow(PIECES::MOVE_DOWN) && !checkPieceOverlaps(0, PIECES::MOVE_DOWN);
 
-	this->absPiecePositionY += canFall * PIECES::MOVE_DOWN;
+	this->absPiecePositionRow += canFall * PIECES::MOVE_DOWN;
 
 	if (!canFall) setPiece();
 
@@ -88,7 +88,7 @@ bool Board::movePieceDown() {
 bool Board::movePieceLeft() {
 	bool canMove = !checkOutOfBoundsLeft(PIECES::MOVE_LEFT) && !checkPieceOverlaps(PIECES::MOVE_LEFT, 0);
 
-	this->absPiecePositionX += canMove * PIECES::MOVE_LEFT;
+	this->absPiecePositionCol += canMove * PIECES::MOVE_LEFT;
 	
 	return canMove;
 }
@@ -96,47 +96,47 @@ bool Board::movePieceLeft() {
 bool Board::movePieceRight() {
 	bool canMove = !checkOutOfBoundsRight(PIECES::MOVE_RIGHT) && !checkPieceOverlaps(PIECES::MOVE_RIGHT, 0);
 
-	this->absPiecePositionX += canMove * PIECES::MOVE_RIGHT;
+	this->absPiecePositionCol += canMove * PIECES::MOVE_RIGHT;
 
 	return canMove;
 };
 
-bool Board::pieceRotate() {
-	int oldRotation = this->rotation, oldPositionX = this->absPiecePositionX, oldPositionY = this->absPiecePositionY;
+bool Board::rotatePiece() {
+	int oldRotation = this->rotation, oldPositionX = this->absPiecePositionCol, oldPositionY = this->absPiecePositionRow;
 	this->rotation = (this->rotation + 4) % this->currentPiece->relXPositions.size();
-	this->absPiecePositionY += PIECES::MOVE_UP * checkOutOfBoundsBelow(0) + PIECES::MOVE_UP * checkOutOfBoundsBelow(PIECES::MOVE_UP);
-	this->absPiecePositionX += PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(0) + PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(PIECES::MOVE_RIGHT);
-	this->absPiecePositionX += PIECES::MOVE_LEFT * checkOutOfBoundsRight(0) + PIECES::MOVE_LEFT * checkOutOfBoundsRight(PIECES::MOVE_LEFT);
+	this->absPiecePositionRow += PIECES::MOVE_UP * checkOutOfBoundsBelow(0) + PIECES::MOVE_UP * checkOutOfBoundsBelow(PIECES::MOVE_UP);
+	this->absPiecePositionCol += PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(0) + PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(PIECES::MOVE_RIGHT);
+	this->absPiecePositionCol += PIECES::MOVE_LEFT * checkOutOfBoundsRight(0) + PIECES::MOVE_LEFT * checkOutOfBoundsRight(PIECES::MOVE_LEFT);
 
 	if (!checkPieceOverlaps(0, 0)) {}
 	else if (!checkPieceOverlaps(0, PIECES::MOVE_UP)) {
-		this->absPiecePositionY += PIECES::MOVE_UP;
+		this->absPiecePositionRow += PIECES::MOVE_UP;
 	}
 	else if (!checkPieceOverlaps(PIECES::MOVE_RIGHT, 0) && !checkOutOfBoundsRight(1)) {
-		this->absPiecePositionX += PIECES::MOVE_RIGHT;
+		this->absPiecePositionCol += PIECES::MOVE_RIGHT;
 	}
 	else if (!checkPieceOverlaps(PIECES::MOVE_LEFT, 0) && !checkOutOfBoundsLeft(-1)) {
-		this->absPiecePositionX += PIECES::MOVE_LEFT;
+		this->absPiecePositionCol += PIECES::MOVE_LEFT;
 	}
 	else if (!checkPieceOverlaps(0, PIECES::MOVE_UP * 2)) {
-		this->absPiecePositionY += PIECES::MOVE_UP * 2;
+		this->absPiecePositionRow += PIECES::MOVE_UP * 2;
 	}
 	else if (!checkPieceOverlaps(PIECES::MOVE_RIGHT * 2, 0) && !checkOutOfBoundsRight(PIECES::MOVE_RIGHT * 2)) {
-		this->absPiecePositionX += PIECES::MOVE_RIGHT * 2;
+		this->absPiecePositionCol += PIECES::MOVE_RIGHT * 2;
 	}
 	else if (!checkPieceOverlaps(PIECES::MOVE_LEFT * 2, 0) && !checkOutOfBoundsLeft(PIECES::MOVE_LEFT * 2)) {
-		this->absPiecePositionX += PIECES::MOVE_LEFT * 2;
+		this->absPiecePositionCol += PIECES::MOVE_LEFT * 2;
 	}
 	else {
 		this->rotation = oldRotation;
-		this->absPiecePositionX = oldPositionX;
-		this->absPiecePositionY = oldPositionY;
+		this->absPiecePositionCol = oldPositionX;
+		this->absPiecePositionRow = oldPositionY;
 		return false;
 	}
 	return true;
 };
 
-void Board::pieceDrop() {
+void Board::dropPiece() {
 	while (movePieceDown());
 };
 

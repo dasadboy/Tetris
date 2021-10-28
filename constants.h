@@ -18,7 +18,23 @@ namespace PIECES {
 	const int MOVE_RIGHT = 1;
 }
 
-namespace COLOR { const int INITIAL_COLOR = 0; }
+namespace COLOR { 
+	const int COLOR_EMPTY = 0;
+	
+	const int COLOR_SQUARE = 1;
+
+	const int COLOR_LBLOCKL = 2;
+
+	const int COLOR_LBLOCKR = 3;
+
+	const int COLOR_TBLOCK = 4;
+
+	const int COLOR_ZBLOCK = 5;
+
+	const int COLOR_SBLOCK = 6;
+
+	const int COLOR_STRAIGHT = 7;
+}
 
 namespace BOARD {
 

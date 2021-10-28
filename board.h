@@ -24,8 +24,8 @@ private:
     std::vector<int> blocksPerRow;
     static const std::vector<CreateFn> pieceNames;
     Piece* currentPiece;
-    int absPiecePositionX;
-    int absPiecePositionY;
+    int absPiecePositionRow;
+    int absPiecePositionCol;
     int rotation;
     int currentHeight;
 
@@ -44,15 +44,15 @@ public:
     void generateNewPiece(Piece& piece);
 
     inline int get_x(int i) {
-        return this->absPiecePositionX + this->currentPiece->relXPositions[rotation + i];
+        return this->absPiecePositionRow + this->currentPiece->relXPositions[rotation + i];
     }
 
     inline int get_y(int i) {
-        return this->absPiecePositionY + this->currentPiece->relYPositions[rotation + i];
+        return this->absPiecePositionCol + this->currentPiece->relYPositions[rotation + i];
     }
 
     inline int get_xy(int i) {
-        return this->absPiecePositionX + 10 * this->absPiecePositionY + this->currentPiece->relXPositions[this->rotation + i] + 10 * this->currentPiece->relYPositions[this->rotation + i];
+        return this->absPiecePositionRow + 10 * this->absPiecePositionCol + this->currentPiece->relXPositions[this->rotation + i] + 10 * this->currentPiece->relYPositions[this->rotation + i];
     }
 
     inline bool checkPieceOverlaps(int offsetX, int offsetY) {
@@ -84,9 +84,9 @@ public:
 
     bool movePieceRight();
 
-    bool pieceRotate();
+    bool rotatePiece();
 
-    void pieceDrop();
+    void dropPiece();
 
     ~Board() { delete currentPiece; }
 };
