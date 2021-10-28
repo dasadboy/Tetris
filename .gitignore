@@ -5,4 +5,7 @@ Tetris.vcxproj
 Tetris.vcxproj.filters
 Tetris.vcxproj.user
 *.ruleset
-WORKSPACE
+bazel-bin/
+bazel-out/
+bazel-testlogs/
+bazel-tetris/
