@@ -3,25 +3,53 @@
 const std::vector<CreateFn> Board::pieceNames = { &Create<Square>, &Create<TBlock>, &Create<LBlockL>, &Create<LBlockR>, &Create<Straight>, &Create<ZBlock>, &Create<SBlock>};
 
 Board::Board() {
-	board = std::vector<int>(BOARD::BOARD_SIZE, 0);
-	blocksPerRow = std::vector<int>(BOARD::COLUMN_SIZE, 0);
-	currentHeight = 0;
-	generateNewPiece();
-}
-
-Board::Board(Piece& piece) {
-	board = std::vector<int>(BOARD::BOARD_SIZE, 0);
-	blocksPerRow = std::vector<int>(BOARD::COLUMN_SIZE, 0);
-	currentHeight = 0;
-	generateNewPiece(piece);
+	this->board = std::vector<int>(BOARD::BOARD_SIZE, 0);
+	this->blocksPerRow = std::vector<int>(BOARD::COLUMN_SIZE, 0);
+	this->currentHeight = 0;
+	this->currentPiece = nullptr;
+	this->absPiecePositionCol = 0;
+	this->absPiecePositionRow = 0;
+	this->rotation = 0;
 }
 
 int& Board::operator[] (int rowCol){
 	return board[rowCol];
 }
 
+
 int& Board::operator[] (indices rowCol) {
 	return board[rowCol.i * 10 + rowCol.j];
+}
+
+inline int Board::getPieceCol(int i) {
+	return this->absPiecePositionCol + (*(this->currentPiece->relXPositions))[rotation * 4 + i];
+}
+
+inline int Board::getPieceRow(int i) {
+	return this->absPiecePositionRow + (*(this->currentPiece->relYPositions))[rotation * 4 + i];
+}
+
+inline int Board::getPieceRowCol(int i) {
+	return 10 * this->absPiecePositionRow + this->absPiecePositionCol + (*(this->currentPiece->relXPositions))[rotation * 4 + i] + 10 * (*(this->currentPiece->relYPositions))[rotation * 4 + i];
+}
+
+bool Board::checkPieceOverlaps(int offsetX, int offsetY) {
+	return (board[((getPieceRowCol(0) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0)
+	    || (board[((getPieceRowCol(1) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0)
+	    || (board[((getPieceRowCol(2) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0)
+	    || (board[((getPieceRowCol(3) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0);
+}
+
+inline bool Board::checkOutOfBoundsRight(int offsetX) {
+	return (getPieceCol(0) + offsetX > BOARD::RIGHT_BOUNDARY) || (getPieceCol(1) + offsetX > BOARD::RIGHT_BOUNDARY) || (getPieceCol(2) + offsetX > BOARD::RIGHT_BOUNDARY) || (getPieceCol(3) + offsetX > BOARD::RIGHT_BOUNDARY);
+}
+
+inline bool Board::checkOutOfBoundsLeft(int offsetX) {
+	return (getPieceCol(0) + offsetX < BOARD::LEFT_BOUNDARY) || (getPieceCol(1) + offsetX < BOARD::LEFT_BOUNDARY) /* || (getPieceCol(2) + offsetX < BOARD::LEFT_BOUNDARY) || (getPieceCol(3) + offsetX < BOARD::LEFT_BOUNDARY)*/;
+}
+
+inline bool Board::checkOutOfBoundsBelow(int offsetY) {
+	return (getPieceRow(0) + offsetY < BOARD::BOTTOM_BOUNDARY) || (getPieceRow(1) + offsetY < BOARD::BOTTOM_BOUNDARY) || (getPieceRow(2) + offsetY < BOARD::BOTTOM_BOUNDARY) || (getPieceRow(3) + offsetY < BOARD::BOTTOM_BOUNDARY);
 }
 
 void Board::generateNewPiece() {
@@ -31,8 +59,8 @@ void Board::generateNewPiece() {
 	this->rotation = PIECES::INITIAL_ROTATION;
 }
 
-void Board::generateNewPiece(Piece& piece) {
-	this->currentPiece = &piece;
+void Board::generateNewPiece(Piece* piece) {
+	this->currentPiece = piece;
 	this->absPiecePositionCol = PIECES::INITIAL_ABS_POSITION_X;
 	this->absPiecePositionRow = PIECES::INITIAL_ABS_POSITION_Y;
 	this->rotation = PIECES::INITIAL_ROTATION;
@@ -60,33 +88,38 @@ void Board::removeFilledRows(int rowStart) {
 }
 
 void Board::setPiece() {
-	this->currentHeight = std::max({ get_y(0), get_y(1), get_y(2), get_y(3) });
+	this->currentHeight = std::max({ getPieceRow(0), getPieceRow(1), getPieceRow(2), getPieceRow(3) });
 
-	this->board[get_xy(0)] = this->currentPiece->color;
-	++this->blocksPerRow[get_y(0)];
+	this->board[getPieceRowCol(0)] = this->currentPiece->color;
+	++this->blocksPerRow[getPieceRow(0)];
 
-	this->board[get_xy(1)] = this->currentPiece->color;
-	++this->blocksPerRow[get_y(1)];
+	this->board[getPieceRowCol(1)] = this->currentPiece->color;
+	++this->blocksPerRow[getPieceRow(1)];
 
-	this->board[get_xy(2)] = this->currentPiece->color;
-	++this->blocksPerRow[get_xy(2)];
+	this->board[getPieceRowCol(2)] = this->currentPiece->color;
+	++this->blocksPerRow[getPieceRow(2)];
 
-	this->board[get_xy(3)] = this->currentPiece->color;
-	++this->blocksPerRow[get_xy(3)];
+	this->board[getPieceRowCol(3)] = this->currentPiece->color;
+	++this->blocksPerRow[getPieceRow(3)];
 }
 
 bool Board::movePieceDown() {
-	bool canFall = !checkOutOfBoundsBelow(PIECES::MOVE_DOWN) && !checkPieceOverlaps(0, PIECES::MOVE_DOWN);
+	if (checkOutOfBoundsBelow(PIECES::MOVE_DOWN))
+		return false;
+
+	bool canFall = !checkPieceOverlaps(0, PIECES::MOVE_DOWN);
 
 	this->absPiecePositionRow += canFall * PIECES::MOVE_DOWN;
-
-	if (!canFall) setPiece();
 
 	return canFall;
 }
 
 bool Board::movePieceLeft() {
-	bool canMove = !checkOutOfBoundsLeft(PIECES::MOVE_LEFT) && !checkPieceOverlaps(PIECES::MOVE_LEFT, 0);
+	if (checkOutOfBoundsLeft(PIECES::MOVE_LEFT)) {
+		return false;
+	}
+
+	bool canMove = !checkPieceOverlaps(PIECES::MOVE_LEFT, 0);
 
 	this->absPiecePositionCol += canMove * PIECES::MOVE_LEFT;
 	
@@ -94,7 +127,10 @@ bool Board::movePieceLeft() {
 }
 
 bool Board::movePieceRight() {
-	bool canMove = !checkOutOfBoundsRight(PIECES::MOVE_RIGHT) && !checkPieceOverlaps(PIECES::MOVE_RIGHT, 0);
+	if (checkOutOfBoundsRight(PIECES::MOVE_RIGHT))
+		return false;
+
+	bool canMove = !checkPieceOverlaps(PIECES::MOVE_RIGHT, 0);
 
 	this->absPiecePositionCol += canMove * PIECES::MOVE_RIGHT;
 
@@ -103,10 +139,10 @@ bool Board::movePieceRight() {
 
 bool Board::rotatePiece() {
 	int oldRotation = this->rotation, oldPositionX = this->absPiecePositionCol, oldPositionY = this->absPiecePositionRow;
-	this->rotation = (this->rotation + 4) % this->currentPiece->relXPositions.size();
+	this->rotation = (this->rotation + 1) % PIECES::ROTATION_STATES;
 	this->absPiecePositionRow += PIECES::MOVE_UP * checkOutOfBoundsBelow(0) + PIECES::MOVE_UP * checkOutOfBoundsBelow(PIECES::MOVE_UP);
 	this->absPiecePositionCol += PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(0) + PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(PIECES::MOVE_RIGHT);
-	this->absPiecePositionCol += PIECES::MOVE_LEFT * checkOutOfBoundsRight(0) + PIECES::MOVE_LEFT * checkOutOfBoundsRight(PIECES::MOVE_LEFT);
+	this->absPiecePositionCol += PIECES::MOVE_LEFT * checkOutOfBoundsRight(0) + PIECES::MOVE_LEFT * checkOutOfBoundsRight(PIECES::MOVE_RIGHT);
 
 	if (!checkPieceOverlaps(0, 0)) {}
 	else if (!checkPieceOverlaps(0, PIECES::MOVE_UP)) {
