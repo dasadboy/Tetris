@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+
 namespace PIECES {
 
 	const int NUMBER_OF_PIECES = 7;
@@ -16,6 +18,36 @@ namespace PIECES {
 	const int MOVE_LEFT = -1;
 
 	const int MOVE_RIGHT = 1;
+
+	const std::vector<int> SQUARE_REL_X_POSITIONS = { 0, 1, 0, 1 };
+
+	const std::vector<int> SQUARE_REL_Y_POSITIONS = { 0, 0, 1, 1 };
+
+	const std::vector<int> TBLOCK_REL_X_POSITIONS = { -1, 0, 1, 0, 0, 0, 0, 1, -1, 0, 1, 0, 0, 0, 0, -1 };
+
+	const std::vector<int> TBLOCK_REL_Y_POSITIONS = { 0, 0, 0, 1, 1, 0, -1, 0, 0, 0, 0, -1, 1, 0, -1, 0 };
+
+	const std::vector<int> LBLOCKL_REL_X_POSITIONS = { -1, 0, 1, 1, 0, 0, 0, 1, -1, 0, 1, -1, 0, 0, 0, -1 };
+
+	const std::vector<int> LBLOCKL_REL_Y_POSITIONS = { 0, 0, 0, 1, 1, 0, -1, -1, 0, 0, 0, -1, -1, 0, 1, 1 };
+
+	const std::vector<int> LBLOCKR_REL_X_POSITIONS = { -1, 0, 1, -1, 0, 0, 0, 1, -1, 0, 1, 1, 0, 0, 0, -1 };
+
+	const std::vector<int> LBLOCKR_REL_Y_POSITIONS = { 0, 0, 0, 1, 1, 0, -1, 1, 0, 0, 0, -1, -1, 0, 1, -1 };
+
+	const std::vector<int> STRAIGHT_REL_X_POSITIONS = { -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2, 0, 0, 0, 0 };
+
+	const std::vector<int> STRAIGHT_REL_Y_POSITIONS = { 0, 0, 0, 0, -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2 };
+
+	const std::vector<int> ZBLOCK_REL_X_POSITIONS = { -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2, 0, 0, 0, 0 };
+
+	const std::vector<int> ZBLOCK_REL_Y_POSITIONS = { 0, 0, 0, 0, -1, 0, 1, 2, -1, -1, -1, -1, -1, 0, 1, 2 };
+
+	const std::vector<int> SBLOCK_REL_X_POSITIONS = { -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2, 0, 0, 0, 0 };
+
+	const std::vector<int> SBLOCK_REL_Y_POSITIONS = { 0, 0, 0, 0, -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2 };
+
+	const int ROTATION_STATES = 4;
 }
 
 namespace COLOR { 

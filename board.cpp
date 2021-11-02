@@ -6,7 +6,7 @@ Board::Board() {
 	this->board = std::vector<int>(BOARD::BOARD_SIZE, 0);
 	this->blocksPerRow = std::vector<int>(BOARD::COLUMN_SIZE, 0);
 	this->currentHeight = 0;
-	this->currentPiece = nullptr;
+	this->currentPiece = new Piece();
 	this->absPiecePositionCol = 0;
 	this->absPiecePositionRow = 0;
 	this->rotation = 0;
@@ -45,7 +45,7 @@ inline bool Board::checkOutOfBoundsRight(int offsetX) {
 }
 
 inline bool Board::checkOutOfBoundsLeft(int offsetX) {
-	return (getPieceCol(0) + offsetX < BOARD::LEFT_BOUNDARY) || (getPieceCol(1) + offsetX < BOARD::LEFT_BOUNDARY) /* || (getPieceCol(2) + offsetX < BOARD::LEFT_BOUNDARY) || (getPieceCol(3) + offsetX < BOARD::LEFT_BOUNDARY)*/;
+	return (getPieceCol(0) + offsetX < BOARD::LEFT_BOUNDARY) || (getPieceCol(1) + offsetX < BOARD::LEFT_BOUNDARY) || (getPieceCol(2) + offsetX < BOARD::LEFT_BOUNDARY) || (getPieceCol(3) + offsetX < BOARD::LEFT_BOUNDARY);
 }
 
 inline bool Board::checkOutOfBoundsBelow(int offsetY) {
@@ -53,6 +53,7 @@ inline bool Board::checkOutOfBoundsBelow(int offsetY) {
 }
 
 void Board::generateNewPiece() {
+	delete this->currentPiece;
 	this->currentPiece = this->pieceNames[rand() % PIECES::NUMBER_OF_PIECES]();
 	this->absPiecePositionCol = PIECES::INITIAL_ABS_POSITION_X;
 	this->absPiecePositionRow = PIECES::INITIAL_ABS_POSITION_Y;
@@ -60,6 +61,7 @@ void Board::generateNewPiece() {
 }
 
 void Board::generateNewPiece(Piece* piece) {
+	delete this->currentPiece;
 	this->currentPiece = piece;
 	this->absPiecePositionCol = PIECES::INITIAL_ABS_POSITION_X;
 	this->absPiecePositionRow = PIECES::INITIAL_ABS_POSITION_Y;
@@ -142,16 +144,22 @@ bool Board::rotatePiece() {
 	this->rotation = (this->rotation + 1) % PIECES::ROTATION_STATES;
 	this->absPiecePositionRow += PIECES::MOVE_UP * checkOutOfBoundsBelow(0) + PIECES::MOVE_UP * checkOutOfBoundsBelow(PIECES::MOVE_UP);
 	this->absPiecePositionCol += PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(0) + PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(PIECES::MOVE_RIGHT);
-	this->absPiecePositionCol += PIECES::MOVE_LEFT * checkOutOfBoundsRight(0) + PIECES::MOVE_LEFT * checkOutOfBoundsRight(PIECES::MOVE_RIGHT);
+	this->absPiecePositionCol += PIECES::MOVE_LEFT * checkOutOfBoundsRight(0) + PIECES::MOVE_LEFT * checkOutOfBoundsRight(PIECES::MOVE_LEFT);
 
 	if (!checkPieceOverlaps(0, 0)) {}
 	else if (!checkPieceOverlaps(0, PIECES::MOVE_UP)) {
 		this->absPiecePositionRow += PIECES::MOVE_UP;
 	}
-	else if (!checkPieceOverlaps(PIECES::MOVE_RIGHT, 0) && !checkOutOfBoundsRight(1)) {
+	else if (!checkPieceOverlaps(PIECES::MOVE_RIGHT, 0) && !checkOutOfBoundsRight(PIECES::MOVE_RIGHT)) {
 		this->absPiecePositionCol += PIECES::MOVE_RIGHT;
 	}
-	else if (!checkPieceOverlaps(PIECES::MOVE_LEFT, 0) && !checkOutOfBoundsLeft(-1)) {
+	else if (!checkPieceOverlaps(PIECES::MOVE_LEFT, 0) && !checkOutOfBoundsLeft(PIECES::MOVE_LEFT)) {
+		this->absPiecePositionCol += PIECES::MOVE_LEFT;
+	}
+	else if (!checkPieceOverlaps(PIECES::MOVE_RIGHT, PIECES::MOVE_UP) && !checkOutOfBoundsRight(PIECES::MOVE_RIGHT)) {
+		this->absPiecePositionCol += PIECES::MOVE_RIGHT;
+	}
+	else if (!checkPieceOverlaps(PIECES::MOVE_LEFT, PIECES::MOVE_UP) && !checkOutOfBoundsLeft(PIECES::MOVE_LEFT)) {
 		this->absPiecePositionCol += PIECES::MOVE_LEFT;
 	}
 	else if (!checkPieceOverlaps(0, PIECES::MOVE_UP * 2)) {
