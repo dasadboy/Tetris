@@ -41,11 +41,11 @@ public:
 
     void generateNewPiece(Piece* piece);
 
-    inline int getPieceCol(int i);
+    inline int getBlockCol(int i);
 
-    inline int getPieceRow(int i);
+    inline int getBlockRow(int i);
 
-    inline int getPieceRowCol(int i);
+    inline int getBlockRowCol(int i);
 
     inline bool checkPieceOverlaps(int offsetX, int offsetY);
 

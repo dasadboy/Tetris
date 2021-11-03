@@ -21,35 +21,35 @@ int& Board::operator[] (indices rowCol) {
 	return board[rowCol.i * 10 + rowCol.j];
 }
 
-inline int Board::getPieceCol(int i) {
-	return this->absPiecePositionCol + (*(this->currentPiece->relXPositions))[rotation * 4 + i];
+inline int Board::getBlockCol(int i) {
+	return this->absPiecePositionCol + (*(this->currentPiece->relXPositions))[rotation * PIECES::STATES_OF_ROTATION + i];
 }
 
-inline int Board::getPieceRow(int i) {
-	return this->absPiecePositionRow + (*(this->currentPiece->relYPositions))[rotation * 4 + i];
+inline int Board::getBlockRow(int i) {
+	return this->absPiecePositionRow + (*(this->currentPiece->relYPositions))[rotation * PIECES::STATES_OF_ROTATION + i];
 }
 
-inline int Board::getPieceRowCol(int i) {
-	return 10 * this->absPiecePositionRow + this->absPiecePositionCol + (*(this->currentPiece->relXPositions))[rotation * 4 + i] + 10 * (*(this->currentPiece->relYPositions))[rotation * 4 + i];
+inline int Board::getBlockRowCol(int i) {
+	return BOARD::ROW_SIZE * this->absPiecePositionRow + this->absPiecePositionCol + (*(this->currentPiece->relXPositions))[rotation * PIECES::STATES_OF_ROTATION + i] + BOARD::ROW_SIZE * (*(this->currentPiece->relYPositions))[rotation * PIECES::STATES_OF_ROTATION + i];
 }
 
 bool Board::checkPieceOverlaps(int offsetX, int offsetY) {
-	return (board[((getPieceRowCol(0) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0)
-	    || (board[((getPieceRowCol(1) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0)
-	    || (board[((getPieceRowCol(2) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0)
-	    || (board[((getPieceRowCol(3) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0);
+	return (board[((getBlockRowCol(0) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0)
+	    || (board[((getBlockRowCol(1) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0)
+	    || (board[((getBlockRowCol(2) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0)
+	    || (board[((getBlockRowCol(3) + offsetX + BOARD::ROW_SIZE * offsetY + BOARD::BOARD_SIZE) % BOARD::BOARD_SIZE)] != 0);
 }
 
 inline bool Board::checkOutOfBoundsRight(int offsetX) {
-	return (getPieceCol(0) + offsetX > BOARD::RIGHT_BOUNDARY) || (getPieceCol(1) + offsetX > BOARD::RIGHT_BOUNDARY) || (getPieceCol(2) + offsetX > BOARD::RIGHT_BOUNDARY) || (getPieceCol(3) + offsetX > BOARD::RIGHT_BOUNDARY);
+	return (getBlockCol(0) + offsetX > BOARD::RIGHT_BOUNDARY) || (getBlockCol(1) + offsetX > BOARD::RIGHT_BOUNDARY) || (getBlockCol(2) + offsetX > BOARD::RIGHT_BOUNDARY) || (getBlockCol(3) + offsetX > BOARD::RIGHT_BOUNDARY);
 }
 
 inline bool Board::checkOutOfBoundsLeft(int offsetX) {
-	return (getPieceCol(0) + offsetX < BOARD::LEFT_BOUNDARY) || (getPieceCol(1) + offsetX < BOARD::LEFT_BOUNDARY) || (getPieceCol(2) + offsetX < BOARD::LEFT_BOUNDARY) || (getPieceCol(3) + offsetX < BOARD::LEFT_BOUNDARY);
+	return (getBlockCol(0) + offsetX < BOARD::LEFT_BOUNDARY) || (getBlockCol(1) + offsetX < BOARD::LEFT_BOUNDARY) || (getBlockCol(2) + offsetX < BOARD::LEFT_BOUNDARY) || (getBlockCol(3) + offsetX < BOARD::LEFT_BOUNDARY);
 }
 
 inline bool Board::checkOutOfBoundsBelow(int offsetY) {
-	return (getPieceRow(0) + offsetY < BOARD::BOTTOM_BOUNDARY) || (getPieceRow(1) + offsetY < BOARD::BOTTOM_BOUNDARY) || (getPieceRow(2) + offsetY < BOARD::BOTTOM_BOUNDARY) || (getPieceRow(3) + offsetY < BOARD::BOTTOM_BOUNDARY);
+	return (getBlockRow(0) + offsetY < BOARD::BOTTOM_BOUNDARY) || (getBlockRow(1) + offsetY < BOARD::BOTTOM_BOUNDARY) || (getBlockRow(2) + offsetY < BOARD::BOTTOM_BOUNDARY) || (getBlockRow(3) + offsetY < BOARD::BOTTOM_BOUNDARY);
 }
 
 void Board::generateNewPiece() {
@@ -90,19 +90,19 @@ void Board::removeFilledRows(int rowStart) {
 }
 
 void Board::setPiece() {
-	this->currentHeight = std::max({ getPieceRow(0), getPieceRow(1), getPieceRow(2), getPieceRow(3) });
+	this->currentHeight = std::max({ getBlockRow(0), getBlockRow(1), getBlockRow(2), getBlockRow(3) });
 
-	this->board[getPieceRowCol(0)] = this->currentPiece->color;
-	++this->blocksPerRow[getPieceRow(0)];
+	this->board[getBlockRowCol(0)] = this->currentPiece->color;
+	++this->blocksPerRow[getBlockRow(0)];
 
-	this->board[getPieceRowCol(1)] = this->currentPiece->color;
-	++this->blocksPerRow[getPieceRow(1)];
+	this->board[getBlockRowCol(1)] = this->currentPiece->color;
+	++this->blocksPerRow[getBlockRow(1)];
 
-	this->board[getPieceRowCol(2)] = this->currentPiece->color;
-	++this->blocksPerRow[getPieceRow(2)];
+	this->board[getBlockRowCol(2)] = this->currentPiece->color;
+	++this->blocksPerRow[getBlockRow(2)];
 
-	this->board[getPieceRowCol(3)] = this->currentPiece->color;
-	++this->blocksPerRow[getPieceRow(3)];
+	this->board[getBlockRowCol(3)] = this->currentPiece->color;
+	++this->blocksPerRow[getBlockRow(3)];
 }
 
 bool Board::movePieceDown() {
@@ -141,7 +141,7 @@ bool Board::movePieceRight() {
 
 bool Board::rotatePiece() {
 	int oldRotation = this->rotation, oldPositionX = this->absPiecePositionCol, oldPositionY = this->absPiecePositionRow;
-	this->rotation = (this->rotation + 1) % PIECES::ROTATION_STATES;
+	this->rotation = (this->rotation + 1) % PIECES::STATES_OF_ROTATION;
 	this->absPiecePositionRow += PIECES::MOVE_UP * checkOutOfBoundsBelow(0) + PIECES::MOVE_UP * checkOutOfBoundsBelow(PIECES::MOVE_UP);
 	this->absPiecePositionCol += PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(0) + PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(PIECES::MOVE_RIGHT);
 	this->absPiecePositionCol += PIECES::MOVE_LEFT * checkOutOfBoundsRight(0) + PIECES::MOVE_LEFT * checkOutOfBoundsRight(PIECES::MOVE_LEFT);
