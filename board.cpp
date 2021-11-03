@@ -146,7 +146,9 @@ bool Board::rotatePiece() {
 	this->absPiecePositionCol += PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(0) + PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(PIECES::MOVE_RIGHT);
 	this->absPiecePositionCol += PIECES::MOVE_LEFT * checkOutOfBoundsRight(0) + PIECES::MOVE_LEFT * checkOutOfBoundsRight(PIECES::MOVE_LEFT);
 
-	if (!checkPieceOverlaps(0, 0)) {}
+	if (!checkPieceOverlaps(0, 0)) {
+		std::cout << oldRotation << " " << oldPositionX << " " << oldPositionY << std::endl;
+	}
 	else if (!checkPieceOverlaps(0, PIECES::MOVE_UP)) {
 		this->absPiecePositionRow += PIECES::MOVE_UP;
 	}
@@ -157,9 +159,11 @@ bool Board::rotatePiece() {
 		this->absPiecePositionCol += PIECES::MOVE_LEFT;
 	}
 	else if (!checkPieceOverlaps(PIECES::MOVE_RIGHT, PIECES::MOVE_UP) && !checkOutOfBoundsRight(PIECES::MOVE_RIGHT)) {
+		this->absPiecePositionRow += PIECES::MOVE_UP;
 		this->absPiecePositionCol += PIECES::MOVE_RIGHT;
 	}
 	else if (!checkPieceOverlaps(PIECES::MOVE_LEFT, PIECES::MOVE_UP) && !checkOutOfBoundsLeft(PIECES::MOVE_LEFT)) {
+		this->absPiecePositionRow += PIECES::MOVE_UP;
 		this->absPiecePositionCol += PIECES::MOVE_LEFT;
 	}
 	else if (!checkPieceOverlaps(0, PIECES::MOVE_UP * 2)) {
