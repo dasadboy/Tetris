@@ -167,4 +167,13 @@ TEST_F(BoardTests, TestRotationWithObstructions) {
 	EXPECT_FALSE(board.checkPieceOverlaps(0, 0));
 	EXPECT_EQ(board.absPiecePositionCol, 5) << "rotates in tight space between set bocks space needs to move 1 right";
 	EXPECT_EQ(board.absPiecePositionRow, 6) << "rotates in tight space between set bocks space needs to move 1 up";
+	
+	board.rotatePiece(); // rotation 3
+	board.absPiecePositionRow = 1;
+	board.absPiecePositionCol = 1;
+	EXPECT_FALSE(board.rotatePiece()); // should fail to rotate, rotation 3
+	EXPECT_FALSE(board.checkPieceOverlaps(0, 0));
+	EXPECT_EQ(board.absPiecePositionCol, 1);
+	EXPECT_EQ(board.absPiecePositionRow, 1);
+	EXPECT_EQ(board.rotation, 3);
 }
