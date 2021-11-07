@@ -33,7 +33,7 @@ int& Board::operator[] (indices rowCol) {
 }
 
 // true if occupied
-bool Board::checkPositionOccupied(int row, int col) {
+bool Board::checkPositionLegal(int row, int col) {
 	int rowTranslated = translateRow(row), colTranslated = translateCol(col);
 	return (this->board[rowTranslated * BOARD::TRUE_ROW_SIZE + colTranslated] != 0);
 }

@@ -30,7 +30,7 @@ public:
 
     int& operator[](indices rowCol); // called with board({row, col}) or given object 'obj' of type indices, board(obj)
 
-    bool checkPositionOccupied(int row, int col);
+    bool checkPositionLegal(int row, int col);
 
     void removeFilledRows(int rowStart); // remove filled rows
 
