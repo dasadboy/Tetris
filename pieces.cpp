@@ -14,10 +14,10 @@ Piece::Piece(Board& b) : board(b) {
 
 // true if piece collides
 inline bool Piece::checkCollidesAtOffset(int rowOffset, int colOffset) {
-	return board.checkPositionOccupied((this->positionRow + (*relRowPositions)[rotation * PIECES::STATES_OF_ROTATION + 0] + rowOffset), (this->positionCol + (*relColPositions)[rotation * PIECES::STATES_OF_ROTATION + 0] + colOffset))
-		|| board.checkPositionOccupied((this->positionRow + (*relRowPositions)[rotation * PIECES::STATES_OF_ROTATION + 1] + rowOffset), (this->positionCol + (*relColPositions)[rotation * PIECES::STATES_OF_ROTATION + 1] + colOffset))
-		|| board.checkPositionOccupied((this->positionRow + (*relRowPositions)[rotation * PIECES::STATES_OF_ROTATION + 2] + rowOffset), (this->positionCol + (*relColPositions)[rotation * PIECES::STATES_OF_ROTATION + 2] + colOffset))
-		|| board.checkPositionOccupied((this->positionRow + (*relRowPositions)[rotation * PIECES::STATES_OF_ROTATION + 3] + rowOffset), (this->positionCol + (*relColPositions)[rotation * PIECES::STATES_OF_ROTATION + 3] + colOffset));
+	return board.checkPositionLegal((this->positionRow + (*relRowPositions)[rotation * PIECES::STATES_OF_ROTATION + 0] + rowOffset), (this->positionCol + (*relColPositions)[rotation * PIECES::STATES_OF_ROTATION + 0] + colOffset))
+		|| board.checkPositionLegal((this->positionRow + (*relRowPositions)[rotation * PIECES::STATES_OF_ROTATION + 1] + rowOffset), (this->positionCol + (*relColPositions)[rotation * PIECES::STATES_OF_ROTATION + 1] + colOffset))
+		|| board.checkPositionLegal((this->positionRow + (*relRowPositions)[rotation * PIECES::STATES_OF_ROTATION + 2] + rowOffset), (this->positionCol + (*relColPositions)[rotation * PIECES::STATES_OF_ROTATION + 2] + colOffset))
+		|| board.checkPositionLegal((this->positionRow + (*relRowPositions)[rotation * PIECES::STATES_OF_ROTATION + 3] + rowOffset), (this->positionCol + (*relColPositions)[rotation * PIECES::STATES_OF_ROTATION + 3] + colOffset));
 }
 
 bool Piece::moveDown() {
