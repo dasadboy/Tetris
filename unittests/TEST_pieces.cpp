@@ -19,10 +19,10 @@ TEST_F(BoardTests, TestCollisionChecks) {
 	ASSERT_EQ(board.translateRow(-1), 0);
 	ASSERT_EQ(board.translateRow(-5), 0);
 
-	EXPECT_FALSE (board.checkPositionOccupied(5, 5));
-	EXPECT_TRUE(board.checkPositionOccupied(-20, 8));
-	EXPECT_TRUE(board.checkPositionOccupied(8, -20));
-	EXPECT_TRUE(board.checkPositionOccupied(8, 20));
+	EXPECT_FALSE (board.checkPositionLegal(5, 5));
+	EXPECT_TRUE(board.checkPositionLegal(-20, 8));
+	EXPECT_TRUE(board.checkPositionLegal(8, -20));
+	EXPECT_TRUE(board.checkPositionLegal(8, 20));
 }
 
 TEST_F(PieceTests, TestInitialValues) {
@@ -71,16 +71,16 @@ TEST_F(PieceTests, TestMoveWithObstructions) {
 	// 1 4 1
 	// so piece cannot move down, left, or right.
 	EXPECT_FALSE(piece.moveLeft()) << "piece should not move";
-	EXPECT_EQ(piece.positionCol, PIECES::INITIAL_ABS_POSITION_X);
+	EXPECT_EQ(piece.positionCol, PIECES::INITIAL_ABS_POSITION_X) << "does not move";
 	
 	EXPECT_FALSE(piece.moveRight()) << "piece should not move";
-	EXPECT_EQ(piece.positionCol, PIECES::INITIAL_ABS_POSITION_X);
+	EXPECT_EQ(piece.positionCol, PIECES::INITIAL_ABS_POSITION_X) << "does not move";
 
 	EXPECT_FALSE(piece.moveDown()) << "piece should not move";
-	EXPECT_EQ(piece.positionRow, PIECES::INITIAL_ABS_POSITION_Y);
+	EXPECT_EQ(piece.positionRow, PIECES::INITIAL_ABS_POSITION_Y) << "does not move";
 
-	EXPECT_EQ(piece.positionCol, PIECES::INITIAL_ABS_POSITION_X) << "final col position";
-	EXPECT_EQ(piece.positionRow, PIECES::INITIAL_ABS_POSITION_Y) << "final row position";
+	EXPECT_EQ(piece.positionCol, PIECES::INITIAL_ABS_POSITION_X) << "final col position should be unmoved from 5";
+	EXPECT_EQ(piece.positionRow, PIECES::INITIAL_ABS_POSITION_Y) << "final row position should be unmoved from 20";
 }
 
 TEST_F(PieceTests, TestDrop) {
@@ -119,20 +119,20 @@ TEST_F(PieceTests, TestRotation) {
 	TBlock piece(board);
 
 	piece.positionRow = 0;
-	EXPECT_TRUE(piece.rotate());
-	EXPECT_EQ(piece.rotation, 1);
-	EXPECT_EQ(piece.positionRow, 1);
+	EXPECT_TRUE(piece.rotate()) << "should succeed, only obstructed by bottom boundary after rotation";
+	EXPECT_EQ(piece.rotation, 1) << "rotation state 0 -> 1";
+	EXPECT_EQ(piece.positionRow, 1) << "piece moves up to avoid bottom boundary 0 -> 1";
 
 	piece.positionCol = 0;
-	EXPECT_TRUE(piece.rotate());
-	EXPECT_EQ(piece.rotation, 2);
-	EXPECT_EQ(piece.positionCol, 1);
+	EXPECT_TRUE(piece.rotate()) << "should succeed, only obstructed by bottom boundary after rotation";
+	EXPECT_EQ(piece.rotation, 2) << "rotation state 1 -> 2";
+	EXPECT_EQ(piece.positionCol, 1) << "piece moves up to avoid left boundary 0 -> 1";
 
 	piece.rotate(); // rotation state is 3 now
 	piece.positionCol = 9;
-	EXPECT_TRUE(piece.rotate());
-	EXPECT_EQ(piece.rotation, 0);
-	EXPECT_EQ(piece.positionCol, 8);
+	EXPECT_TRUE(piece.rotate()) << "should succeed, only obstructed by bottom boundary after rotation";
+	EXPECT_EQ(piece.rotation, 0) << "rotation state 1 -> 2";
+	EXPECT_EQ(piece.positionCol, 8) << "piece moves up to avoid left boundary 0 -> 1";
 }
 
 TEST_F(PieceTests, TestRotationWithObstructions) {
