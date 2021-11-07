@@ -47,7 +47,7 @@ namespace PIECES {
 
 	const std::vector<int> SBLOCK_REL_Y_POSITIONS = { 0, 0, 0, 0, -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2 };
 
-	const int ROTATION_STATES = 4;
+	const int STATES_OF_ROTATION = 4;
 }
 
 namespace COLOR { 
@@ -70,17 +70,27 @@ namespace COLOR {
 
 namespace BOARD {
 
-	const int BOARD_SIZE = 400;
-
-	const int COLUMN_SIZE = 40;
-
-	const int LEFT_BOUNDARY = 0;
-
-	const int RIGHT_BOUNDARY = 9;
-
 	const int ROW_SIZE = 10;
 
-	const int BOTTOM_BOUNDARY = 0;
+	const int TRUE_ROW_SIZE = 12;
+
+	const int COLUMN_SIZE = 40; 
+
+	const int TRUE_COLUMN_SIZE = 41;
+
+	const int BOARD_SIZE = (ROW_SIZE) * (COLUMN_SIZE);
+
+	const int TRUE_BOARD_SIZE = (TRUE_ROW_SIZE) * (TRUE_COLUMN_SIZE); // extra row and 2 columns for buffer
+
+	const int COLUMN_OFFSET = 1;
+
+	const int ROW_OFFSET = 1;
+
+	const int LEFT_BOUNDARY = 1;
+
+	const int RIGHT_BOUNDARY = 10;
+
+	const int BOTTOM_BOUNDARY = 1;
 
 	const int RIGHT_ONE_COLUMN = 1;
 
