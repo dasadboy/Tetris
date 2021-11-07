@@ -2,15 +2,34 @@
 
 #include <vector>
 #include "constants.h"
+#include "board.h"
 
 class Piece {
 public:
-    int color;
     // position of pieces relative to position of piece given in board
-    const std::vector<int>* relXPositions;
-    const std::vector<int>* relYPositions;
+    static const std::vector<int>* relRowPositions;
+    static const std::vector<int>* relColPositions;
+    Board& board;
+    int color;
+    int positionRow;
+    int positionCol;
+    int rotation;
 
-    Piece();
+    Piece(Board& b);
+
+    virtual inline bool checkCollidesAtOffset(int rowOffset, int colOffset);
+
+    virtual bool moveDown();
+
+    virtual bool moveLeft();
+
+    virtual bool moveRight();
+
+    virtual void drop();
+
+    virtual bool rotate();
+
+    virtual void set();
 
     virtual ~Piece() {}
 };
@@ -20,28 +39,30 @@ class Square : public Piece {
 public:
     // position of pieces relative to position of piece given in board
 
-    Square();
+    Square(Board& b);
+
+    bool rotate() override;
 };
 
 class TBlock : public Piece {
 public:
     // position of pieces relative to position of piece given in board
 
-    TBlock();
+    TBlock(Board& b);
 };
 
 class LBlockL : public Piece {
 public:
     // position of pieces relative to position of piece given in board
 
-    LBlockL();
+    LBlockL(Board& b);
 };
 
 class LBlockR : public Piece {
 public:
     // position of pieces relative to position of piece given in board
 
-    LBlockR();
+    LBlockR(Board& b);
 };
 
 // TODO
@@ -49,19 +70,19 @@ class Straight : public Piece {
 public:
     // position of pieces relative to position of piece given in board
 
-    Straight();
+    Straight(Board& b);
 };
 
 class ZBlock : public Piece {
 public:
     // position of pieces relative to position of piece given in board
 
-    ZBlock();
+    ZBlock(Board& b);
 };
 
 class SBlock : public Piece {
 public:
     // position of pieces relative to position of piece given in board
 
-    SBlock();
+    SBlock(Board& b);
 };

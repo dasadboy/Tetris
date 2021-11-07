@@ -3,71 +3,36 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include "pieces.h"
+#include <string>
 #include "constants.h"
 
 struct indices {
     int i, j;
 };
 
-template <typename T>
-Piece* Create() { return new T(); }
-
-
-typedef Piece* (*CreateFn)();
-
 
 class Board {
-public:
     // playfield is 10 wide 40 tall.
     // cell called using y * 10 + x
     std::vector<int> board;
     std::vector<int> blocksPerRow;
-    static const std::vector<CreateFn> pieceNames;
-    Piece* currentPiece;
-    int absPiecePositionRow;
-    int absPiecePositionCol;
-    int rotation;
     int currentHeight;
+    
+public:
 
+    inline int translateRow(int row);
+
+    inline int translateCol(int col);
 
     Board();
 
     int& operator[](int rowCol);
 
-    int& operator[](indices rowCol); // called with board({row, col})
+    int& operator[](indices rowCol); // called with board({row, col}) or given object 'obj' of type indices, board(obj)
 
-    void generateNewPiece();
-
-    void generateNewPiece(Piece* piece);
-
-    inline int getBlockCol(int i);
-
-    inline int getBlockRow(int i);
-
-    inline int getBlockRowCol(int i);
-
-    inline bool checkPieceOverlaps(int offsetX, int offsetY);
-
-    inline bool checkOutOfBoundsRight(int offsetX);
-
-    inline bool checkOutOfBoundsLeft(int offsetX);
-
-    inline bool checkOutOfBoundsBelow(int offsetY);
+    bool checkPositionOccupied(int row, int col);
 
     void removeFilledRows(int rowStart); // remove filled rows
 
-    void setPiece();
-
-    bool movePieceDown();
-
-    bool movePieceLeft();
-
-    bool movePieceRight();
-
-    bool rotatePiece();
-
-    void dropPiece();
-
-    ~Board() { delete currentPiece; }
+    void setPiece(std::vector<int> rows, std::vector<int> cols, int color);
 };
