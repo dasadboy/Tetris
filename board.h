@@ -20,10 +20,6 @@ class Board {
     
 public:
 
-    inline int translateRow(int row);
-
-    inline int translateCol(int col);
-
     Board();
 
     int& operator[](int rowCol);

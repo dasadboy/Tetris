@@ -1,6 +1,9 @@
 #include "board.h"
 
 
+#define translateRow(row) std::max(0, row + BOARD::ROW_OFFSET)
+#define translateCol(col) std::max(0, std::min(col + BOARD::COLUMN_OFFSET, 11)) // returns 0 or 11 if row + offset is not between 1 and 10
+
 Board::Board() {
 	this->board = std::vector<int>(BOARD::TRUE_BOARD_SIZE, 0);
 	this->blocksPerRow = std::vector<int>(BOARD::COLUMN_SIZE, 0);
@@ -8,20 +11,12 @@ Board::Board() {
 	
 	// place buffer at beginning and end of each row
 	for (int row = 0, size = BOARD::TRUE_COLUMN_SIZE; row < size; ++row) {
-		this->board[row * BOARD::TRUE_ROW_SIZE] = -1;
-		this->board[row * BOARD::TRUE_ROW_SIZE + BOARD::TRUE_ROW_SIZE - 1] = -1;
+		this->board[row * BOARD::TRUE_ROW_SIZE] = BOARD::OUT_OF_BOUNDS_SENTINEL;
+		this->board[row * BOARD::TRUE_ROW_SIZE + BOARD::TRUE_ROW_SIZE - 1] = BOARD::OUT_OF_BOUNDS_SENTINEL;
 	}
 	for (int col = 0, size = BOARD::TRUE_ROW_SIZE; col < size; ++col) {
-		this->board[col] = -1;
+		this->board[col] = BOARD::OUT_OF_BOUNDS_SENTINEL;
 	}
-}
-
-inline int Board::translateRow(int row) {
-	return std::max(0, row + BOARD::ROW_OFFSET); 
-}
-
-inline int Board::translateCol(int col) {
-	return std::max(0, std::min(col + BOARD::COLUMN_OFFSET, 11)); // returns 0 or 11 if row + offset is not between 1 and 10
 }
 
 int& Board::operator[] (int rowCol){
@@ -77,7 +72,5 @@ void Board::setPiece(std::vector<int> rows, std::vector<int> cols, int color) {
 
 	this->board[translateRow(rows[3]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[3])] = color;
 	++this->blocksPerRow[translateRow(rows[3])];
-	
-	std::cout << (*this)[{2, 5}] << std::endl;
 }
 
