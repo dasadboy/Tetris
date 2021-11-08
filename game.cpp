@@ -10,7 +10,7 @@ void Game::generateNewPiece() {
 	this->currPiece = pieceTypes[rand() % PIECES::NUMBER_OF_PIECES](this->board);
 }
 
-void Game::generateNewPiece(Piece* piece) {
+void Game::usePiece(Piece* piece) {
 	delete this->currPiece;
 	this->currPiece = piece;
 }
