@@ -1,0 +1,11 @@
+x64
+packages
+unittests/x64/
+unittests/packages.config
+unittests/pch.cpp
+unittests/pch.h
+*.ruleset
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
