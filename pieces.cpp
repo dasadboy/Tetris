@@ -2,10 +2,7 @@
 
 // Piece
 
-const std::vector<int>* Piece::relRowPositions = nullptr;
-const std::vector<int>* Piece::relColPositions = nullptr;
-
-Piece::Piece(Board& b) : board(b) {
+Piece::Piece(Board& b) : board(b) { 
 	this->color = COLOR::COLOR_EMPTY;
 	this->positionRow = PIECES::INITIAL_ABS_POSITION_Y;
 	this->positionCol = PIECES::INITIAL_ABS_POSITION_X;
@@ -14,10 +11,10 @@ Piece::Piece(Board& b) : board(b) {
 
 // true if piece collides
 inline bool Piece::checkCollidesAtOffset(int rowOffset, int colOffset) {
-	return board.checkPositionLegal((this->positionRow + (*relRowPositions)[rotation * PIECES::STATES_OF_ROTATION + 0] + rowOffset), (this->positionCol + (*relColPositions)[rotation * PIECES::STATES_OF_ROTATION + 0] + colOffset))
-		|| board.checkPositionLegal((this->positionRow + (*relRowPositions)[rotation * PIECES::STATES_OF_ROTATION + 1] + rowOffset), (this->positionCol + (*relColPositions)[rotation * PIECES::STATES_OF_ROTATION + 1] + colOffset))
-		|| board.checkPositionLegal((this->positionRow + (*relRowPositions)[rotation * PIECES::STATES_OF_ROTATION + 2] + rowOffset), (this->positionCol + (*relColPositions)[rotation * PIECES::STATES_OF_ROTATION + 2] + colOffset))
-		|| board.checkPositionLegal((this->positionRow + (*relRowPositions)[rotation * PIECES::STATES_OF_ROTATION + 3] + rowOffset), (this->positionCol + (*relColPositions)[rotation * PIECES::STATES_OF_ROTATION + 3] + colOffset));
+	return board.checkPositionLegal(getBlockPositionRow(0) + rowOffset, getBlockPositionCol(0) + colOffset)
+		|| board.checkPositionLegal(getBlockPositionRow(1) + rowOffset, getBlockPositionCol(1) + colOffset)
+		|| board.checkPositionLegal(getBlockPositionRow(2) + rowOffset, getBlockPositionCol(2) + colOffset)
+		|| board.checkPositionLegal(getBlockPositionRow(3) + rowOffset, getBlockPositionCol(3) + colOffset);
 }
 
 bool Piece::moveDown() {
@@ -44,7 +41,10 @@ void Piece::drop() {
 
 bool Piece::rotate() {
 	int oldRotation = this->rotation;
-	this->rotation = (this->rotation + 1) % 4;
+	this->rotation = (this->rotation + 1) % PIECES::STATES_OF_ROTATION;
+	// check if any spaces within 2 blocks around piece are available to move to
+	// move there if available and return true
+	// otherwise return rotation to previous and return false
 	if (!checkCollidesAtOffset(0, 0)) {}
 	else if (!checkCollidesAtOffset(PIECES::MOVE_UP, 0)) {
 		this->positionRow += PIECES::MOVE_UP;
@@ -58,9 +58,6 @@ bool Piece::rotate() {
 	else if (!checkCollidesAtOffset(0, PIECES::MOVE_RIGHT)) {
 		this->positionCol += PIECES::MOVE_RIGHT;
 	}
-	else if (!checkCollidesAtOffset(PIECES::MOVE_UP * 2, 0)) {
-		this->positionRow += PIECES::MOVE_UP * 2;
-	}
 	else if (!checkCollidesAtOffset(PIECES::MOVE_UP, PIECES::MOVE_LEFT)) {
 		this->positionRow += PIECES::MOVE_UP;
 		this->positionCol += PIECES::MOVE_LEFT;
@@ -68,6 +65,9 @@ bool Piece::rotate() {
 	else if (!checkCollidesAtOffset(PIECES::MOVE_UP, PIECES::MOVE_RIGHT)) {
 		this->positionRow += PIECES::MOVE_UP;
 		this->positionCol += PIECES::MOVE_RIGHT;
+	}
+	else if (!checkCollidesAtOffset(PIECES::MOVE_UP * 2, 0)) {
+		this->positionRow += PIECES::MOVE_UP * 2;
 	}
 	else if (!checkCollidesAtOffset(0, PIECES::MOVE_RIGHT * 2)) {
 		this->positionCol += PIECES::MOVE_LEFT * 2;
@@ -84,20 +84,27 @@ bool Piece::rotate() {
 
 void Piece::set() {
 	std::vector<int> rows, cols;
-	int sliceStart = this->rotation * 4, sliceEnd = sliceStart + 4;
-	for (; sliceStart < sliceEnd; ++sliceStart) {
-		rows.push_back(positionRow + (*(this->relRowPositions))[sliceStart]);
-		cols.push_back(positionCol + (*(this->relColPositions))[sliceStart]);
+	for (int blockNumber = 0; blockNumber < 4; ++blockNumber) {
+		rows.push_back( getBlockPositionRow(blockNumber) );
+		cols.push_back( getBlockPositionCol(blockNumber) );
 	}
 	board.setPiece(rows, cols, this->color);
 }
 
+
+// PieceHolder
+
+template <class P> PieceHolder<P>::PieceHolder(Board& board) : Piece(board) {}
+
+
 // Square
 
-Square::Square(Board& board) : Piece(board) {
+template <> const std::vector<int> PieceHolder<Square>::relRowPositions = { 0, 0, 1, 1 };
+
+template <> const std::vector<int> PieceHolder<Square>::relColPositions = { 0, 1, 0, 1 };
+
+Square::Square(Board& board) : PieceHolder(board) {
 	this->color = COLOR::COLOR_SQUARE;
-	this->relRowPositions = &PIECES::SQUARE_REL_Y_POSITIONS;
-	this->relColPositions = &PIECES::SQUARE_REL_X_POSITIONS;
 }
 
 bool Square::rotate() {
@@ -106,53 +113,65 @@ bool Square::rotate() {
 
 // TBlock
 
-TBlock::TBlock(Board& board) : Piece(board) {
+template <> const std::vector<int> PieceHolder<TBlock>::relRowPositions = { 0, 0, 0, 1, 1, 0, -1, 0, 0, 0, 0, -1, 1, 0, -1, 0 };
+
+template <> const std::vector<int> PieceHolder<TBlock>::relColPositions = { -1, 0, 1, 0, 0, 0, 0, 1, -1, 0, 1, 0, 0, 0, 0, -1 };
+
+TBlock::TBlock(Board& board) : PieceHolder(board) {
 	this->color = COLOR::COLOR_TBLOCK;
-	this->relRowPositions = &PIECES::TBLOCK_REL_Y_POSITIONS;
-	this->relColPositions = &PIECES::TBLOCK_REL_X_POSITIONS;
 }
 
 
 // LBlockL
 
-LBlockL::LBlockL(Board& board) : Piece(board) {
+template <> const std::vector<int> PieceHolder<LBlockL>::relRowPositions = { 0, 0, 0, 1, 1, 0, -1, -1, 0, 0, 0, -1, -1, 0, 1, 1 };
+
+template <> const std::vector<int> PieceHolder<LBlockL>::relColPositions = { -1, 0, 1, 1, 0, 0, 0, 1, -1, 0, 1, -1, 0, 0, 0, -1 };
+
+LBlockL::LBlockL(Board& board) : PieceHolder(board) {
 	this->color = COLOR::COLOR_LBLOCKL;
-	this->relRowPositions = &PIECES::LBLOCKL_REL_Y_POSITIONS;
-	this->relColPositions = &PIECES::LBLOCKL_REL_X_POSITIONS;
 }
 
 
 // LBlockR
 
-LBlockR::LBlockR(Board& board) : Piece(board) {
+template <> const std::vector<int> PieceHolder<LBlockR>::relRowPositions = { 0, 0, 0, 1, 1, 0, -1, 1, 0, 0, 0, -1, -1, 0, 1, -1 };
+
+template <> const std::vector<int> PieceHolder<LBlockR>::relColPositions = { -1, 0, 1, -1, 0, 0, 0, 1, -1, 0, 1, 1, 0, 0, 0, -1 };
+
+LBlockR::LBlockR(Board& board) : PieceHolder(board) {
 	this->color = COLOR::COLOR_LBLOCKL;
-	this->relRowPositions = &PIECES::LBLOCKR_REL_Y_POSITIONS;
-	this->relColPositions = &PIECES::LBLOCKR_REL_X_POSITIONS;
 }
 
 
 // Straight
 
-Straight::Straight(Board& board) : Piece(board) {
+template <> const std::vector<int> PieceHolder<Straight>::relRowPositions = { 0, 0, 0, 0, -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2 };
+
+template <> const std::vector<int> PieceHolder<Straight>::relColPositions = { -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2, 0, 0, 0, 0 };
+
+Straight::Straight(Board& board) : PieceHolder(board) {
 	this->color = COLOR::COLOR_STRAIGHT;
-	this->relRowPositions = &PIECES::STRAIGHT_REL_Y_POSITIONS;
-	this->relColPositions = &PIECES::STRAIGHT_REL_X_POSITIONS;
 }
 
 
 // ZBlock
 
-ZBlock::ZBlock(Board& board) : Piece(board) {
+template <> const std::vector<int> PieceHolder<ZBlock>::relRowPositions = { 1, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, -1, 1, 0, 0, -1 };
+
+template <> const std::vector<int> PieceHolder<ZBlock>::relColPositions = { -1, 0, 0, 1, 1, 1, 0, 0, -1, 0, 0, 1, 0, 0, -1, -1 };
+
+ZBlock::ZBlock(Board& board) : PieceHolder(board) {
 	this->color = COLOR::COLOR_LBLOCKL;
-	this->relRowPositions = &PIECES::ZBLOCK_REL_Y_POSITIONS;
-	this->relColPositions = &PIECES::ZBLOCK_REL_X_POSITIONS;
 }
 
 
 // SBlock
 
-SBlock::SBlock(Board& board) : Piece(board) {
+template <> const std::vector<int> PieceHolder<SBlock>::relRowPositions = { 1, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, -1, 1, 0, 0, -1 };
+
+template <> const std::vector<int> PieceHolder<SBlock>::relColPositions = { -1, 0, 0, 1, 0, 0, 1, 1, -1, 0, 0, 1, -1, -1, 0, 0 };
+
+SBlock::SBlock(Board& board) : PieceHolder(board) {
 	this->color = COLOR::COLOR_LBLOCKL;
-	this->relRowPositions = &PIECES::SBLOCK_REL_Y_POSITIONS;
-	this->relColPositions = &PIECES::SBLOCK_REL_X_POSITIONS;
 }

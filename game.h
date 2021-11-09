@@ -18,7 +18,7 @@ class Game {
 
 	void generateNewPiece();
 
-	void generateNewPiece(Piece* piece);
+	void usePiece(Piece* piece);
 
 	~Game() { delete currPiece; }
 };

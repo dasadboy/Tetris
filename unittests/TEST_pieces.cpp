@@ -9,17 +9,17 @@ class PieceTests : public ::testing::Test {};
 TEST_F(BoardTests, TestCollisionChecks) {
 	Board board;
 
-	ASSERT_EQ(board.translateCol(5), 6);
-	ASSERT_EQ(board.translateCol(-1), 0);
-	ASSERT_EQ(board.translateCol(-5), 0);
-	ASSERT_EQ(board.translateCol(11), 11);
-	ASSERT_EQ(board.translateCol(15), 11);
+	//ASSERT_EQ(translateCol(5), 6);
+	//ASSERT_EQ(translateCol(-1), 0);
+	//ASSERT_EQ(translateCol(-5), 0);
+	//ASSERT_EQ(translateCol(11), 11);
+	//ASSERT_EQ(translateCol(15), 11);
 
-	ASSERT_EQ(board.translateRow(6), 7);
-	ASSERT_EQ(board.translateRow(-1), 0);
-	ASSERT_EQ(board.translateRow(-5), 0);
+	//ASSERT_EQ(translateRow(6), 7);
+	//ASSERT_EQ(translateRow(-1), 0);
+	//ASSERT_EQ(translateRow(-5), 0);
 
-	EXPECT_FALSE (board.checkPositionLegal(5, 5));
+	EXPECT_FALSE(board.checkPositionLegal(5, 5));
 	EXPECT_TRUE(board.checkPositionLegal(-20, 8));
 	EXPECT_TRUE(board.checkPositionLegal(8, -20));
 	EXPECT_TRUE(board.checkPositionLegal(8, 20));
@@ -31,12 +31,9 @@ TEST_F(PieceTests, TestInitialValues) {
 	EXPECT_EQ(piece.rotation, 0);
 	EXPECT_EQ(piece.positionRow, 20);
 	EXPECT_EQ(piece.positionCol, 5);
-	EXPECT_EQ(piece.relRowPositions->size(), 16);
-	EXPECT_EQ(piece.relColPositions->size(), 16);
-	EXPECT_EQ((*(piece.relRowPositions))[0], 0);
-	EXPECT_EQ((*(piece.relColPositions))[0], -1);
+	EXPECT_EQ(piece.getBlockPositionRow(0), 20);
+	EXPECT_EQ(piece.getBlockPositionCol(0), 4);
 }
-
 TEST_F(PieceTests, TestMove) {
 	Board board;
 	TBlock piece(board);
@@ -87,8 +84,11 @@ TEST_F(PieceTests, TestDrop) {
 	Board board;
 	TBlock piece(board);
 	EXPECT_TRUE(piece.rotate());
+	EXPECT_EQ(piece.positionRow, 20);
+	EXPECT_EQ(piece.positionCol, 5);
 	piece.drop();
 	EXPECT_EQ(piece.positionRow, 1) << "abs row position of tblock after drop from default";
+	EXPECT_EQ(piece.positionCol, 5) << "should not move from col = 5";
 	piece.set();
 	std::vector<int> boardSlice = 
 	{ 
@@ -161,16 +161,16 @@ TEST_F(PieceTests, TestRotationWithObstructions) {
 	piece.positionCol = 0;
 	EXPECT_TRUE(piece.rotate()) << "rotation should succeed";// rotation 2
 	EXPECT_FALSE(piece.checkCollidesAtOffset(0, 0)) << "piece should not collide with any obstruction or boundary";
-	EXPECT_EQ(piece.positionCol, 1) << "rotates along left boundary, needs to move 1 left";
-	EXPECT_EQ(piece.positionRow, 7) << "rotates along left boundary, needs to move 1 up";
+	EXPECT_EQ(piece.positionCol, 1) << "rotates along left boundary, moves 1 space left";
+	EXPECT_EQ(piece.positionRow, 7) << "rotates along left boundary, moves 1 space up";
 
 	piece.rotate(); // rotation 3
 	piece.positionRow = 6;
 	piece.positionCol = 9;
 	EXPECT_TRUE(piece.rotate()) << "rotation should succeed"; // rotation 0
 	EXPECT_FALSE(piece.checkCollidesAtOffset(0, 0)) << "piece should not collide with any obstruction or boundary";
-	EXPECT_EQ(piece.positionCol, 8)<< "rotates along right boundary, needs to move right";
-	EXPECT_EQ(piece.positionRow, 7)<< "rotates along right boundary, needs to move 1 up";
+	EXPECT_EQ(piece.positionCol, 8)<< "rotates along right boundary, moves 1 space right";
+	EXPECT_EQ(piece.positionRow, 7)<< "rotates along right boundary, moves 1 space up";
 
 	piece.rotate(); // rotation 1
 	piece.positionRow = 5;
@@ -178,7 +178,7 @@ TEST_F(PieceTests, TestRotationWithObstructions) {
 	EXPECT_TRUE(piece.rotate()) << "rotation should succeed"; // rotation 2
 	EXPECT_FALSE(piece.checkCollidesAtOffset(0, 0)) << "piece should not collide with any obstruction or boundary";
 	EXPECT_EQ(piece.positionCol, 4) << "rotates in tight space between set bocks, does not move horizontally";
-	EXPECT_EQ(piece.positionRow, 7) << "rotates in tight space between set bocks, needs to move 2 up";
+	EXPECT_EQ(piece.positionRow, 7) << "rotates in tight space between set bocks, moves 2 spaces up";
 
 	board[{6, 6}] = 0;
 	board[{7, 3}] = 1;
@@ -190,8 +190,8 @@ TEST_F(PieceTests, TestRotationWithObstructions) {
 	piece.positionCol = 4;
 	EXPECT_TRUE(piece.rotate()) << "rotation should succeed"; // rotation 2
 	EXPECT_FALSE(piece.checkCollidesAtOffset(0, 0)) << "piece should not collide with any obstruction or boundary";
-	EXPECT_EQ(piece.positionCol, 5) << "rotates in tight space between set bocks space needs to move 1 right";
-	EXPECT_EQ(piece.positionRow, 6) << "rotates in tight space between set bocks space needs to move 1 up";
+	EXPECT_EQ(piece.positionCol, 5) << "rotates in tight space between set bocks space moves 1 space right";
+	EXPECT_EQ(piece.positionRow, 6) << "rotates in tight space between set bocks space moves 1 space up";
 	
 	piece.rotate(); // rotation 3
 	piece.positionRow = 1;

@@ -2,7 +2,7 @@
 
 Game::Game() {
 	this->board = Board();
-	this->currPiece = new Piece(this->board);
+	this->currPiece = nullptr;
 }
 
 void Game::generateNewPiece() {

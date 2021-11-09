@@ -4,11 +4,10 @@
 #include "constants.h"
 #include "board.h"
 
+
 class Piece {
 public:
     // position of pieces relative to position of piece given in board
-    static const std::vector<int>* relRowPositions;
-    static const std::vector<int>* relColPositions;
     Board& board;
     int color;
     int positionRow;
@@ -17,7 +16,11 @@ public:
 
     Piece(Board& b);
 
-    virtual inline bool checkCollidesAtOffset(int rowOffset, int colOffset);
+    virtual int getBlockPositionRow(int blockNumber) = 0;
+
+    virtual int getBlockPositionCol(int blockNumber) = 0;
+
+    virtual bool checkCollidesAtOffset(int rowOffset, int colOffset);
 
     virtual bool moveDown();
 
@@ -34,8 +37,24 @@ public:
     virtual ~Piece() {}
 };
 
+template <class P>
+class PieceHolder : public Piece {
+    static const std::vector<int> relRowPositions;
+    static const std::vector<int> relColPositions;
+public:
+    PieceHolder(Board& b);
 
-class Square : public Piece {
+    virtual int getBlockPositionRow(int blockNumber) {
+        return this->positionRow + relRowPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
+    }
+
+    virtual int getBlockPositionCol(int blockNumber) {
+        return this->positionCol + relColPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
+    }
+};
+
+
+class Square : public PieceHolder<Square> {
 public:
     // position of pieces relative to position of piece given in board
 
@@ -44,21 +63,21 @@ public:
     bool rotate() override;
 };
 
-class TBlock : public Piece {
+class TBlock : public PieceHolder<TBlock> {
 public:
     // position of pieces relative to position of piece given in board
 
     TBlock(Board& b);
 };
 
-class LBlockL : public Piece {
+class LBlockL : public PieceHolder<LBlockL> {
 public:
     // position of pieces relative to position of piece given in board
 
     LBlockL(Board& b);
 };
 
-class LBlockR : public Piece {
+class LBlockR : public PieceHolder<LBlockR> {
 public:
     // position of pieces relative to position of piece given in board
 
@@ -66,21 +85,21 @@ public:
 };
 
 // TODO
-class Straight : public Piece {
+class Straight : public PieceHolder<Straight> {
 public:
     // position of pieces relative to position of piece given in board
 
     Straight(Board& b);
 };
 
-class ZBlock : public Piece {
+class ZBlock : public PieceHolder<ZBlock> {
 public:
     // position of pieces relative to position of piece given in board
 
     ZBlock(Board& b);
 };
 
-class SBlock : public Piece {
+class SBlock : public PieceHolder<SBlock> {
 public:
     // position of pieces relative to position of piece given in board
 

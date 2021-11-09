@@ -19,38 +19,11 @@ namespace PIECES {
 
 	const int MOVE_RIGHT = 1;
 
-	const std::vector<int> SQUARE_REL_X_POSITIONS = { 0, 1, 0, 1 };
-
-	const std::vector<int> SQUARE_REL_Y_POSITIONS = { 0, 0, 1, 1 };
-
-	const std::vector<int> TBLOCK_REL_X_POSITIONS = { -1, 0, 1, 0, 0, 0, 0, 1, -1, 0, 1, 0, 0, 0, 0, -1 };
-
-	const std::vector<int> TBLOCK_REL_Y_POSITIONS = { 0, 0, 0, 1, 1, 0, -1, 0, 0, 0, 0, -1, 1, 0, -1, 0 };
-
-	const std::vector<int> LBLOCKL_REL_X_POSITIONS = { -1, 0, 1, 1, 0, 0, 0, 1, -1, 0, 1, -1, 0, 0, 0, -1 };
-
-	const std::vector<int> LBLOCKL_REL_Y_POSITIONS = { 0, 0, 0, 1, 1, 0, -1, -1, 0, 0, 0, -1, -1, 0, 1, 1 };
-
-	const std::vector<int> LBLOCKR_REL_X_POSITIONS = { -1, 0, 1, -1, 0, 0, 0, 1, -1, 0, 1, 1, 0, 0, 0, -1 };
-
-	const std::vector<int> LBLOCKR_REL_Y_POSITIONS = { 0, 0, 0, 1, 1, 0, -1, 1, 0, 0, 0, -1, -1, 0, 1, -1 };
-
-	const std::vector<int> STRAIGHT_REL_X_POSITIONS = { -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2, 0, 0, 0, 0 };
-
-	const std::vector<int> STRAIGHT_REL_Y_POSITIONS = { 0, 0, 0, 0, -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2 };
-
-	const std::vector<int> ZBLOCK_REL_X_POSITIONS = { -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2, 0, 0, 0, 0 };
-
-	const std::vector<int> ZBLOCK_REL_Y_POSITIONS = { 0, 0, 0, 0, -1, 0, 1, 2, -1, -1, -1, -1, -1, 0, 1, 2 };
-
-	const std::vector<int> SBLOCK_REL_X_POSITIONS = { -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2, 0, 0, 0, 0 };
-
-	const std::vector<int> SBLOCK_REL_Y_POSITIONS = { 0, 0, 0, 0, -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2 };
-
 	const int STATES_OF_ROTATION = 4;
 }
 
 namespace COLOR { 
+
 	const int COLOR_EMPTY = 0;
 	
 	const int COLOR_SQUARE = 1;
@@ -99,4 +72,6 @@ namespace BOARD {
 	const int DOWN_ONE_ROW = -10;
 
 	const int UP_ONE_ROW = 10;
+
+	const int OUT_OF_BOUNDS_SENTINEL = -1;
 }
