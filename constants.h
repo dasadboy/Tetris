@@ -47,7 +47,7 @@ namespace BOARD {
 
 	const int TRUE_ROW_SIZE = 12;
 
-	const int COLUMN_SIZE = 40; 
+	const int COLUMN_SIZE = 40;
 
 	const int TRUE_COLUMN_SIZE = 41;
 

@@ -1,6 +1,5 @@
 #include "board.h"
 
-
 #define translateRow(row) std::max(0, row + BOARD::ROW_OFFSET)
 #define translateCol(col) std::max(0, std::min(col + BOARD::COLUMN_OFFSET, BOARD::TRUE_ROW_SIZE - 1)) // returns 0 or 11 if row + offset is not between 1 and 10
 
@@ -73,4 +72,3 @@ void Board::setPiece(std::vector<int> rows, std::vector<int> cols, int color) {
 	this->board[translateRow(rows[3]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[3])] = color;
 	++this->blocksPerRow[translateRow(rows[3])];
 }
-

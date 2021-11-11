@@ -17,7 +17,6 @@ class Board {
     std::vector<int> board;
     std::vector<int> blocksPerRow;
     int currentHeight;
-    
 public:
 
     Board();
