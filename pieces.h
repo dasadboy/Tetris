@@ -2,71 +2,107 @@
 
 #include <vector>
 #include "constants.h"
+#include "board.h"
+#include <vector>
+#include "constants.h"
 
 class Piece {
 public:
-    int color;
     // position of pieces relative to position of piece given in board
-    static const std::vector<int> relXPositions;
-    static const std::vector<int> relYPositions;
+    Board& board;
+    int color;
+    int positionRow;
+    int positionCol;
+    int rotation;
+
+    Piece(Board& b);
+
+    virtual int getBlockPositionRow(int blockNumber) = 0;
+
+    virtual int getBlockPositionCol(int blockNumber) = 0;
+
+    virtual bool checkCollidesAtOffset(int rowOffset, int colOffset);
+
+    virtual bool moveDown();
+
+    virtual bool moveLeft();
+
+    virtual bool moveRight();
+
+    virtual void drop();
+
+    virtual bool rotate();
+
+    virtual void set();
 
     virtual ~Piece() {}
 };
 
-class Square : public Piece {
+template <class P>
+class PieceHolder : public Piece {
+    static const std::vector<int> relRowPositions;
+    static const std::vector<int> relColPositions;
 public:
-    // position of pieces relative to position of piece given in board
-    static const std::vector<int> relXPositions;
-    static const std::vector<int> relYPositions;
-    Square();
+    PieceHolder(Board& b);
+
+    virtual int getBlockPositionRow(int blockNumber) {
+        return this->positionRow + relRowPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
+    }
+
+    virtual int getBlockPositionCol(int blockNumber) {
+        return this->positionCol + relColPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
+    }
 };
 
-class TBlock : public Piece {
+
+class Square : public PieceHolder<Square> {
 public:
     // position of pieces relative to position of piece given in board
-    static const std::vector<int> relXPositions; 
-    static const std::vector<int> relYPositions;
-    TBlock();
+
+    Square(Board& b);
+
+    bool rotate() override;
 };
 
-class LBlockL : public Piece {
+class TBlock : public PieceHolder<TBlock> {
 public:
     // position of pieces relative to position of piece given in board
-    static const std::vector<int> relXPositions;
-    static const std::vector<int> relYPositions;
-    LBlockL();
+
+    TBlock(Board& b);
 };
 
-class LBlockR : public Piece {
+class LBlockL : public PieceHolder<LBlockL> {
 public:
     // position of pieces relative to position of piece given in board
-    static const std::vector<int> relXPositions;
-    static const std::vector<int> relYPositions;
-    LBlockR();
+
+    LBlockL(Board& b);
+};
+
+class LBlockR : public PieceHolder<LBlockR> {
+public:
+    // position of pieces relative to position of piece given in board
+
+    LBlockR(Board& b);
 };
 
 // TODO
-class Straight : public Piece {
-
+class Straight : public PieceHolder<Straight> {
 public:
     // position of pieces relative to position of piece given in board
-    static const std::vector<int> relXPositions;
-    static const std::vector<int> relYPositions;
-    Straight();
+
+    Straight(Board& b);
 };
 
-class ZBlock : public Piece {
+class ZBlock : public PieceHolder<ZBlock> {
 public:
     // position of pieces relative to position of piece given in board
-    static const std::vector<int> relXPositions;
-    static const std::vector<int> relYPositions;
-    ZBlock();
+
+    ZBlock(Board& b);
 };
 
-class SBlock : public Piece {
+class SBlock : public PieceHolder<SBlock> {
 public:
     // position of pieces relative to position of piece given in board
-    static const std::vector<int> relXPositions;
-    static const std::vector<int> relYPositions;
-    SBlock();
+
+    SBlock(Board& b);
 };

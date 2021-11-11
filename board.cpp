@@ -1,42 +1,55 @@
 #include "board.h"
 
-const std::vector<CreateFn> Board::pieceNames = { &Create<Square>, &Create<TBlock>, &Create<LBlockL>, &Create<LBlockR>, &Create<Straight>, &Create<ZBlock>, &Create<SBlock>};
+#define translateRow(row) std::max(0, row + BOARD::ROW_OFFSET)
+#define translateCol(col) std::max(0, std::min(col + BOARD::COLUMN_OFFSET, BOARD::TRUE_ROW_SIZE - 1)) // returns 0 or 11 if row + offset is not between 1 and 10
 
 Board::Board() {
-	board = std::vector<int>(BOARD::BOARD_SIZE, 0);
-	blocksPerRow = std::vector<int>(BOARD::COLUMN_SIZE, 0);
-	currentHeight = 0;
-	generateNewPiece();
+	this->board = std::vector<int>(BOARD::TRUE_BOARD_SIZE, 0);
+	this->blocksPerRow = std::vector<int>(BOARD::COLUMN_SIZE, 0);
+	this->currentHeight = 1;
+	
+	// place buffer at beginning and end of each row
+	for (int row = 0, size = BOARD::TRUE_COLUMN_SIZE; row < size; ++row) {
+		this->board[row * BOARD::TRUE_ROW_SIZE] = BOARD::OUT_OF_BOUNDS_SENTINEL;
+		this->board[row * BOARD::TRUE_ROW_SIZE + BOARD::TRUE_ROW_SIZE - 1] = BOARD::OUT_OF_BOUNDS_SENTINEL;
+	}
+	for (int col = 0, size = BOARD::TRUE_ROW_SIZE; col < size; ++col) {
+		this->board[col] = BOARD::OUT_OF_BOUNDS_SENTINEL;
+	}
 }
 
 int& Board::operator[] (int rowCol){
-	return board[rowCol];
+	return board[translateRow(rowCol / BOARD::ROW_SIZE) * BOARD::TRUE_ROW_SIZE + translateCol(rowCol % 10)];
 }
 
 int& Board::operator[] (indices rowCol) {
-	return board[rowCol.i * 10 + rowCol.j];
+	return board[translateRow(rowCol.i) * BOARD::TRUE_ROW_SIZE + translateCol(rowCol.j)];
 }
 
-void Board::generateNewPiece() {
-	this->currentPiece = this->pieceNames[rand() % PIECES::NUMBER_OF_PIECES]();
-	this->absPiecePositionX = PIECES::INITIAL_ABS_POSITION_X;
-	this->absPiecePositionY = PIECES::INITIAL_ABS_POSITION_Y;
-	this->rotation = PIECES::INITIAL_ROTATION;
+// true if occupied
+bool Board::checkPositionLegal(int row, int col) {
+	int rowTranslated = translateRow(row), colTranslated = translateCol(col);
+	return (this->board[rowTranslated * BOARD::TRUE_ROW_SIZE + colTranslated] != 0);
 }
 
 void Board::removeFilledRows(int rowStart) {
 	// Copy all unfilled rows from rowStart to currentHeight to an unfilled row
-	for (int currRow = rowStart, srcRow = rowStart; srcRow <= currentHeight;) {
+	int currRow = translateRow(rowStart), srcRow = translateRow(rowStart), height = this->currentHeight;
+	while (srcRow <= height) {
 		if (this->blocksPerRow[srcRow] == BOARD::ROW_SIZE) {
 			++srcRow; // Skip this row as it is full and should not be in the result
+			--this->currentHeight;
 		}
 		else {
 			// copy srcRow to currRow
 			int currCell = currRow * BOARD::ROW_SIZE, currCellEnd = currRow + BOARD::ROW_SIZE,
 				srcCell = srcRow * BOARD::ROW_SIZE, srcCellEnd = srcCell + BOARD::ROW_SIZE;
 
+			this->blocksPerRow[currRow] = this->blocksPerRow[srcRow];
+
 			for (; currCell < currCellEnd; ++currCell, ++srcCell) {
 				this->board[currCell] = this->board[srcCell];
+				this->board[srcCell] = 0;
 			}
 
 			++currRow, ++srcRow;
@@ -44,84 +57,18 @@ void Board::removeFilledRows(int rowStart) {
 	}
 }
 
-void Board::setPiece() {
-	this->currentHeight = std::max({ get_y(0), get_y(1), get_y(2), get_y(3) });
+void Board::setPiece(std::vector<int> rows, std::vector<int> cols, int color) {
+	this->currentHeight = *std::max_element(rows.begin(), rows.end());
 
-	this->board[get_xy(0)] = this->currentPiece->color;
-	++this->blocksPerRow[get_y(0)];
+	this->board[translateRow(rows[0]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[0])] = color;
+	++this->blocksPerRow[translateRow(rows[0])];
 
-	this->board[get_xy(1)] = this->currentPiece->color;
-	++this->blocksPerRow[get_y(1)];
+	this->board[translateRow(rows[1]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[1])] = color;
+	++this->blocksPerRow[translateRow(rows[1])];
 
-	this->board[get_xy(2)] = this->currentPiece->color;
-	++this->blocksPerRow[get_xy(2)];
+	this->board[translateRow(rows[2]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[2])] = color;
+	++this->blocksPerRow[translateRow(rows[2])];
 
-	this->board[get_xy(3)] = this->currentPiece->color;
-	++this->blocksPerRow[get_xy(3)];
+	this->board[translateRow(rows[3]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[3])] = color;
+	++this->blocksPerRow[translateRow(rows[3])];
 }
-
-bool Board::movePieceDown() {
-	bool canFall = !checkOutOfBoundsBelow(PIECES::MOVE_DOWN) && !checkPieceOverlaps(0, PIECES::MOVE_DOWN);
-
-	this->absPiecePositionY += canFall * PIECES::MOVE_DOWN;
-
-	if (!canFall) setPiece();
-
-	return canFall;
-}
-
-bool Board::movePieceLeft() {
-	bool canMove = !checkOutOfBoundsLeft(PIECES::MOVE_LEFT) && !checkPieceOverlaps(PIECES::MOVE_LEFT, 0);
-
-	this->absPiecePositionX += canMove * PIECES::MOVE_LEFT;
-	
-	return canMove;
-}
-
-bool Board::movePieceRight() {
-	bool canMove = !checkOutOfBoundsRight(PIECES::MOVE_RIGHT) && !checkPieceOverlaps(PIECES::MOVE_RIGHT, 0);
-
-	this->absPiecePositionX += canMove * PIECES::MOVE_RIGHT;
-
-	return canMove;
-};
-
-bool Board::pieceRotate() {
-	int oldRotation = this->rotation, oldPositionX = this->absPiecePositionX, oldPositionY = this->absPiecePositionY;
-	this->rotation = (this->rotation + 4) % this->currentPiece->relXPositions.size();
-	this->absPiecePositionY += PIECES::MOVE_UP * checkOutOfBoundsBelow(0) + PIECES::MOVE_UP * checkOutOfBoundsBelow(PIECES::MOVE_UP);
-	this->absPiecePositionX += PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(0) + PIECES::MOVE_RIGHT * checkOutOfBoundsLeft(PIECES::MOVE_RIGHT);
-	this->absPiecePositionX += PIECES::MOVE_LEFT * checkOutOfBoundsRight(0) + PIECES::MOVE_LEFT * checkOutOfBoundsRight(PIECES::MOVE_LEFT);
-
-	if (!checkPieceOverlaps(0, 0)) {}
-	else if (!checkPieceOverlaps(0, PIECES::MOVE_UP)) {
-		this->absPiecePositionY += PIECES::MOVE_UP;
-	}
-	else if (!checkPieceOverlaps(PIECES::MOVE_RIGHT, 0) && !checkOutOfBoundsRight(1)) {
-		this->absPiecePositionX += PIECES::MOVE_RIGHT;
-	}
-	else if (!checkPieceOverlaps(PIECES::MOVE_LEFT, 0) && !checkOutOfBoundsLeft(-1)) {
-		this->absPiecePositionX += PIECES::MOVE_LEFT;
-	}
-	else if (!checkPieceOverlaps(0, PIECES::MOVE_UP * 2)) {
-		this->absPiecePositionY += PIECES::MOVE_UP * 2;
-	}
-	else if (!checkPieceOverlaps(PIECES::MOVE_RIGHT * 2, 0) && !checkOutOfBoundsRight(PIECES::MOVE_RIGHT * 2)) {
-		this->absPiecePositionX += PIECES::MOVE_RIGHT * 2;
-	}
-	else if (!checkPieceOverlaps(PIECES::MOVE_LEFT * 2, 0) && !checkOutOfBoundsLeft(PIECES::MOVE_LEFT * 2)) {
-		this->absPiecePositionX += PIECES::MOVE_LEFT * 2;
-	}
-	else {
-		this->rotation = oldRotation;
-		this->absPiecePositionX = oldPositionX;
-		this->absPiecePositionY = oldPositionY;
-		return false;
-	}
-	return true;
-};
-
-void Board::pieceDrop() {
-	while (movePieceDown());
-};
-
