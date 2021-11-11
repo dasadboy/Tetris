@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../game.h"
+#include "game.h"
 
 class BoardTests: public ::testing::Test {};
 
