@@ -1,6 +1,8 @@
 #pragma once
 
 #include "pieces.h"
+#include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
 
 
 template <typename T>
@@ -13,12 +15,36 @@ const std::vector<CreateFn> pieceTypes = { &Create<Square>, &Create<TBlock>, &Cr
 class Game {
 	Board board;
 	Piece* currPiece;
+	sf::Clock movePieceLeftTimer;
+	sf::Clock movePieceRightTimer;
+	sf::Clock movePieceDownTimer;
+	sf::Clock passiveMoveDownTimer;
+	sf::Window window;
+	sf::Clock clock;
 
 	Game();
 
 	void generateNewPiece();
 
+	void init();
+
+	void handleEvent(sf::Event event);
+
+	void handlePiecePassiveMoveDown();
+
+	void handlePieceMoveDown();
+
+	void handlePieceMoveLeft();
+
+	void handlePieceMoveRight();
+
+	void handlePieceDrop();
+
+	void handlePieceRotate();
+
 	void usePiece(Piece* piece);
+
+	void terminate();
 
 	~Game() { delete currPiece; }
 };
