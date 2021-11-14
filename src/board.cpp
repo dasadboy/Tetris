@@ -72,3 +72,5 @@ void Board::setPiece(std::vector<int> rows, std::vector<int> cols, int color) {
 	this->board[translateRow(rows[3]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[3])] = color;
 	++this->blocksPerRow[translateRow(rows[3])];
 }
+
+void Board::draw() {}

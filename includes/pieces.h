@@ -35,6 +35,8 @@ public:
 
     virtual void set();
 
+    virtual void draw();
+
     virtual ~Piece() {}
 };
 
