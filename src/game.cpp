@@ -15,15 +15,19 @@ void Game::init() {
 	generateNewPiece();
 }
 
-void Game::play() {
+void Game::update() {
 	while (this->window.isOpen()) {
-		sf::Event event;
-		handleEvents(event);
+		handleEvents();
 		handlePiecePassiveMoveDown();
 	}
 }
 
-void Game::handleEvents(sf::Event event) {
+void Game::terminate() {
+	this->window.close();
+}
+
+void Game::handleEvents() {
+	sf::Event event;
 	while (this->window.pollEvent(event)) {
 		switch (event.type) {
 			case sf::Event::Closed:
@@ -96,6 +100,7 @@ void Game::usePiece(Piece* piece) {
 	this->currPiece = piece;
 }
 
-void Game::terminate() {
-	this->window.close();
+void Game::drawScreen() {
+	this->currPiece->draw();
+	this->board.draw();
 }
