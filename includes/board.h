@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 #include "constants.h"
+#include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
 
 struct indices {
     int i, j;
