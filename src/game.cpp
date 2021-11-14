@@ -15,28 +15,38 @@ void Game::init() {
 	generateNewPiece();
 }
 
-void Game::handleEvent(sf::Event event) {
-	switch (event.type) {
-		case sf::Event::Closed:
-			this->window.close();
-		case sf::Event::KeyPressed:
-			switch (event.key.code) {
-				case sf::Keyboard::Down:
-					handlePieceMoveDown();
-				case sf::Keyboard::Left:
-					handlePieceMoveLeft();
-				case sf::Keyboard::Right:
-					handlePieceMoveLeft();
-				case sf::Keyboard::Up:
-					handlePieceRotate();
-				case sf::Keyboard::Space:
-					handlePieceDrop();
-			}
+void Game::play() {
+	while (this->window.isOpen()) {
+		sf::Event event;
+		handleEvents(event);
+		handlePiecePassiveMoveDown();
+	}
+}
+
+void Game::handleEvents(sf::Event event) {
+	while (this->window.pollEvent(event)) {
+		switch (event.type) {
+			case sf::Event::Closed:
+				terminate();
+			case sf::Event::KeyPressed:
+				switch (event.key.code) {
+					case sf::Keyboard::Down:
+						handlePieceMoveDown();
+					case sf::Keyboard::Left:
+						handlePieceMoveLeft();
+					case sf::Keyboard::Right:
+						handlePieceMoveLeft();
+					case sf::Keyboard::Up:
+						handlePieceRotate();
+					case sf::Keyboard::Space:
+						handlePieceDrop();
+				}
+		}
 	}
 }
 
 void Game::handlePiecePassiveMoveDown() {
-	if (this->passiveMoveDownTimer.getElapsedTime().asSeconds() > 1) {
+	if (this->passiveMoveDownTimer.getElapsedTime().asSeconds() > 1.f) {
 		if (!this->currPiece->moveDown()) {
 			this->currPiece->set();
 			generateNewPiece();

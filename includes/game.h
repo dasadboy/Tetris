@@ -1,8 +1,6 @@
 #pragma once
 
 #include "pieces.h"
-#include "SFML/Graphics.hpp"
-#include "SFML/System.hpp"
 
 
 template <typename T>
@@ -28,7 +26,9 @@ class Game {
 
 	void init();
 
-	void handleEvent(sf::Event event);
+	void play();
+
+	void handleEvents(sf::Event event);
 
 	void handlePiecePassiveMoveDown();
 
