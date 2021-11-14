@@ -26,7 +26,9 @@ class Game {
 
 	void init();
 
-	void play();
+	void update();
+
+	void terminate();
 
 	void handleEvents(sf::Event event);
 
@@ -44,7 +46,7 @@ class Game {
 
 	void usePiece(Piece* piece);
 
-	void terminate();
+	void drawScreen();
 
 	~Game() { delete currPiece; }
 };
