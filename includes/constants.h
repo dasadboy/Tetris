@@ -75,3 +75,21 @@ namespace BOARD {
 
 	const int OUT_OF_BOUNDS_SENTINEL = -1;
 }
+
+namespace DISPLAY {
+
+	const unsigned int SIZE_X = 200;
+
+	const unsigned int SIZE_Y = 400;
+}
+
+namespace BLOCK {
+
+	const int NUMBER_OF_POINTS = 4;
+
+	const int BLOCK_SIZE = 20;
+
+	const int INNER_SIZE = 18;
+
+	const int OUTLINE_SIZE = 1;
+}

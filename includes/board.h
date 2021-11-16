@@ -4,9 +4,7 @@
 #include <algorithm>
 #include <vector>
 #include <string>
-#include "constants.h"
-#include "SFML/Graphics.hpp"
-#include "SFML/System.hpp"
+#include "blocks.h"
 
 struct indices {
     int i, j;
@@ -32,6 +30,8 @@ public:
     void removeFilledRows(int rowStart); // remove filled rows
 
     void setPiece(std::vector<int> rows, std::vector<int> cols, int color);
+
+    void drawBlock(int row, int col);
 
     void draw();
 };

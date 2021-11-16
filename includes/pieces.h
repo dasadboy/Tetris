@@ -1,10 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "constants.h"
 #include "board.h"
-#include <vector>
-#include "constants.h"
 
 class Piece {
 public:
