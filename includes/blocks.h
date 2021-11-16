@@ -11,23 +11,11 @@ class Block : sf::Shape {
 
 public:
 
-	explicit Block(sf::Vector2f& pos, sf::Color clr) : 
-		position(pos), color(clr) {
-		update();
-	}
+	explicit Block(sf::Vector2f& pos, sf::Color clr);
 
-	void setPosition(const sf::Vector2f& pos) {
-		position = pos;
-		update();
-	}
+	void setPosition(const sf::Vector2f& pos);
 
-	virtual std::size_t getPointCount() const {
-		return 4;
-	}
+	virtual std::size_t getPointCount() const;
 
-	virtual sf::Vector2f getPoint(std::size_t idx) const {
-		static std::vector<float> relPositionsX = {0, BLOCK::BLOCK_SIZE, 0, BLOCK::BLOCK_SIZE};
-		static std::vector<float> relPositionsY = {0, 0, BLOCK::BLOCK_SIZE, BLOCK::BLOCK_SIZE};
-		return sf::Vector2f(position.x + relPositionsX[idx], position.y + relPositionsY[idx]);
-	}
+	virtual sf::Vector2f getPoint(std::size_t idx) const;
 };
