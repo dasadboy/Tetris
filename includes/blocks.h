@@ -1,21 +1,21 @@
 #pragma once
 
-#include <vector>
 #include "constants.h"
-#include "SFML/Graphics.hpp"
-#include "SFML/System.hpp"
 
-class Block : sf::Shape {
-	sf::Vector2f& position;
-	sf::Color color;
+class Block {
+	sf::RectangleShape block;
 
 public:
 
-	explicit Block(sf::Vector2f& pos, sf::Color clr);
+	Block(int row, int col);
 
-	void setPosition(const sf::Vector2f& pos);
+	Block(int row, int col, sf::Color clr);
 
-	virtual std::size_t getPointCount() const;
+	void setPos(sf::Vector2f& pos);
 
-	virtual sf::Vector2f getPoint(std::size_t idx) const;
+	void setPos(int row, int col);
+
+	sf::Vector2f getPos();
+
+	sf::RectangleShape& getShape();
 };
