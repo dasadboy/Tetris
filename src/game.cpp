@@ -36,21 +36,31 @@ void Game::handleEvents() {
 				switch (event.key.code) {
 					case sf::Keyboard::Down:
 						handlePieceMoveDown();
+						break;
 					case sf::Keyboard::Left:
 						handlePieceMoveLeft();
+						break;
 					case sf::Keyboard::Right:
 						handlePieceMoveLeft();
+						break;
 					case sf::Keyboard::Up:
 						handlePieceRotate();
+						this->upHeldDown = true;
+						break;
 					case sf::Keyboard::Space:
 						handlePieceDrop();
+						break;
+				}
+			case sf::Event::KeyReleased:
+				if (event.key.code == sf::Keyboard::Up) {
+						this->upHeldDown = false;
 				}
 		}
 	}
 }
 
 void Game::handlePiecePassiveMoveDown() {
-	if (this->passiveMoveDownTimer.getElapsedTime().asSeconds() > 1.f) {
+	if (this->passiveMoveDownTimer.getElapsedTime().asSeconds() > TIME::PASSIVE_TIME_CUTOFF) {
 		if (!this->currPiece->moveDown()) {
 			this->currPiece->set();
 			generateNewPiece();
@@ -60,7 +70,7 @@ void Game::handlePiecePassiveMoveDown() {
 }
 
 void Game::handlePieceMoveDown() {
-	if (this->movePieceDownTimer.getElapsedTime().asSeconds() > .2f) {
+	if (this->movePieceDownTimer.getElapsedTime().asSeconds() > TIME::PIECE_MOVE_COOLDOWN) {
 		if (!this->currPiece->moveDown()) {
 			this->currPiece->set();
 			generateNewPiece();
@@ -71,14 +81,14 @@ void Game::handlePieceMoveDown() {
 }
 
 void Game::handlePieceMoveLeft() {
-	if (this->movePieceLeftTimer.getElapsedTime().asSeconds() > .2f) {
+	if (this->movePieceLeftTimer.getElapsedTime().asSeconds() > TIME::PIECE_MOVE_COOLDOWN) {
 		this->currPiece->moveLeft();
 		this->movePieceLeftTimer.restart();
 	}
 }
 
 void Game::handlePieceMoveRight() {
-	if (this->movePieceLeftTimer.getElapsedTime().asSeconds() > .2f) {
+	if (this->movePieceLeftTimer.getElapsedTime().asSeconds() > TIME::PIECE_MOVE_COOLDOWN) {
 		this->currPiece->moveLeft();
 		this->movePieceLeftTimer.restart();
 	}
@@ -91,8 +101,13 @@ void Game::handlePieceDrop() {
 }
 
 void Game::handlePieceRotate() {
-	this->currPiece->rotate();
-	this->passiveMoveDownTimer.restart();
+	if (!this->upHeldDown) {
+		int initialRow = this->currPiece->positionRow, int initialCol = this->currPiece->positionCol;
+		this->currPiece->rotate();
+		if (initialRow != this->currPiece->positionRow || initialCol != this->currPiece->positionCol) {
+			this->passiveMoveDownTimer.restart();
+		}
+	}
 }
 
 void Game::usePiece(Piece* piece) {
