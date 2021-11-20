@@ -75,3 +75,11 @@ namespace BOARD {
 
 	const int OUT_OF_BOUNDS_SENTINEL = -1;
 }
+
+namespace TIME {
+
+	const int PASSIVE_TIME_CUTOFF = 1.f;
+
+	const int PIECE_MOVE_COOLDOWN = .2f;
+
+ }
