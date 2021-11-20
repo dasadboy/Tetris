@@ -1,5 +1,8 @@
 #pragma once
+
 #include <vector>
+#include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
 
 namespace PIECES {
 
@@ -87,9 +90,11 @@ namespace BLOCK {
 
 	const int NUMBER_OF_POINTS = 4;
 
-	const int BLOCK_SIZE = 20;
+	const float BLOCK_SIZE = 20;
 
-	const int INNER_SIZE = 18;
+	const float INNER_SIZE = 18;
 
-	const int OUTLINE_SIZE = 1;
+	const float OUTLINE_SIZE = 1;
+
+	const sf::RectangleShape COMMON_BLOCK = sf::RectangleShape(sf::Vector2f(INNER_SIZE, INNER_SIZE));
 }
