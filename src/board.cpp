@@ -8,6 +8,14 @@ Board::Board() {
 	this->blocksPerRow = std::vector<int>(BOARD::COLUMN_SIZE, 0);
 	this->currentHeight = 1;
 	int row = BOARD::LEFT_BOUNDARY, col = BOARD::BOTTOM_BOUNDARY;
+
+	for (int row = 0; row < BOARD::COLUMN_SIZE; ++row) {
+		for (int col = 0; col < BOARD::ROW_SIZE; ++col) {
+			Block block(row, col);
+			BoardCell cell(block);
+			board[translateRow(row) * BOARD::TRUE_ROW_SIZE + translateCol(col)] = cell;
+		}
+	}
 	
 	// set beginning and end of each row as buffer
 	for (int row = 0, size = BOARD::TRUE_COLUMN_SIZE; row < size; ++row) {
