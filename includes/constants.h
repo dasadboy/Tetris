@@ -23,6 +23,8 @@ namespace PIECES {
 	const int MOVE_RIGHT = 1;
 
 	const int STATES_OF_ROTATION = 4;
+
+	const int NUMBER_OF_BLOCKS = 4;
 }
 
 namespace COLOR { 

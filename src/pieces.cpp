@@ -7,6 +7,12 @@ Piece::Piece(Board& b) : board(b) {
 	this->positionRow = PIECES::INITIAL_ABS_POSITION_Y;
 	this->positionCol = PIECES::INITIAL_ABS_POSITION_X;
 	this->rotation = PIECES::INITIAL_ROTATION;
+
+	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
+		sf::Color clr = getBlockColor();
+		Block block = Block(getBlockPositionRow(blockNumber), getBlockPositionCol(blockNumber), clr);
+		this->blocks[blockNumber] = block;
+	}
 }
 
 // true if piece collides
@@ -82,13 +88,20 @@ bool Piece::rotate() {
 	return true;
 }
 
+void Piece::updateBlocks() {
+	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
+		sf::Vector2f newPos = { getBlockPositionRow(blockNumber), getBlockPositionCol(blockNumber) };
+		this->blocks[blockNumber].setPos(newPos);
+	}
+}
+
 void Piece::set() {
 	std::vector<int> rows, cols;
-	for (int blockNumber = 0; blockNumber < 4; ++blockNumber) {
+	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
 		rows.push_back( getBlockPositionRow(blockNumber) );
 		cols.push_back( getBlockPositionCol(blockNumber) );
 	}
-	board.setPiece(rows, cols, this->color);
+	board.setPiece(rows, cols, this->blocks);
 }
 
 void Piece::draw() {}

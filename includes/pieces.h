@@ -11,12 +11,15 @@ public:
     int positionRow;
     int positionCol;
     int rotation;
+    std::vector<Block> blocks;
 
     Piece(Board& b);
 
     virtual int getBlockPositionRow(int blockNumber) = 0;
 
     virtual int getBlockPositionCol(int blockNumber) = 0;
+
+    virtual sf::Color getBlockColor() = 0;
 
     virtual bool checkCollidesAtOffset(int rowOffset, int colOffset);
 
@@ -29,6 +32,8 @@ public:
     virtual void drop();
 
     virtual bool rotate();
+
+    virtual void updateBlocks();
 
     virtual void set();
 
@@ -50,6 +55,10 @@ public:
 
     virtual int getBlockPositionCol(int blockNumber) {
         return this->positionCol + relColPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
+    }
+
+    virtual sf::Color getBlockColor() {
+        return this->color;
     }
 };
 
