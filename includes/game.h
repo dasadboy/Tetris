@@ -13,13 +13,12 @@ const std::vector<CreateFn> pieceTypes = { &Create<Square>, &Create<TBlock>, &Cr
 class Game {
 	Board board;
 	Piece* currPiece;
-	bool upHeldDown = false;
+	bool upHeldDown;
 	sf::Clock movePieceLeftTimer;
 	sf::Clock movePieceRightTimer;
 	sf::Clock movePieceDownTimer;
 	sf::Clock passiveMoveDownTimer;
 	sf::Window window;
-	sf::Clock clock;
 
 	Game();
 

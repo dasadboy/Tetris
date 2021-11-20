@@ -3,6 +3,7 @@
 Game::Game() {
 	this->board = Board();
 	this->currPiece = nullptr;
+	this->upHeldDown = false;
 }
 
 void Game::generateNewPiece() {
