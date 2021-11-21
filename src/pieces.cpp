@@ -91,6 +91,8 @@ void Piece::set() {
 	board.setPiece(rows, cols, this->color);
 }
 
+void Piece::draw() {}
+
 // PieceHolder
 
 template <class P> PieceHolder<P>::PieceHolder(Board& board) : Piece(board) {}
