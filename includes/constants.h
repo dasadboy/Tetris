@@ -100,3 +100,11 @@ namespace BLOCK {
 
 	const sf::RectangleShape COMMON_BLOCK = sf::RectangleShape(sf::Vector2f(INNER_SIZE, INNER_SIZE));
 }
+
+namespace TIME {
+
+	const int PASSIVE_TIME_CUTOFF = 1.f;
+
+	const int PIECE_MOVE_COOLDOWN = .2f;
+
+ }
