@@ -1,7 +1,8 @@
 #include "game.h"
 
 Game::Game() {
-	this->board = Board();
+	Board board = Board();
+	this->board = board;
 	this->currPiece = nullptr;
 	this->upHeldDown = false;
 }
@@ -12,24 +13,24 @@ void Game::generateNewPiece() {
 }
 
 void Game::init() {
-	this->window.create(sf::VideoMode(200, 400), "Tetris");
+	window.create(sf::VideoMode(200, 400), "Tetris");
 	generateNewPiece();
 }
 
 void Game::update() {
-	while (this->window.isOpen()) {
+	while (window.isOpen()) {
 		handleEvents();
 		handlePiecePassiveMoveDown();
 	}
 }
 
 void Game::terminate() {
-	this->window.close();
+	window.close();
 }
 
 void Game::handleEvents() {
 	sf::Event event;
-	while (this->window.pollEvent(event)) {
+	while (window.pollEvent(event)) {
 		switch (event.type) {
 			case sf::Event::Closed:
 				terminate();

@@ -11,14 +11,13 @@ typedef Piece* (*CreateFn)(Board& board);
 const std::vector<CreateFn> pieceTypes = { &Create<Square>, &Create<TBlock>, &Create<LBlockL>, &Create<LBlockR>, &Create<Straight>, &Create<ZBlock>, &Create<SBlock> };
 
 class Game {
-	Board board;
 	Piece* currPiece;
 	bool upHeldDown;
 	sf::Clock movePieceLeftTimer;
 	sf::Clock movePieceRightTimer;
 	sf::Clock movePieceDownTimer;
 	sf::Clock passiveMoveDownTimer;
-	sf::Window window;
+	Board board;
 
 	Game();
 
