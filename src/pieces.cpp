@@ -2,8 +2,7 @@
 
 // Piece
 
-Piece::Piece(Board& b) : board(b) { 
-	this->color = COLOR::COLOR_EMPTY;
+Piece::Piece(Board& b) : board(b) {
 	this->positionRow = PIECES::INITIAL_ABS_POSITION_Y;
 	this->positionCol = PIECES::INITIAL_ABS_POSITION_X;
 	this->rotation = PIECES::INITIAL_ROTATION;
