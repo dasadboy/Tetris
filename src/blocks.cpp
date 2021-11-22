@@ -4,6 +4,15 @@
 #define translateRow2Disp(row) DISPLAY::SIZE_Y - row * BLOCK::BLOCK_SIZE + BLOCK::OUTLINE_SIZE
 #define translateCol2Disp(col) col * BLOCK::BLOCK_SIZE + BLOCK::OUTLINE_SIZE
 
+sf::RenderWindow window;
+
+Block::Block() {
+	this->block = BLOCK::COMMON_BLOCK;
+	this->block.setPosition(sf::Vector2f(0, 0));
+	this->block.setOutlineColor(sf::Color::Black);
+	this->block.setFillColor(sf::Color::Black);
+}
+
 Block::Block(int row, int col) {
 	this->block = BLOCK::COMMON_BLOCK;
 	this->block.setPosition(sf::Vector2f(translateCol2Disp(col), translateRow2Disp(row)));

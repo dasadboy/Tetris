@@ -10,11 +10,14 @@ struct indices {
 };
 
 struct BoardCell {
-    Block& block;
+    Block block;
     bool isOccupied;
-    BoardCell(Block& b, bool state = false) : block(b) {
-        this->isOccupied = state;
+    BoardCell() {
+        Block block;
+        this->block = block;
+        isOccupied = false;
     }
+    BoardCell(Block& b, bool state = false) : block(b), isOccupied(state) {}
     void setOccupied() {
         this->isOccupied = true;
     }
@@ -24,11 +27,6 @@ struct BoardCell {
         newBlock.setPos(currPosition);
         this->block = newBlock;
         this->isOccupied = src.isOccupied;
-    }
-    void reset(int row, int col) {
-        bool isOccupied = false;
-        Block newBlock = Block(row, col);
-        this->block = newBlock;
     }
 };
 

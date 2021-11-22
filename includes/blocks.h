@@ -2,12 +2,14 @@
 
 #include "constants.h"
 
-sf::RenderWindow window;
+extern sf::RenderWindow window;
 
 class Block {
 	sf::RectangleShape block;
 
 public:
+
+	Block();
 
 	Block(int row, int col);
 
