@@ -9,8 +9,8 @@ Board::Board() {
 	this->currentHeight = 1;
 	int row = BOARD::LEFT_BOUNDARY, col = BOARD::BOTTOM_BOUNDARY;
 
-	for (int row = 0; row < BOARD::COLUMN_SIZE; ++row) {
-		for (int col = 0; col < BOARD::ROW_SIZE; ++col) {
+	for (int row = -1; row < BOARD::TRUE_COLUMN_SIZE; ++row) {
+		for (int col = -1; col < BOARD::TRUE_ROW_SIZE; ++col) {
 			Block block(row, col);
 			BoardCell cell(block);
 			board[translateRow(row) * BOARD::TRUE_ROW_SIZE + translateCol(col)] = cell;
@@ -82,5 +82,9 @@ void Board::setPiece(std::vector<int> rows, std::vector<int> cols, std::vector<B
 }
 
 void Board::draw() {
-	// TODO 
+	for (int row = 0; row < BOARD::COLUMN_SIZE; ++row) {
+		for (int col = 0; col < BOARD::ROW_SIZE; ++col) {
+			this->board[translateRow(row) * BOARD::TRUE_ROW_SIZE + translateCol(col)].block.draw();
+		}
+	}
 }

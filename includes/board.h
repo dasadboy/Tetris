@@ -22,11 +22,13 @@ struct BoardCell {
         Block newBlock = src.block;
         sf::Vector2f currPosition = this->block.getPos();
         newBlock.setPos(currPosition);
+        this->block = newBlock;
         this->isOccupied = src.isOccupied;
     }
     void reset(int row, int col) {
         bool isOccupied = false;
-        block = Block(row, col);
+        Block newBlock = Block(row, col);
+        this->block = newBlock;
     }
 };
 
