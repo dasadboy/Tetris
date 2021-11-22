@@ -1,5 +1,8 @@
 #pragma once
+
 #include <vector>
+#include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
 
 namespace PIECES {
 
