@@ -18,6 +18,7 @@ class Game {
 	sf::Clock movePieceDownTimer;
 	sf::Clock passiveMoveDownTimer;
 	Board board;
+	sf::RenderWindow window;
 
 	Game();
 

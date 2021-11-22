@@ -4,8 +4,6 @@
 #define translateRow2Disp(row) DISPLAY::SIZE_Y - row * BLOCK::BLOCK_SIZE + BLOCK::OUTLINE_SIZE
 #define translateCol2Disp(col) col * BLOCK::BLOCK_SIZE + BLOCK::OUTLINE_SIZE
 
-sf::RenderWindow window;
-
 Block::Block() {
 	this->block = BLOCK::COMMON_BLOCK;
 	this->block.setPosition(sf::Vector2f(0, 0));
@@ -47,6 +45,6 @@ sf::RectangleShape& Block::getShape() {
 	return this->block;
 }
 
-void Block::draw() {
+void Block::draw(sf::RenderWindow& window) {
 	window.draw(this->block);
 }

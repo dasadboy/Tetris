@@ -8,7 +8,7 @@ Piece::Piece(Board& b) : board(b) {
 	this->rotation = PIECES::INITIAL_ROTATION;
 
 	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
-		sf::Color clr = getBlockColor();
+		sf::Color clr = sf::Color();
 		Block block = Block(getBlockPositionRow(blockNumber), getBlockPositionCol(blockNumber), clr);
 		this->blocks[blockNumber] = block;
 	}
@@ -103,7 +103,7 @@ void Piece::set() {
 	board.setPiece(rows, cols, this->blocks);
 }
 
-void Piece::draw() {
+void Piece::draw(sf::RenderWindow& window) {
 	// TODO
 }
 

@@ -50,5 +50,5 @@ public:
 
     void setPiece(std::vector<int> rows, std::vector<int> cols, std::vector<Block> blocks);
 
-    void draw();
+    void draw(sf::RenderWindow& window);
 };

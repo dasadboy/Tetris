@@ -81,10 +81,10 @@ void Board::setPiece(std::vector<int> rows, std::vector<int> cols, std::vector<B
 	++this->blocksPerRow[translateRow(rows[3])];
 }
 
-void Board::draw() {
+void Board::draw(sf::RenderWindow& window) {
 	for (int row = 0; row < currentHeight; ++row) {
 		for (int col = 0; col < BOARD::ROW_SIZE; ++col) {
-			this->board[translateRow(row) * BOARD::TRUE_ROW_SIZE + translateCol(col)].block.draw();
+			this->board[translateRow(row) * BOARD::TRUE_ROW_SIZE + translateCol(col)].block.draw(window);
 		}
 	}
 }

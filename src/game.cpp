@@ -13,24 +13,24 @@ void Game::generateNewPiece() {
 }
 
 void Game::init() {
-	window.create(sf::VideoMode(200, 400), "Tetris");
+	this->window.create(sf::VideoMode(200, 400), "Tetris");
 	generateNewPiece();
 }
 
 void Game::update() {
-	while (window.isOpen()) {
+	while (this->window.isOpen()) {
 		handleEvents();
 		handlePiecePassiveMoveDown();
 	}
 }
 
 void Game::terminate() {
-	window.close();
+	this->window.close();
 }
 
 void Game::handleEvents() {
 	sf::Event event;
-	while (window.pollEvent(event)) {
+	while (this->window.pollEvent(event)) {
 		switch (event.type) {
 			case sf::Event::Closed:
 				terminate();
@@ -118,6 +118,6 @@ void Game::usePiece(Piece* piece) {
 }
 
 void Game::drawScreen() {
-	this->currPiece->draw();
-	this->board.draw();
+	this->currPiece->draw(window);
+	this->board.draw(window);
 }

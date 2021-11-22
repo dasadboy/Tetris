@@ -5,7 +5,6 @@
 
 class Piece {
 public:
-    // position of pieces relative to position of piece given in board
     Board& board;
     int positionRow;
     int positionCol;
@@ -14,9 +13,9 @@ public:
 
     Piece(Board& b);
 
-    virtual int getBlockPositionRow(int blockNumber) = 0;
+    virtual int getBlockPositionRow(int blockNumber) { return 0; }
 
-    virtual int getBlockPositionCol(int blockNumber) = 0;
+    virtual int getBlockPositionCol(int blockNumber) { return 0; }
 
     virtual sf::Color getBlockColor() = 0;
 
@@ -43,7 +42,7 @@ public:
     virtual void set();
 
     // draws piece to screen
-    virtual void draw();
+    virtual void draw(sf::RenderWindow& window);
 
     // del
     virtual ~Piece() {}
@@ -65,9 +64,11 @@ public:
         return this->positionCol + relColPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
     }
 
-    virtual sf::Color getBlockColor() {
+    virtual sf::Color getBlockColor() override {
         return this->color;
     }
+
+    //virtual ~PieceHolder() {}
 };
 
 

@@ -2,8 +2,6 @@
 
 #include "constants.h"
 
-extern sf::RenderWindow window;
-
 class Block {
 	sf::RectangleShape block;
 
@@ -25,5 +23,5 @@ public:
 
 	sf::RectangleShape& getShape();
 
-	void draw();
+	void draw(sf::RenderWindow& window);
 };
