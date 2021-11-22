@@ -17,7 +17,7 @@ public:
 
     virtual int getBlockPositionCol(int blockNumber) { return 0; }
 
-    virtual sf::Color getBlockColor() = 0;
+    virtual sf::Color getBlockColor() { return sf::Color(); };
 
     virtual bool checkCollidesAtOffset(int rowOffset, int colOffset);
 
