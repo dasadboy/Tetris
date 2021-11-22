@@ -71,54 +71,54 @@ public:
 };
 
 
-class Square : public PieceHolder<Square> {
+class OPiece : public PieceHolder<OPiece> {
 public:
     // position of pieces relative to position of piece given in board
 
-    Square(Board& b);
+    OPiece(Board& b);
 
     bool rotate() override;
 };
 
-class TBlock : public PieceHolder<TBlock> {
+class TPiece : public PieceHolder<TPiece> {
 public:
     // position of pieces relative to position of piece given in board
 
-    TBlock(Board& b);
+    TPiece(Board& b);
 };
 
-class LBlockL : public PieceHolder<LBlockL> {
+class JPiece : public PieceHolder<JPiece> {
 public:
     // position of pieces relative to position of piece given in board
 
-    LBlockL(Board& b);
+    JPiece(Board& b);
 };
 
-class LBlockR : public PieceHolder<LBlockR> {
+class LPiece : public PieceHolder<LPiece> {
 public:
     // position of pieces relative to position of piece given in board
 
-    LBlockR(Board& b);
+    LPiece(Board& b);
 };
 
 // TODO
-class Straight : public PieceHolder<Straight> {
+class IPiece : public PieceHolder<IPiece> {
 public:
     // position of pieces relative to position of piece given in board
 
-    Straight(Board& b);
+    IPiece(Board& b);
 };
 
-class ZBlock : public PieceHolder<ZBlock> {
+class ZPiece : public PieceHolder<ZPiece> {
 public:
     // position of pieces relative to position of piece given in board
 
-    ZBlock(Board& b);
+    ZPiece(Board& b);
 };
 
-class SBlock : public PieceHolder<SBlock> {
+class SPiece : public PieceHolder<SPiece> {
 public:
     // position of pieces relative to position of piece given in board
 
-    SBlock(Board& b);
+    SPiece(Board& b);
 };

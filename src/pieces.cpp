@@ -104,88 +104,90 @@ void Piece::set() {
 	board.setPiece(rows, cols, this->blocks);
 }
 
-void Piece::draw() {}
+void Piece::draw() {
+	
+}
 
 // PieceHolder
 
 template <class P> PieceHolder<P>::PieceHolder(Board& board) : Piece(board) {}
 
 
-// Square
+// OPiece
 
-template <> const std::vector<int> PieceHolder<Square>::relRowPositions = { 0, 0, 1, 1 };
+template <> const std::vector<int> PieceHolder<OPiece>::relRowPositions = { 0, 0, 1, 1 };
 
-template <> const std::vector<int> PieceHolder<Square>::relColPositions = { 0, 1, 0, 1 };
+template <> const std::vector<int> PieceHolder<OPiece>::relColPositions = { 0, 1, 0, 1 };
 
-Square::Square(Board& board) : PieceHolder(board) {
-	this->color = COLOR::COLOR_SQUARE;
-}
+template <> const sf::Color PieceHolder<OPiece>::color = COLOR::COLOR_OPIECE;
 
-bool Square::rotate() {
+OPiece::OPiece(Board& board) : PieceHolder(board) {}
+
+bool OPiece::rotate() {
 	return true;
 }
 
-// TBlock
+// TPiece
 
-template <> const std::vector<int> PieceHolder<TBlock>::relRowPositions = { 0, 0, 0, 1, 1, 0, -1, 0, 0, 0, 0, -1, 1, 0, -1, 0 };
+template <> const std::vector<int> PieceHolder<TPiece>::relRowPositions = { 0, 0, 0, 1, 1, 0, -1, 0, 0, 0, 0, -1, 1, 0, -1, 0 };
 
-template <> const std::vector<int> PieceHolder<TBlock>::relColPositions = { -1, 0, 1, 0, 0, 0, 0, 1, -1, 0, 1, 0, 0, 0, 0, -1 };
+template <> const std::vector<int> PieceHolder<TPiece>::relColPositions = { -1, 0, 1, 0, 0, 0, 0, 1, -1, 0, 1, 0, 0, 0, 0, -1 };
 
-TBlock::TBlock(Board& board) : PieceHolder(board) {
-	this->color = COLOR::COLOR_TBLOCK;
-}
+template <> const sf::Color PieceHolder<OPiece>::color = COLOR::COLOR_TPIECE;
 
-
-// LBlockL
-
-template <> const std::vector<int> PieceHolder<LBlockL>::relRowPositions = { 0, 0, 0, 1, 1, 0, -1, -1, 0, 0, 0, -1, -1, 0, 1, 1 };
-
-template <> const std::vector<int> PieceHolder<LBlockL>::relColPositions = { -1, 0, 1, 1, 0, 0, 0, 1, -1, 0, 1, -1, 0, 0, 0, -1 };
-
-LBlockL::LBlockL(Board& board) : PieceHolder(board) {
-	this->color = COLOR::COLOR_LBLOCKL;
-}
+TPiece::TPiece(Board& board) : PieceHolder(board) {}
 
 
-// LBlockR
+// JPiece
 
-template <> const std::vector<int> PieceHolder<LBlockR>::relRowPositions = { 0, 0, 0, 1, 1, 0, -1, 1, 0, 0, 0, -1, -1, 0, 1, -1 };
+template <> const std::vector<int> PieceHolder<JPiece>::relRowPositions = { 0, 0, 0, 1, 1, 0, -1, -1, 0, 0, 0, -1, -1, 0, 1, 1 };
 
-template <> const std::vector<int> PieceHolder<LBlockR>::relColPositions = { -1, 0, 1, -1, 0, 0, 0, 1, -1, 0, 1, 1, 0, 0, 0, -1 };
+template <> const std::vector<int> PieceHolder<JPiece>::relColPositions = { -1, 0, 1, 1, 0, 0, 0, 1, -1, 0, 1, -1, 0, 0, 0, -1 };
 
-LBlockR::LBlockR(Board& board) : PieceHolder(board) {
-	this->color = COLOR::COLOR_LBLOCKL;
-}
+template <> const sf::Color PieceHolder<JPiece>::color = COLOR::COLOR_JPIECE;
 
-
-// Straight
-
-template <> const std::vector<int> PieceHolder<Straight>::relRowPositions = { 0, 0, 0, 0, -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2 };
-
-template <> const std::vector<int> PieceHolder<Straight>::relColPositions = { -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2, 0, 0, 0, 0 };
-
-Straight::Straight(Board& board) : PieceHolder(board) {
-	this->color = COLOR::COLOR_STRAIGHT;
-}
+JPiece::JPiece(Board& board) : PieceHolder(board) {}
 
 
-// ZBlock
+// LPiece
 
-template <> const std::vector<int> PieceHolder<ZBlock>::relRowPositions = { 1, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, -1, 1, 0, 0, -1 };
+template <> const std::vector<int> PieceHolder<LPiece>::relRowPositions = { 0, 0, 0, 1, 1, 0, -1, 1, 0, 0, 0, -1, -1, 0, 1, -1 };
 
-template <> const std::vector<int> PieceHolder<ZBlock>::relColPositions = { -1, 0, 0, 1, 1, 1, 0, 0, -1, 0, 0, 1, 0, 0, -1, -1 };
+template <> const std::vector<int> PieceHolder<LPiece>::relColPositions = { -1, 0, 1, -1, 0, 0, 0, 1, -1, 0, 1, 1, 0, 0, 0, -1 };
 
-ZBlock::ZBlock(Board& board) : PieceHolder(board) {
-	this->color = COLOR::COLOR_LBLOCKL;
-}
+template <> const sf::Color PieceHolder<OPiece>::color = COLOR::COLOR_LPIECE;
+
+LPiece::LPiece(Board& board) : PieceHolder(board) {}
 
 
-// SBlock
+// IPiece
 
-template <> const std::vector<int> PieceHolder<SBlock>::relRowPositions = { 1, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, -1, 1, 0, 0, -1 };
+template <> const std::vector<int> PieceHolder<IPiece>::relRowPositions = { 0, 0, 0, 0, -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2 };
 
-template <> const std::vector<int> PieceHolder<SBlock>::relColPositions = { -1, 0, 0, 1, 0, 0, 1, 1, -1, 0, 0, 1, -1, -1, 0, 0 };
+template <> const std::vector<int> PieceHolder<IPiece>::relColPositions = { -1, 0, 1, 2, 1, 1, 1, 1, -1, 0, 1, 2, 0, 0, 0, 0 };
 
-SBlock::SBlock(Board& board) : PieceHolder(board) {
-	this->color = COLOR::COLOR_LBLOCKL;
-}
+template <> const sf::Color PieceHolder<OPiece>::color = COLOR::COLOR_IPIECE;
+
+IPiece::IPiece(Board& board) : PieceHolder(board) {}
+
+
+// ZPiece
+
+template <> const std::vector<int> PieceHolder<ZPiece>::relRowPositions = { 1, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, -1, 1, 0, 0, -1 };
+
+template <> const std::vector<int> PieceHolder<ZPiece>::relColPositions = { -1, 0, 0, 1, 1, 1, 0, 0, -1, 0, 0, 1, 0, 0, -1, -1 };
+
+template <> const sf::Color PieceHolder<OPiece>::color = COLOR::COLOR_ZPIECE;
+
+ZPiece::ZPiece(Board& board) : PieceHolder(board) {}
+
+
+// SPiece
+
+template <> const std::vector<int> PieceHolder<SPiece>::relRowPositions = { 1, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, -1, 1, 0, 0, -1 };
+
+template <> const std::vector<int> PieceHolder<SPiece>::relColPositions = { -1, 0, 0, 1, 0, 0, 1, 1, -1, 0, 0, 1, -1, -1, 0, 0 };
+
+template <> const sf::Color PieceHolder<OPiece>::color = COLOR::COLOR_SPIECE;
+
+SPiece::SPiece(Board& board) : PieceHolder(board) {}
