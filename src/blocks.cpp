@@ -17,6 +17,11 @@ Block::Block(int row, int col, sf::Color clr) {
 	this->block.setOutlineColor(sf::Color::White);
 }
 
+void Block::operator=(Block& newBlock) {
+	sf::RectangleShape newShape = newBlock.block;
+	block = newShape;
+}
+
 void Block::setPos(sf::Vector2f& pos) {
 	this->block.setPosition(pos);
 }
@@ -31,4 +36,8 @@ sf::Vector2f Block::getPos() {
 
 sf::RectangleShape& Block::getShape() {
 	return this->block;
+}
+
+void Block::draw() {
+	window.draw(this->block);
 }
