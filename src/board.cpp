@@ -69,21 +69,24 @@ void Board::setPiece(std::vector<int> rows, std::vector<int> cols, std::vector<B
 	this->currentHeight = *std::max_element(rows.begin(), rows.end());
 
 	BoardCell& cell0 = this->board[translateRow(rows[0]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[0])];
-	BoardCell& cell1 = this->board[translateRow(rows[0]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[0])];
-	BoardCell& cell2 = this->board[translateRow(rows[0]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[0])];
-	BoardCell& cell3 = this->board[translateRow(rows[0]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[0])];
+	BoardCell& cell1 = this->board[translateRow(rows[1]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[1])];
+	BoardCell& cell2 = this->board[translateRow(rows[2]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[2])];
+	BoardCell& cell3 = this->board[translateRow(rows[3]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[3])];
 
-	cell.block = blocks[0];
-	cell.isOccupied = true;
+	cell0.block = blocks[0];
+	cell0.isOccupied = true;
 	++this->blocksPerRow[translateRow(rows[0])];
 
-	this->board[translateRow(rows[1]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[1])].block = blocks[1];
+	cell1.block = blocks[1];
+	cell1.isOccupied = true;
 	++this->blocksPerRow[translateRow(rows[1])];
 
-	this->board[translateRow(rows[2]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[2])].block = blocks[2];
+	cell2.block = blocks[2];
+	cell2.isOccupied = true;
 	++this->blocksPerRow[translateRow(rows[2])];
 
-	this->board[translateRow(rows[3]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[3])].block = blocks[3];
+	cell3.block = blocks[3];
+	cell3.isOccupied = true;
 	++this->blocksPerRow[translateRow(rows[3])];
 }
 
