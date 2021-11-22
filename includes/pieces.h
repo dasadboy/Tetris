@@ -7,7 +7,6 @@ class Piece {
 public:
     // position of pieces relative to position of piece given in board
     Board& board;
-    int color;
     int positionRow;
     int positionCol;
     int rotation;
@@ -54,6 +53,7 @@ template <class P>
 class PieceHolder : public Piece {
     static const std::vector<int> relRowPositions;
     static const std::vector<int> relColPositions;
+    static const sf::Color color;
 public:
     PieceHolder(Board& b);
 
