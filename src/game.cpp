@@ -103,7 +103,7 @@ void Game::handlePieceDrop() {
 
 void Game::handlePieceRotate() {
 	if (!this->upHeldDown) {
-		int initialRow = this->currPiece->positionRow, int initialCol = this->currPiece->positionCol;
+		int initialRow = this->currPiece->positionRow, initialCol = this->currPiece->positionCol;
 		this->currPiece->rotate();
 		if (initialRow != this->currPiece->positionRow || initialCol != this->currPiece->positionCol) {
 			this->passiveMoveDownTimer.restart();
