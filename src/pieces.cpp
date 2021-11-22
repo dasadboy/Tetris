@@ -8,9 +8,9 @@ Piece::Piece(Board& b) : board(b) {
 	this->rotation = PIECES::INITIAL_ROTATION;
 
 	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
-		sf::Color clr = sf::Color();
+		sf::Color clr = getBlockColor();
 		Block block = Block(getBlockPositionRow(blockNumber), getBlockPositionCol(blockNumber), clr);
-		this->blocks[blockNumber] = block;
+		this->blocks.push_back(block);
 	}
 }
 
