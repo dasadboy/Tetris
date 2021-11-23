@@ -6,12 +6,6 @@ Piece::Piece(Board& b) : board(b) {
 	this->positionRow = PIECES::INITIAL_ABS_POSITION_Y;
 	this->positionCol = PIECES::INITIAL_ABS_POSITION_X;
 	this->rotation = PIECES::INITIAL_ROTATION;
-
-	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
-		sf::Color clr = getBlockColor();
-		Block block = Block(getBlockPositionRow(blockNumber), getBlockPositionCol(blockNumber), clr);
-		this->blocks.push_back(block);
-	}
 }
 
 // true if piece collides
@@ -111,7 +105,14 @@ void Piece::draw(sf::RenderWindow& window) {
 
 // PieceHolder
 
-template <class P> PieceHolder<P>::PieceHolder(Board& board) : Piece(board) {}
+template <class P> PieceHolder<P>::PieceHolder(Board& board) : Piece(board) {
+	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
+		sf::Color clr = getBlockColor();
+		std::cout << getBlockPositionRow(blockNumber) << " " << getBlockPositionCol(blockNumber) << " " << (int)clr.r << std::endl;
+		Block block = Block(getBlockPositionRow(blockNumber), getBlockPositionCol(blockNumber), clr);
+		this->blocks.push_back(block);
+	}
+}
 
 
 // OPiece
