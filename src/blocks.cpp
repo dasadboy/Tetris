@@ -41,10 +41,10 @@ sf::Vector2f Block::getPos() {
 	return this->block.getPosition();
 }
 
-sf::RectangleShape& Block::getShape() {
+sf::RectangleShape& Block::getShape() const {
 	return this->block;
 }
 
-void Block::draw(sf::RenderWindow& window) {
+void Block::draw(sf::RenderWindow& window) const {
 	window.draw(this->block);
 }

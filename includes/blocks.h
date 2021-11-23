@@ -21,7 +21,7 @@ public:
 
 	sf::Vector2f getPos();
 
-	sf::RectangleShape& getShape();
+	const sf::RectangleShape& getShape() const;
 
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window) const;
 };
