@@ -1,10 +1,18 @@
 #include "pch.h"
 #include "game.h"
 
-class BoardTests: public ::testing::Test {};
+class BlockTests : public ::testing::Test {};
+
+class BoardTests : public ::testing::Test {};
 
 class PieceTests : public ::testing::Test {};
 
+TEST_F(BlockTests, TestPositionOfBlockOfNewPiece) {
+	Board board;
+	TPiece piece(board);
+	EXPECT_EQ(piece.blocks[0].getPos().x, 81.f);
+	EXPECT_EQ(piece.blocks[0].getPos().y, -19.f);
+}
 
 TEST_F(BoardTests, TestCollisionChecks) {
 	Board board;
