@@ -21,6 +21,9 @@ void Game::run() {
 	while (this->window.isOpen()) {
 		handleEvents();
 		handlePiecePassiveMoveDown();
+		this->window.clear(sf::Color::Black);
+		drawScreen();
+		window.display();
 	}
 }
 
