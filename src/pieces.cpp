@@ -104,7 +104,9 @@ void Piece::set() {
 }
 
 void Piece::draw(sf::RenderWindow& window) {
-	// TODO
+	for (const Block& block : blocks) {
+		block.draw(window);
+	}
 }
 
 // PieceHolder
