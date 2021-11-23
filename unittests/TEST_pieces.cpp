@@ -60,10 +60,8 @@ TEST_F(PieceTests, TestMoveWithObstructions) {
 	// 0 4 0
 	// 0 4 4
 	// 0 4 0
-	BoardCell obstruction;
-	obstruction.isOccupied = true;
-	board[{19, 4}] = obstruction; 
-	board[{19, 6}] = obstruction; // set obstruction to left and right of bottom block of piece
+	board[{19, 4}].isOccupied = true; 
+	board[{19, 6}].isOccupied = true; // set obstruction to left and right of bottom block of piece
 	// slice of board between rows 3, 6 and cols 19, 22 if piece is set here:
 	// 0 4 0
 	// 0 4 4
