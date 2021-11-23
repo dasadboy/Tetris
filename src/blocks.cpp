@@ -41,7 +41,7 @@ sf::Vector2f Block::getPos() {
 	return this->block.getPosition();
 }
 
-sf::RectangleShape& Block::getShape() const {
+const sf::RectangleShape& Block::getShape() const {
 	return this->block;
 }
 
