@@ -111,9 +111,7 @@ TEST_F(PieceTests, TestDropWithObstructions) {
 	Board board;
 	TPiece piece(board);
 	piece.rotate();
-	BoardCell obstruction;
-	obstruction.isOccupied = true;
-	board[{10, 5}] = obstruction; // create obstruction
+	board[{10, 5}].isOccupied = true; // create obstruction
 	piece.drop();
 	EXPECT_EQ(piece.positionRow, 12) << "abs row position of tblock after drop from default position with obstruction at {10, 5}";
 }
@@ -144,11 +142,9 @@ TEST_F(PieceTests, TestRotationWithObstructions) {
 	TPiece piece(board);
 
 	// make obstruction
-	BoardCell obstruction;
-	obstruction.isOccupied = true;
-	board[{10, 4}] = obstruction;
-	board[{10, 5}] = obstruction;
-	board[{10, 6}] = obstruction;
+	board[{10, 4}].isOccupied = true;
+	board[{10, 5}].isOccupied = true;
+	board[{10, 6}].isOccupied = true;
 	
 	piece.positionRow = 11;
 	EXPECT_TRUE(piece.rotate()) << "piece collides with obstruction under, shoould succeed"; // rotation 1
@@ -157,10 +153,10 @@ TEST_F(PieceTests, TestRotationWithObstructions) {
 
 	// more obstructions
 	for (int r = 0, re = 7; r < re; ++r) {
-		board[{r, 2}] = obstruction;
-		board[{r, 7}] = obstruction;
-		board[{r, 3}] = obstruction;
-		board[{r, 6}] = obstruction;
+		board[{r, 2}].isOccupied = true;
+		board[{r, 7}].isOccupied = true;
+		board[{r, 3}].isOccupied = true;
+		board[{r, 6}].isOccupied = true;
 	}
 	
 	piece.positionRow = 6;
@@ -186,8 +182,8 @@ TEST_F(PieceTests, TestRotationWithObstructions) {
 	EXPECT_EQ(piece.positionCol, 4) << "rotates in tight space between set bocks, does not move horizontally";
 	EXPECT_EQ(piece.positionRow, 7) << "rotates in tight space between set bocks, moves 2 spaces up";
 
-	board[{6, 6}] = obstruction;
-	board[{7, 3}] = obstruction;
+	board[{6, 6}].isOccupied = false;
+	board[{7, 3}].isOccupied = true;
 	
 	piece.rotate(); // rotation 3
 	piece.rotate(); // rotation 0
