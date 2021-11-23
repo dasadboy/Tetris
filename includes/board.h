@@ -1,9 +1,6 @@
 #pragma once
 
 #include "blocks.h"
-#include <iostream>
-#include <algorithm>
-#include <vector>
 
 struct indices {
     int i, j;

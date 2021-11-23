@@ -1,6 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
+#include <algorithm>
+#include <string>
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
 
