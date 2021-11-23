@@ -45,6 +45,6 @@ sf::RectangleShape& Block::getShape() {
 	return this->block;
 }
 
-void Block::draw(sf::RenderWindow& window) {
+void Block::draw(sf::RenderWindow& window) const {
 	window.draw(this->block);
 }

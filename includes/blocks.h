@@ -23,5 +23,5 @@ public:
 
 	sf::RectangleShape& getShape();
 
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window) const;
 };
