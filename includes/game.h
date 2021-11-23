@@ -20,15 +20,7 @@ class Game {
 	Board board;
 	sf::RenderWindow window;
 
-	Game();
-
 	void generateNewPiece();
-
-	void init();
-
-	void run();
-
-	void terminate();
 
 	void handleEvents();
 
@@ -47,6 +39,16 @@ class Game {
 	void usePiece(Piece* piece);
 
 	void drawScreen();
+
+public:
+
+	Game();
+
+	void init();
+
+	void run();
+
+	void terminate();
 
 	~Game() { delete currPiece; }
 };
