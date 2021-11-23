@@ -26,7 +26,7 @@ class Game {
 
 	void init();
 
-	void update();
+	void run();
 
 	void terminate();
 

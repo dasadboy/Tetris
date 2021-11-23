@@ -17,7 +17,7 @@ void Game::init() {
 	generateNewPiece();
 }
 
-void Game::update() {
+void Game::run() {
 	while (this->window.isOpen()) {
 		handleEvents();
 		handlePiecePassiveMoveDown();
