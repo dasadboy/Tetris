@@ -1,7 +1,7 @@
 #include "blocks.h"
 
 
-#define translateRow2Disp(row) DISPLAY::SIZE_Y - row * BLOCK::BLOCK_SIZE + BLOCK::OUTLINE_SIZE
+#define translateRow2Disp(row) DISPLAY::SIZE_Y - (row + 1) * BLOCK::BLOCK_SIZE + BLOCK::OUTLINE_SIZE
 #define translateCol2Disp(col) col * BLOCK::BLOCK_SIZE + BLOCK::OUTLINE_SIZE
 
 Block::Block() {
@@ -37,7 +37,7 @@ void Block::setPos(int row, int col) {
 	this->block.setPosition(translateCol2Disp(col), translateRow2Disp(row));
 }
 
-sf::Vector2f Block::getPos() {
+const sf::Vector2f& Block::getPos() const {
 	return this->block.getPosition();
 }
 
