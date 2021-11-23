@@ -19,18 +19,21 @@ inline bool Piece::checkCollidesAtOffset(int rowOffset, int colOffset) {
 bool Piece::moveDown() {
 	bool canMove = !checkCollidesAtOffset(PIECES::MOVE_DOWN, 0);
 	this->positionRow += canMove * PIECES::MOVE_DOWN;
+	updateBlocks();
 	return canMove;
 }
 
 bool Piece::moveLeft() {
 	bool canMove = !checkCollidesAtOffset(0, PIECES::MOVE_LEFT);
 	this->positionCol += canMove * PIECES::MOVE_LEFT;
+	updateBlocks();
 	return canMove;
 }
 
 bool Piece::moveRight() {
 	bool canMove = !checkCollidesAtOffset(0, PIECES::MOVE_RIGHT);
 	this->positionCol += canMove * PIECES::MOVE_RIGHT;
+	updateBlocks();
 	return canMove;
 }
 
@@ -78,6 +81,7 @@ bool Piece::rotate() {
 		this->rotation = oldRotation;
 		return false;
 	}
+	updateBlocks();
 	return true;
 }
 
@@ -108,7 +112,6 @@ void Piece::draw(sf::RenderWindow& window) {
 template <class P> PieceHolder<P>::PieceHolder(Board& board) : Piece(board) {
 	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
 		sf::Color clr = getBlockColor();
-		std::cout << getBlockPositionRow(blockNumber) << " " << getBlockPositionCol(blockNumber) << " " << (int)clr.r << std::endl;
 		Block block = Block(getBlockPositionRow(blockNumber), getBlockPositionCol(blockNumber), clr);
 		this->blocks.push_back(block);
 	}
