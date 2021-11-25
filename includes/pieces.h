@@ -18,6 +18,8 @@ public:
 
     virtual sf::Color getBlockColor() = 0;
 
+    virtual void generateBlocks();
+
     virtual bool checkCollidesAtOffset(int rowOffset, int colOffset);
 
     // moves piece down, returns false if it could not move down
@@ -49,10 +51,10 @@ public:
 
 template <class P>
 class PieceHolder : public Piece {
+public:
     static const std::vector<int> relRowPositions;
     static const std::vector<int> relColPositions;
     static const sf::Color color;
-public:
     PieceHolder(Board& b);
 
     virtual int getBlockPositionRow(int blockNumber) override {
@@ -63,8 +65,8 @@ public:
         return this->positionCol + relColPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
     }
 
-    virtual sf::Color getBlockColor() override {
-        return this->color;
+    virtual sf::Color getBlockColor() {
+        return color;
     }
 
     //virtual ~PieceHolder() {}

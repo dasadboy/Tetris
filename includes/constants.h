@@ -13,7 +13,7 @@ namespace PIECES {
 
 	const int INITIAL_ABS_POSITION_X = 5;
 
-	const int INITIAL_ABS_POSITION_Y = 20;
+	const int INITIAL_ABS_POSITION_Y = 19;
 
 	const int INITIAL_ROTATION = 0;
 
@@ -32,19 +32,19 @@ namespace PIECES {
 
 namespace COLOR { 
 	
-	const sf::Color COLOR_OPIECE = sf::Color::Yellow;
+	const sf::Color COLOR_OPIECE = sf::Color(0xff, 0xff, 0, 0xff); // Yellow
 
-	const sf::Color COLOR_JPIECE = sf::Color::Blue;
+	const sf::Color COLOR_JPIECE = sf::Color(0, 0, 0xff, 0xff); //Blue
 
-	const sf::Color COLOR_LPIECE = sf::Color::Red + sf::Color::Yellow; // Orange doesn't exist
+	const sf::Color COLOR_LPIECE = sf::Color(0xff, 0x80, 0, 0xff); // Orange 
 
-	const sf::Color COLOR_TPIECE = sf::Color::Red + sf::Color::Blue; // Purple doesn't exist
+	const sf::Color COLOR_TPIECE = sf::Color(0xff, 0, 0xff, 0xff); // Purple
 
-	const sf::Color COLOR_ZPIECE = sf::Color::Red;
+	const sf::Color COLOR_ZPIECE = sf::Color(0xff, 0, 0, 0xff); // Red
 
-	const sf::Color COLOR_SPIECE = sf::Color::Green;
+	const sf::Color COLOR_SPIECE = sf::Color(0, 0xff, 0, 0xff); // Green
 
-	const sf::Color COLOR_IPIECE = sf::Color::Cyan;
+	const sf::Color COLOR_IPIECE = sf::Color(0, 0xff, 0xff, 0xff); // Cyan
 }
 
 namespace BOARD {

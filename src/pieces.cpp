@@ -8,6 +8,14 @@ Piece::Piece(Board& b) : board(b) {
 	this->rotation = PIECES::INITIAL_ROTATION;
 }
 
+void Piece::generateBlocks() {
+	sf::Color clr = getBlockColor();
+	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
+		Block block = Block(getBlockPositionRow(blockNumber), getBlockPositionCol(blockNumber), clr);
+		this->blocks.push_back(block);
+	}
+}
+
 // true if piece collides
 inline bool Piece::checkCollidesAtOffset(int rowOffset, int colOffset) {
 	return board.checkPositionLegal(getBlockPositionRow(0) + rowOffset, getBlockPositionCol(0) + colOffset)
@@ -109,13 +117,7 @@ void Piece::draw(sf::RenderWindow& window) {
 
 // PieceHolder
 
-template <class P> PieceHolder<P>::PieceHolder(Board& board) : Piece(board) {
-	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
-		sf::Color clr = getBlockColor();
-		Block block = Block(getBlockPositionRow(blockNumber), getBlockPositionCol(blockNumber), clr);
-		this->blocks.push_back(block);
-	}
-}
+template <class P> PieceHolder<P>::PieceHolder(Board& board) : Piece(board) {}
 
 
 // OPiece
@@ -189,7 +191,7 @@ ZPiece::ZPiece(Board& board) : PieceHolder(board) {}
 
 // SPiece
 
-template <> const std::vector<int> PieceHolder<SPiece>::relRowPositions = { 1, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, -1, 1, 0, 0, -1 };
+template <> const std::vector<int> PieceHolder<SPiece>::relRowPositions = { 0, 0, 1, 1, 1, 0, 0, -1, -1, -1, 0, 0, 1, 0, 0, -1 };
 
 template <> const std::vector<int> PieceHolder<SPiece>::relColPositions = { -1, 0, 0, 1, 0, 0, 1, 1, -1, 0, 0, 1, -1, -1, 0, 0 };
 
