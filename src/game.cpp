@@ -10,6 +10,7 @@ Game::Game() {
 void Game::generateNewPiece() {
 	delete this->currPiece;
 	this->currPiece = pieceTypes[rand() % PIECES::NUMBER_OF_PIECES](this->board);
+	this->currPiece->generateBlocks();
 }
 
 void Game::init() {
@@ -46,7 +47,7 @@ void Game::handleEvents() {
 						handlePieceMoveLeft();
 						break;
 					case sf::Keyboard::Right:
-						handlePieceMoveLeft();
+						handlePieceMoveRight();
 						break;
 					case sf::Keyboard::Up:
 						handlePieceRotate();
@@ -75,28 +76,19 @@ void Game::handlePiecePassiveMoveDown() {
 }
 
 void Game::handlePieceMoveDown() {
-	if (this->movePieceDownTimer.getElapsedTime().asSeconds() > TIME::PIECE_MOVE_COOLDOWN) {
-		if (!this->currPiece->moveDown()) {
-			this->currPiece->set();
-			generateNewPiece();
-		}
-		this->movePieceDownTimer.restart();
-		this->passiveMoveDownTimer.restart();
+	if (!this->currPiece->moveDown()) {
+		this->currPiece->set();
+		generateNewPiece();
 	}
+	this->passiveMoveDownTimer.restart();
 }
 
 void Game::handlePieceMoveLeft() {
-	if (this->movePieceLeftTimer.getElapsedTime().asSeconds() > TIME::PIECE_MOVE_COOLDOWN) {
-		this->currPiece->moveLeft();
-		this->movePieceLeftTimer.restart();
-	}
+	this->currPiece->moveLeft();
 }
 
 void Game::handlePieceMoveRight() {
-	if (this->movePieceLeftTimer.getElapsedTime().asSeconds() > TIME::PIECE_MOVE_COOLDOWN) {
-		this->currPiece->moveLeft();
-		this->movePieceLeftTimer.restart();
-	}
+	this->currPiece->moveRight();
 }
 
 void Game::handlePieceDrop() {

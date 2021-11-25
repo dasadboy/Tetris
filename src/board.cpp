@@ -51,8 +51,8 @@ void Board::removeFilledRows(int rowStart) {
 		}
 		else {
 			// copy srcRow to currRow
-			int currCell = currRow * BOARD::ROW_SIZE, currCellEnd = currRow + BOARD::ROW_SIZE,
-				srcCell = srcRow * BOARD::ROW_SIZE, srcCellEnd = srcCell + BOARD::ROW_SIZE;
+			int currCell = currRow * BOARD::TRUE_ROW_SIZE + translateCol(0), currCellEnd = currCell + BOARD::ROW_SIZE,
+				srcCell = srcRow * BOARD::TRUE_ROW_SIZE + translateCol(0), srcCellEnd = srcCell + BOARD::ROW_SIZE;
 
 			this->blocksPerRow[currRow] = this->blocksPerRow[srcRow];
 
@@ -66,7 +66,7 @@ void Board::removeFilledRows(int rowStart) {
 }
 
 void Board::setPiece(std::vector<int> rows, std::vector<int> cols, std::vector<Block> blocks) {
-	this->currentHeight = *std::max_element(rows.begin(), rows.end());
+	this->currentHeight = std::max(this->currentHeight, *std::max_element(rows.begin(), rows.end()));
 
 	BoardCell& cell0 = this->board[translateRow(rows[0]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[0])];
 	BoardCell& cell1 = this->board[translateRow(rows[1]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[1])];
@@ -88,10 +88,12 @@ void Board::setPiece(std::vector<int> rows, std::vector<int> cols, std::vector<B
 	cell3.block = blocks[3];
 	cell3.isOccupied = true;
 	++this->blocksPerRow[translateRow(rows[3])];
+
+	removeFilledRows(*std::min_element(rows.begin(), rows.end()));
 }
 
 void Board::draw(sf::RenderWindow& window) {
-	for (int row = 0; row < currentHeight; ++row) {
+	for (int row = 0; row <= currentHeight; ++row) {
 		for (int col = 0; col < BOARD::ROW_SIZE; ++col) {
 			this->board[translateRow(row) * BOARD::TRUE_ROW_SIZE + translateCol(col)].block.draw(window);
 		}
