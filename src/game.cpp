@@ -7,15 +7,22 @@ Game::Game() {
 	this->upHeldDown = false;
 }
 
-void Game::generateNewPiece() {
-	delete this->currPiece;
-	this->currPiece = pieceTypes[rand() % PIECES::NUMBER_OF_PIECES](this->board);
-	this->currPiece->generateBlocks();
+Piece* Game::generateNewPiece() {
+	Piece* newPiece = pieceTypes[rand() % PIECES::NUMBER_OF_PIECES](this->board);
+	newPiece->generateBlocks();
+	return newPiece;
+}
+
+void Game::setPiece() {
+	Piece* pieceBeingSet = this->currPiece;
+	this->currPiece = generateNewPiece();
+	pieceBeingSet->set();
+	delete pieceBeingSet;
 }
 
 void Game::init() {
 	this->window.create(sf::VideoMode(200, 400), "Tetris");
-	generateNewPiece();
+	this->currPiece = generateNewPiece();
 }
 
 void Game::run() {
@@ -68,8 +75,7 @@ void Game::handleEvents() {
 void Game::handlePiecePassiveMoveDown() {
 	if (this->passiveMoveDownTimer.getElapsedTime().asSeconds() > TIME::PASSIVE_TIME_CUTOFF) {
 		if (!this->currPiece->moveDown()) {
-			this->currPiece->set();
-			generateNewPiece();
+			setPiece();
 		}
 		this->passiveMoveDownTimer.restart();
 	}
@@ -77,8 +83,7 @@ void Game::handlePiecePassiveMoveDown() {
 
 void Game::handlePieceMoveDown() {
 	if (!this->currPiece->moveDown()) {
-		this->currPiece->set();
-		generateNewPiece();
+		setPiece();
 	}
 	this->passiveMoveDownTimer.restart();
 }
@@ -93,7 +98,7 @@ void Game::handlePieceMoveRight() {
 
 void Game::handlePieceDrop() {
 	this->currPiece->drop();
-	this->currPiece->set();
+	setPiece();
 	this->passiveMoveDownTimer.restart();
 }
 

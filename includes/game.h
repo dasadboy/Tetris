@@ -20,7 +20,9 @@ class Game {
 	Board board;
 	sf::RenderWindow window;
 
-	void generateNewPiece();
+	Piece* generateNewPiece();
+
+	void setPiece();
 
 	void handleEvents();
 
