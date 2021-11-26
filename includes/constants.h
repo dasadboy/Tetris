@@ -57,6 +57,8 @@ namespace BOARD {
 
 	const int TRUE_COLUMN_SIZE = 41;
 
+	const int VISIBLE_HEIGHT = 21;
+
 	const int BOARD_SIZE = (ROW_SIZE) * (COLUMN_SIZE);
 
 	const int TRUE_BOARD_SIZE = (TRUE_ROW_SIZE) * (TRUE_COLUMN_SIZE); // extra row and 2 columns for buffer
