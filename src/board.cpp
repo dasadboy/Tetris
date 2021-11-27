@@ -1,7 +1,7 @@
 #include "board.h"
 
-#define translateRow(row) std::max(0, row + BOARD::ROW_OFFSET)
-#define translateCol(col) std::max(0, std::min(col + BOARD::COLUMN_OFFSET, BOARD::TRUE_ROW_SIZE - 1)) // returns 0 or 11 if !(0 < row + offset < 11)
+#define translateRow(row) (std::max(0, row + BOARD::ROW_OFFSET))
+#define translateCol(col) (std::max(0, std::min(col + BOARD::COLUMN_OFFSET, BOARD::TRUE_ROW_SIZE - 1))) // returns 0 or 11 if !(0 < row + offset < 11)
 
 Board::Board() {
 	this->board = std::vector<BoardCell>(BOARD::TRUE_BOARD_SIZE);
