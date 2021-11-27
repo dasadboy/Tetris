@@ -77,8 +77,6 @@ namespace BOARD {
 	const int DOWN_ONE_ROW = -10;
 
 	const int UP_ONE_ROW = 10;
-
-	const int OUT_OF_BOUNDS_SENTINEL = -1;
 }
 
 namespace DISPLAY {
