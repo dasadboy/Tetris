@@ -1,10 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "constants.h"
 #include "board.h"
-#include <vector>
-#include "constants.h"
 
 class Piece {
 public:
@@ -14,12 +11,15 @@ public:
     int positionRow;
     int positionCol;
     int rotation;
+    std::vector<Block> blocks;
 
     Piece(Board& b);
 
-    virtual int getBlockPositionRow(int blockNumber) = 0;
+    virtual const int getBlockPositionRow(int blockNumber) = 0;
 
-    virtual int getBlockPositionCol(int blockNumber) = 0;
+    virtual const int getBlockPositionCol(int blockNumber) = 0;
+
+    virtual const sf::Color& getBlockColor() = 0;
 
     virtual bool checkCollidesAtOffset(int rowOffset, int colOffset);
 
@@ -38,6 +38,8 @@ public:
     // rotates piece clockwise, returns false if it cannot turn
     virtual bool rotate();
 
+    virtual void updateBlocks();
+
     // sets piece on board
     virtual void set();
 
@@ -55,12 +57,16 @@ class PieceHolder : public Piece {
 public:
     PieceHolder(Board& b);
 
-    virtual int getBlockPositionRow(int blockNumber) {
+    virtual const int getBlockPositionRow(int blockNumber) {
         return this->positionRow + relRowPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
     }
 
-    virtual int getBlockPositionCol(int blockNumber) {
+    virtual const int getBlockPositionCol(int blockNumber) {
         return this->positionCol + relColPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
+    }
+
+    virtual const sf::Color& getBlockColor() {
+        return this->color;
     }
 };
 

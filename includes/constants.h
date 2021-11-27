@@ -23,6 +23,8 @@ namespace PIECES {
 	const int MOVE_RIGHT = 1;
 
 	const int STATES_OF_ROTATION = 4;
+
+	const int NUMBER_OF_BLOCKS = 4;
 }
 
 namespace COLOR { 
@@ -75,14 +77,32 @@ namespace BOARD {
 	const int DOWN_ONE_ROW = -10;
 
 	const int UP_ONE_ROW = 10;
+}
 
-	const int OUT_OF_BOUNDS_SENTINEL = -1;
+namespace DISPLAY {
+
+	const unsigned int SIZE_X = 200;
+
+	const unsigned int SIZE_Y = 400;
+}
+
+namespace BLOCK {
+
+	const int NUMBER_OF_POINTS = 4;
+
+	const float BLOCK_SIZE = 20;
+
+	const float INNER_SIZE = 18;
+
+	const float OUTLINE_SIZE = 1;
+
+	const sf::RectangleShape COMMON_BLOCK = sf::RectangleShape(sf::Vector2f(INNER_SIZE, INNER_SIZE));
 }
 
 namespace TIME {
 
-	const float PASSIVE_TIME_CUTOFF = 1.f;
+	const int PASSIVE_TIME_CUTOFF = 1.f;
 
-	const float PIECE_MOVE_COOLDOWN = .2f;
+	const int PIECE_MOVE_COOLDOWN = .2f;
 
  }
