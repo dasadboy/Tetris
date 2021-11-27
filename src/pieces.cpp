@@ -6,9 +6,11 @@ Piece::Piece(Board& b) : board(b) {
 	this->positionRow = PIECES::INITIAL_ABS_POSITION_Y;
 	this->positionCol = PIECES::INITIAL_ABS_POSITION_X;
 	this->rotation = PIECES::INITIAL_ROTATION;
+}
 
+void Piece::generateBlocks() {
+	sf::Color clr = getBlockColor();
 	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
-		sf::Color clr = getBlockColor();
 		Block block = Block(getBlockPositionRow(blockNumber), getBlockPositionCol(blockNumber), clr);
 		this->blocks.push_back(block);
 	}

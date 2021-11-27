@@ -10,6 +10,7 @@ Game::Game() {
 void Game::generateNewPiece() {
 	delete this->currPiece;
 	this->currPiece = pieceTypes[rand() % PIECES::NUMBER_OF_PIECES](this->board);
+	this->currPiece->generateBlocks();
 }
 
 void Game::init() {

@@ -19,9 +19,9 @@ public:
 
 	void setPos(int row, int col);
 
-	sf::Vector2f getPos();
+	const sf::Vector2f& getPos();
 
-	sf::RectangleShape& getShape();
+	const sf::RectangleShape& getShape();
 
 	void draw(sf::RenderWindow& window) const;
 };

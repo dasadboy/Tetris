@@ -13,11 +13,13 @@ public:
 
     Piece(Board& b);
 
-    virtual int getBlockPositionRow(int blockNumber) { return 0; }
+    virtual const int getBlockPositionRow(int blockNumber) = 0;
 
-    virtual int getBlockPositionCol(int blockNumber) { return 0; }
+    virtual const int getBlockPositionCol(int blockNumber) = 0;
 
-    virtual sf::Color getBlockColor() { return sf::Color(); };
+    virtual const sf::Color& getBlockColor() = 0;
+
+    virtual void generateBlocks();
 
     virtual bool checkCollidesAtOffset(int rowOffset, int colOffset);
 
@@ -56,15 +58,15 @@ class PieceHolder : public Piece {
 public:
     PieceHolder(Board& b);
 
-    virtual int getBlockPositionRow(int blockNumber) {
+    virtual const int getBlockPositionRow(int blockNumber) {
         return this->positionRow + relRowPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
     }
 
-    virtual int getBlockPositionCol(int blockNumber) {
+    virtual const int getBlockPositionCol(int blockNumber) {
         return this->positionCol + relColPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
     }
 
-    virtual sf::Color getBlockColor() override {
+    virtual const sf::Color& getBlockColor() {
         return this->color;
     }
 
