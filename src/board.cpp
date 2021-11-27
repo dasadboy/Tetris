@@ -65,7 +65,7 @@ void Board::removeFilledRows(int rowStart) {
 	}
 }
 
-void Board::setPiece(std::vector<int> rows, std::vector<int> cols, std::vector<Block> blocks) {
+void Board::setPiece(std::vector<int>& rows, std::vector<int>& cols, std::vector<Block>& blocks) {
 	this->currentHeight = *std::max_element(rows.begin(), rows.end());
 
 	this->board[translateRow(rows[0]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[0])].block = blocks[0];
