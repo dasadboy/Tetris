@@ -25,10 +25,10 @@ void Block::setPos(int row, int col) {
 	this->block.setPosition(translateCol2Disp(col), translateRow2Disp(row));
 }
 
-sf::Vector2f& Block::getPos() {
+const sf::Vector2f& Block::getPos() {
 	return this->block.getPosition();
 }
 
-sf::RectangleShape& Block::getShape() {
+const sf::RectangleShape& Block::getShape() {
 	return this->block;
 }
