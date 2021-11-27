@@ -105,4 +105,31 @@ namespace TIME {
 
 	const int PIECE_MOVE_COOLDOWN = .2f;
 
+}
+
+namespace DISPLAY {
+
+	const unsigned int SIZE_X = 200;
+
+	const unsigned int SIZE_Y = 400;
+}
+
+namespace BLOCK {
+
+	const int NUMBER_OF_POINTS = 4;
+
+	const float BLOCK_SIZE = 20;
+
+	const float INNER_SIZE = 18;
+
+	const float OUTLINE_SIZE = 1;
+
+	const sf::RectangleShape COMMON_BLOCK = sf::RectangleShape(sf::Vector2f(INNER_SIZE, INNER_SIZE));
+}
+
+namespace TIME {
+
+	const int PASSIVE_TIME_CUTOFF = 1.f;
+
+	const int PIECE_MOVE_COOLDOWN = .2f;
  }
