@@ -37,11 +37,11 @@ void Block::setPos(int row, int col) {
 	this->block.setPosition(translateCol2Disp(col), translateRow2Disp(row));
 }
 
-const sf::Vector2f& Block::getPos() {
+const sf::Vector2f& Block::getPos() const {
 	return this->block.getPosition();
 }
 
-const sf::RectangleShape& Block::getShape() {
+const sf::RectangleShape& Block::getShape() const {
 	return this->block;
 }
 
