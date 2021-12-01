@@ -13,20 +13,18 @@ class Board {
     };
 
     struct BoardCell {
-        Block* block;
+        Block block;
         bool isOccupied;
         BoardCell() {
             isOccupied = false;
-            block = new Block();
         }
-        BoardCell(Block& b, bool state = false) : block(&b) {
-            this->isOccupied = state;
-        }
-        void operator=(BoardCell& src) {
-            Block* newBlock = src.block;
-            sf::Vector2f currPosition = this->block->getPos();
-            newBlock->setPos(currPosition);
+        BoardCell(Block& b, bool occupied) : block(b), isOccupied(occupied) {}
+        void operator=(const BoardCell& src) {
+            Block newBlock = src.block;
+            sf::Vector2f currPosition = this->block.getPos();
+            newBlock.setPos(currPosition);
             this->isOccupied = src.isOccupied;
+            this->block = newBlock;
         }
     };
 

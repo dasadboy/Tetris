@@ -11,9 +11,9 @@ public:
 
 	Block(int row, int col);
 
-	Block(int row, int col, sf::Color clr);
+	Block(int row, int col, sf::Color& clr);
 
-	void operator=(Block& newBlock);
+	void operator=(const Block& newBlock);
 
 	void setPos(sf::Vector2f& pos);
 
