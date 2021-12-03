@@ -13,7 +13,7 @@ namespace PIECES {
 
 	const int INITIAL_ABS_POSITION_X = 5;
 
-	const int INITIAL_ABS_POSITION_Y = 19;
+	const int INITIAL_ABS_POSITION_Y = 20;
 
 	const int INITIAL_ROTATION = 0;
 
@@ -80,8 +80,6 @@ namespace BOARD {
 	const int DOWN_ONE_ROW = -10;
 
 	const int UP_ONE_ROW = 10;
-
-	const int OUT_OF_BOUNDS_SENTINEL = -1;
 }
 
 namespace DISPLAY {
@@ -110,4 +108,4 @@ namespace TIME {
 
 	const float PIECE_MOVE_COOLDOWN = .2f;
 
- }
+}

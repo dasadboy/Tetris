@@ -12,11 +12,11 @@ public:
 
     Piece(Board& b);
 
-    virtual int getBlockPositionRow(int blockNumber) = 0;
+    virtual const int getBlockPositionRow(int blockNumber) = 0;
 
-    virtual int getBlockPositionCol(int blockNumber) = 0;
+    virtual const int getBlockPositionCol(int blockNumber) = 0;
 
-    virtual sf::Color getBlockColor() = 0;
+    virtual const sf::Color& getBlockColor() = 0;
 
     virtual void generateBlocks();
 
@@ -57,16 +57,16 @@ public:
     static const sf::Color color;
     PieceHolder(Board& b);
 
-    virtual int getBlockPositionRow(int blockNumber) override {
+    virtual const int getBlockPositionRow(int blockNumber) {
         return this->positionRow + relRowPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
     }
 
-    virtual int getBlockPositionCol(int blockNumber) override {
+    virtual const int getBlockPositionCol(int blockNumber) {
         return this->positionCol + relColPositions[this->rotation * PIECES::STATES_OF_ROTATION + blockNumber];
     }
 
-    virtual sf::Color getBlockColor() {
-        return color;
+    virtual const sf::Color& getBlockColor() {
+        return this->color;
     }
 
     //virtual ~PieceHolder() {}

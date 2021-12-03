@@ -11,8 +11,7 @@ Piece::Piece(Board& b) : board(b) {
 void Piece::generateBlocks() {
 	sf::Color clr = getBlockColor();
 	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
-		Block block = Block(getBlockPositionRow(blockNumber), getBlockPositionCol(blockNumber), clr);
-		this->blocks.push_back(block);
+		this->blocks.emplace_back(getBlockPositionRow(blockNumber), getBlockPositionCol(blockNumber), clr);
 	}
 }
 

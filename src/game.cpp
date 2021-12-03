@@ -118,6 +118,6 @@ void Game::usePiece(Piece* piece) {
 }
 
 void Game::drawScreen() {
-	this->currPiece->draw(window);
-	this->board.draw(window);
+	this->board.draw(this->window);
+	this->currPiece->draw(this->window);
 }

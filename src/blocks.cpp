@@ -18,7 +18,7 @@ Block::Block(int row, int col) {
 	this->block.setFillColor(sf::Color::Black);
 }
 
-Block::Block(int row, int col, sf::Color clr) {
+Block::Block(int row, int col, sf::Color& clr) {
 	this->block = BLOCK::COMMON_BLOCK;
 	this->block.setPosition(sf::Vector2f(translateCol2Disp(col), translateRow2Disp(row)));
 	this->block.setFillColor(clr);
@@ -26,9 +26,8 @@ Block::Block(int row, int col, sf::Color clr) {
 	this->block.setOutlineThickness(BLOCK::OUTLINE_SIZE);
 }
 
-void Block::operator=(Block& newBlock) {
-	sf::RectangleShape newShape = newBlock.block;
-	block = newShape;
+void Block::operator=(const Block& newBlock) {
+	this->block = newBlock.block;
 }
 
 void Block::setPos(sf::Vector2f& pos) {
