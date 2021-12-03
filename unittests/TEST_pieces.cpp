@@ -27,7 +27,7 @@ TEST_F(BoardTests, TestCollisionChecks) {
 
 TEST_F(PieceTests, TestInitialValues) {
 	Board board;
-	TBlock piece(board);
+	TPiece piece(board);
 	EXPECT_EQ(piece.rotation, 0);
 	EXPECT_EQ(piece.positionRow, 20);
 	EXPECT_EQ(piece.positionCol, 5);
@@ -36,7 +36,7 @@ TEST_F(PieceTests, TestInitialValues) {
 }
 TEST_F(PieceTests, TestMove) {
 	Board board;
-	TBlock piece(board);
+	TPiece piece(board);
 
 	piece.positionCol = 1; // left-most possible column this value should take
 	EXPECT_FALSE(piece.moveLeft()) << "Should not move left (should return false) as it collides with the left boundary";
@@ -54,14 +54,14 @@ TEST_F(PieceTests, TestMove) {
 
 TEST_F(PieceTests, TestMoveWithObstructions) {
 	Board board;
-	TBlock piece(board);
+	TPiece piece(board);
 	piece.rotate();
 	// slice of board between rows 3, 6 and cols 19, 22 if piece is set here:
 	// 0 4 0
 	// 0 4 4
 	// 0 4 0
-	board[{19, 4}] = 1; 
-	board[{19, 6}] = 1; // set obstruction to left and right of bottom block of piece
+	board[{19, 4}].isOccupied = true; 
+	board[{19, 6}].isOccupied = true; // set obstruction to left and right of bottom block of piece
 	// slice of board between rows 3, 6 and cols 19, 22 if piece is set here:
 	// 0 4 0
 	// 0 4 4
@@ -82,7 +82,7 @@ TEST_F(PieceTests, TestMoveWithObstructions) {
 
 TEST_F(PieceTests, TestDrop) {
 	Board board;
-	TBlock piece(board);
+	TPiece piece(board);
 	EXPECT_TRUE(piece.rotate());
 	EXPECT_EQ(piece.positionRow, 20);
 	EXPECT_EQ(piece.positionCol, 5);
@@ -90,33 +90,33 @@ TEST_F(PieceTests, TestDrop) {
 	EXPECT_EQ(piece.positionRow, 1) << "abs row position of tblock after drop from default";
 	EXPECT_EQ(piece.positionCol, 5) << "should not move from col = 5";
 	piece.set();
-	std::vector<int> boardSlice = 
+	std::vector<bool> boardSlice = 
 	{ 
-		board[{ 2, 4 }], board[{ 2, 5 }], board[{ 2, 6 }],
-		board[{ 1, 4 }], board[{ 1, 5 }], board[{ 1, 6 }],
-		board[{ 0, 4 }], board[{ 0, 5 }], board[{ 0, 6 }]
+		board[{ 2, 4 }].isOccupied, board[{ 2, 5 }].isOccupied, board[{ 2, 6 }].isOccupied,
+		board[{ 1, 4 }].isOccupied, board[{ 1, 5 }].isOccupied, board[{ 1, 6 }].isOccupied,
+		board[{ 0, 4 }].isOccupied, board[{ 0, 5 }].isOccupied, board[{ 0, 6 }].isOccupied
 	};
-	std::vector<int> expectedBoardSlice = 
+	std::vector<bool> expectedBoardSlice =
 	{
-		0, 4, 0,
-		0, 4, 4,
-		0, 4, 0
+		false, true, false,
+		false, true, true,
+		false, true, false
 	};
-	EXPECT_EQ(boardSlice, expectedBoardSlice) << "Set TBlock after 1 rotation and drop with no obstructions";
+	EXPECT_EQ(boardSlice, expectedBoardSlice) << "Set TPiece after 1 rotation and drop with no obstructions";
 }
 
 TEST_F(PieceTests, TestDropWithObstructions) {
 	Board board;
-	TBlock piece(board);
+	TPiece piece(board);
 	piece.rotate();
-	board[{10, 5}] = 1; // create obstruction
+	board[{10, 5}].isOccupied = true; // create obstruction
 	piece.drop();
 	EXPECT_EQ(piece.positionRow, 12) << "abs row position of tblock after drop from default position with obstruction at {10, 5}";
 }
 
 TEST_F(PieceTests, TestRotation) {
 	Board board;
-	TBlock piece(board);
+	TPiece piece(board);
 
 	piece.positionRow = 0;
 	EXPECT_TRUE(piece.rotate()) << "should succeed, only obstructed by bottom boundary after rotation";
@@ -137,12 +137,12 @@ TEST_F(PieceTests, TestRotation) {
 
 TEST_F(PieceTests, TestRotationWithObstructions) {
 	Board board;
-	TBlock piece(board);
+	TPiece piece(board);
 
 	// make obstruction
-	board[{10, 4}] = 1;
-	board[{10, 5}] = 1;
-	board[{10, 6}] = 1;
+	board[{10, 4}].isOccupied = true;
+	board[{10, 5}].isOccupied = true;
+	board[{10, 6}].isOccupied = true;
 	
 	piece.positionRow = 11;
 	EXPECT_TRUE(piece.rotate()) << "piece collides with obstruction under, shoould succeed"; // rotation 1
@@ -151,10 +151,10 @@ TEST_F(PieceTests, TestRotationWithObstructions) {
 
 	// more obstructions
 	for (int r = 0, re = 7; r < re; ++r) {
-		board[{r, 2}] = 1;
-		board[{r, 7}] = 1;
-		board[{r, 3}] = 1;
-		board[{r, 6}] = 1;
+		board[{r, 2}].isOccupied = true;
+		board[{r, 7}].isOccupied = true;
+		board[{r, 3}].isOccupied = true;
+		board[{r, 6}].isOccupied = true;
 	}
 	
 	piece.positionRow = 6;
@@ -180,8 +180,8 @@ TEST_F(PieceTests, TestRotationWithObstructions) {
 	EXPECT_EQ(piece.positionCol, 4) << "rotates in tight space between set bocks, does not move horizontally";
 	EXPECT_EQ(piece.positionRow, 7) << "rotates in tight space between set bocks, moves 2 spaces up";
 
-	board[{6, 6}] = 0;
-	board[{7, 3}] = 1;
+	board[{6, 6}].isOccupied = false;
+	board[{7, 3}].isOccupied = true;
 	
 	piece.rotate(); // rotation 3
 	piece.rotate(); // rotation 0

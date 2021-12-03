@@ -11,27 +11,26 @@ Board::Board() {
 
 	for (int row = 0; row < BOARD::COLUMN_SIZE; ++row) {
 		for (int col = 0; col < BOARD::ROW_SIZE; ++col) {
-			Block block(row, col);
-			BoardCell cell(block);
-			board[translateRow(row) * BOARD::TRUE_ROW_SIZE + translateCol(col)] = cell;
+			BoardCell& cell = board[translateRow(row) * BOARD::TRUE_ROW_SIZE + translateCol(col)];
+			cell.block.setPos(row, col);
 		}
 	}
 	
 	// set beginning and end of each row as buffer
-	for (int row = 0, size = BOARD::TRUE_COLUMN_SIZE; row < size; ++row) {
-		this->board[row * BOARD::TRUE_ROW_SIZE].setOccupied();
-		this->board[row * BOARD::TRUE_ROW_SIZE + BOARD::TRUE_ROW_SIZE - 1].setOccupied();
+	for (int row = 0; row < BOARD::TRUE_COLUMN_SIZE; ++row) {
+		this->board[row * BOARD::TRUE_ROW_SIZE].isOccupied = true;
+		this->board[row * BOARD::TRUE_ROW_SIZE + BOARD::TRUE_ROW_SIZE - 1].isOccupied = true;
 	}
 	for (int col = 0, size = BOARD::TRUE_ROW_SIZE; col < size; ++col) {
-		this->board[col].setOccupied();
+		this->board[col].isOccupied = true;
 	}
 }
 
-BoardCell& Board::operator[] (int rowCol){
+Board::BoardCell& Board::operator[] (int rowCol){
 	return board[translateRow(rowCol / BOARD::ROW_SIZE) * BOARD::TRUE_ROW_SIZE + translateCol(rowCol % 10)];
 }
 
-BoardCell& Board::operator[] (indices rowCol) {
+Board::BoardCell& Board::operator[] (indices rowCol) {
 	return board[translateRow(rowCol.i) * BOARD::TRUE_ROW_SIZE + translateCol(rowCol.j)];
 }
 
@@ -68,19 +67,32 @@ void Board::removeFilledRows(int rowStart) {
 void Board::setPiece(std::vector<int>& rows, std::vector<int>& cols, std::vector<Block>& blocks) {
 	this->currentHeight = *std::max_element(rows.begin(), rows.end());
 
-	this->board[translateRow(rows[0]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[0])].block = blocks[0];
+	BoardCell& cell0 = this->board[translateRow(rows[0]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[0])];
+	BoardCell& cell1 = this->board[translateRow(rows[1]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[1])];
+	BoardCell& cell2 = this->board[translateRow(rows[2]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[2])];
+	BoardCell& cell3 = this->board[translateRow(rows[3]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[3])];
+
+	cell0.block = blocks[0];
+	cell0.isOccupied = true;
 	++this->blocksPerRow[translateRow(rows[0])];
 
-	this->board[translateRow(rows[1]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[1])].block = blocks[1];
+	cell1.block = blocks[1];
+	cell1.isOccupied = true;
 	++this->blocksPerRow[translateRow(rows[1])];
 
-	this->board[translateRow(rows[2]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[2])].block = blocks[2];
+	cell2.block = blocks[2];
+	cell2.isOccupied = true;
 	++this->blocksPerRow[translateRow(rows[2])];
 
-	this->board[translateRow(rows[3]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[3])].block = blocks[3];
+	cell3.block = blocks[3];
+	cell3.isOccupied = true;
 	++this->blocksPerRow[translateRow(rows[3])];
 }
 
-void Board::draw() {
-	// TODO 
+void Board::draw(sf::RenderWindow& window) {
+	for (int row = 0; row <= currentHeight; ++row) {
+		for (int col = 0; col < BOARD::ROW_SIZE; ++col) {
+			this->board[translateRow(row) * BOARD::TRUE_ROW_SIZE + translateCol(col)].block.draw(window);
+		}
+	}
 }

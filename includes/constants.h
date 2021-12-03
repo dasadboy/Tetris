@@ -28,22 +28,20 @@ namespace PIECES {
 }
 
 namespace COLOR { 
-
-	const int COLOR_EMPTY = 0;
 	
-	const int COLOR_SQUARE = 1;
+	const sf::Color COLOR_OPIECE = sf::Color::Yellow;
 
-	const int COLOR_LBLOCKL = 2;
+	const sf::Color COLOR_JPIECE = sf::Color::Blue;
 
-	const int COLOR_LBLOCKR = 3;
+	const sf::Color COLOR_LPIECE = sf::Color::Red + sf::Color::Yellow; // Orange doesn't exist
 
-	const int COLOR_TBLOCK = 4;
+	const sf::Color COLOR_TPIECE = sf::Color::Red + sf::Color::Blue; // Purple doesn't exist
 
-	const int COLOR_ZBLOCK = 5;
+	const sf::Color COLOR_ZPIECE = sf::Color::Red;
 
-	const int COLOR_SBLOCK = 6;
+	const sf::Color COLOR_SPIECE = sf::Color::Green;
 
-	const int COLOR_STRAIGHT = 7;
+	const sf::Color COLOR_IPIECE = sf::Color::Cyan;
 }
 
 namespace BOARD {
@@ -101,35 +99,8 @@ namespace BLOCK {
 
 namespace TIME {
 
-	const int PASSIVE_TIME_CUTOFF = 1.f;
+	const float PASSIVE_TIME_CUTOFF = 1.f;
 
-	const int PIECE_MOVE_COOLDOWN = .2f;
+	const float PIECE_MOVE_COOLDOWN = .2f;
 
 }
-
-namespace DISPLAY {
-
-	const unsigned int SIZE_X = 200;
-
-	const unsigned int SIZE_Y = 400;
-}
-
-namespace BLOCK {
-
-	const int NUMBER_OF_POINTS = 4;
-
-	const float BLOCK_SIZE = 20;
-
-	const float INNER_SIZE = 18;
-
-	const float OUTLINE_SIZE = 1;
-
-	const sf::RectangleShape COMMON_BLOCK = sf::RectangleShape(sf::Vector2f(INNER_SIZE, INNER_SIZE));
-}
-
-namespace TIME {
-
-	const int PASSIVE_TIME_CUTOFF = 1.f;
-
-	const int PIECE_MOVE_COOLDOWN = .2f;
- }

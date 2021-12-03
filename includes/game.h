@@ -8,7 +8,7 @@ Piece* Create(Board& board) { return new T(board); }
 
 typedef Piece* (*CreateFn)(Board& board);
 
-const std::vector<CreateFn> pieceTypes = { &Create<Square>, &Create<TBlock>, &Create<LBlockL>, &Create<LBlockR>, &Create<Straight>, &Create<ZBlock>, &Create<SBlock> };
+const std::vector<CreateFn> pieceTypes = { &Create<OPiece>, &Create<TPiece>, &Create<JPiece>, &Create<LPiece>, &Create<IPiece>, &Create<ZPiece>, &Create<SPiece> };
 
 class Game {
 	Board board;
@@ -18,7 +18,7 @@ class Game {
 	sf::Clock movePieceRightTimer;
 	sf::Clock movePieceDownTimer;
 	sf::Clock passiveMoveDownTimer;
-	sf::Window window;
+	sf::RenderWindow window;
 
 	Game();
 
