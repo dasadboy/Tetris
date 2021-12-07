@@ -18,6 +18,7 @@ class Game {
 	sf::Clock movePieceDownTimer;
 	sf::Clock passiveMoveDownTimer;
 	sf::RenderWindow window;
+	int score;
 
 	Piece* generateNewPiece();
 

@@ -3,10 +3,11 @@
 #define translateRow(row) (std::max(0, (row) + BOARD::ROW_OFFSET))
 #define translateCol(col) (std::max(0, std::min((col) + BOARD::COLUMN_OFFSET, BOARD::TRUE_ROW_SIZE - 1))) // returns 0 or 11 if !(0 < row + offset < 11)
 
+const Block Board::BoardCell::defaultBlock = Block();
+
 Board::Board() {
 	this->board = std::vector<BoardCell>(BOARD::TRUE_BOARD_SIZE);
 	this->blocksPerRow = std::vector<int>(BOARD::COLUMN_SIZE, 0);
-	this->currentHeight = 1;
 	int row = BOARD::LEFT_BOUNDARY, col = BOARD::BOTTOM_BOUNDARY;
 
 	for (int row = 0; row < BOARD::COLUMN_SIZE; ++row) {
@@ -40,13 +41,12 @@ bool Board::checkPositionLegal(int row, int col) {
 	return (this->board[rowTranslated * BOARD::TRUE_ROW_SIZE + colTranslated].isOccupied);
 }
 
-void Board::removeFilledRows(int rowStart) {
+int Board::removeFilledRows(int rowStart) {
 	// Copy all unfilled rows from rowStart to currentHeight to an unfilled row
-	int currRow = translateRow(rowStart), srcRow = translateRow(rowStart), height = this->currentHeight;
-	while (srcRow <= height) {
+	int currRow = translateRow(rowStart), srcRow = translateRow(rowStart), score = 0;
+	while (currRow <= BOARD::VISIBLE_HEIGHT) {
 		if (this->blocksPerRow[srcRow] == BOARD::ROW_SIZE) {
-			++srcRow; // Skip this row as it is full and should not be in the result
-			--this->currentHeight;
+			++srcRow, ++score; // Skip this row as it is full and should not be in the result
 		}
 		else {
 			// copy srcRow to currRow
@@ -62,10 +62,11 @@ void Board::removeFilledRows(int rowStart) {
 			++currRow, ++srcRow;
 		}
 	}
+
+	return score;
 }
 
-void Board::setPiece(std::vector<int>& rows, std::vector<int>& cols, std::vector<Block>& blocks) {
-	this->currentHeight = std::max(this->currentHeight, *std::max_element(rows.begin(), rows.end()));
+int Board::setPiece(std::vector<int>& rows, std::vector<int>& cols, std::vector<Block>& blocks) {
 
 	BoardCell& cell0 = this->board[translateRow(rows[0]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[0])];
 	BoardCell& cell1 = this->board[translateRow(rows[1]) * BOARD::TRUE_ROW_SIZE + translateCol(cols[1])];
@@ -88,7 +89,7 @@ void Board::setPiece(std::vector<int>& rows, std::vector<int>& cols, std::vector
 	cell3.isOccupied = true;
 	++this->blocksPerRow[translateRow(rows[3])];
 
-	removeFilledRows(*std::min_element(rows.begin(), rows.end()));
+	return removeFilledRows(*std::min_element(rows.begin(), rows.end()));
 }
 
 void Board::draw(sf::RenderWindow& window) {
@@ -97,4 +98,8 @@ void Board::draw(sf::RenderWindow& window) {
 			this->board[translateRow(row) * BOARD::TRUE_ROW_SIZE + translateCol(col)].block.draw(window);
 		}
 	}
+}
+
+bool Board::checkGameOver() {
+	return this->blocksPerRow[translateRow(20)] >= 1;
 }

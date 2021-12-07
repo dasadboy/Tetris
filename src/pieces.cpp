@@ -99,13 +99,13 @@ void Piece::updateBlocks() {
 	}
 }
 
-void Piece::set() {
+int Piece::set() {
 	std::vector<int> rows, cols;
 	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
 		rows.push_back( getBlockPositionRow(blockNumber) );
 		cols.push_back( getBlockPositionCol(blockNumber) );
 	}
-	board.setPiece(rows, cols, this->blocks);
+	return board.setPiece(rows, cols, this->blocks);
 }
 
 void Piece::draw(sf::RenderWindow& window) {

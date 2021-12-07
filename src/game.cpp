@@ -5,6 +5,7 @@ Game::Game() {
 	this->board = board;
 	this->currPiece = nullptr;
 	this->upHeldDown = false;
+	this->score = 0;
 }
 
 Piece* Game::generateNewPiece() {
@@ -16,8 +17,11 @@ Piece* Game::generateNewPiece() {
 void Game::setPiece() {
 	Piece* pieceBeingSet = this->currPiece;
 	this->currPiece = generateNewPiece();
-	pieceBeingSet->set();
+	this->score += pieceBeingSet->set();
 	delete pieceBeingSet;
+	if (board.checkGameOver()) {
+		terminate();
+	}
 }
 
 void Game::init() {

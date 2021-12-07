@@ -10,6 +10,7 @@ class Board {
     };
 
     struct BoardCell {
+        static const Block defaultBlock;
         Block block;
         bool isOccupied;
         BoardCell() {
@@ -23,12 +24,15 @@ class Board {
             this->isOccupied = src.isOccupied;
             this->block = newBlock;
         }
+        void reset() {
+            this->block = BoardCell::defaultBlock;
+            isOccupied = false;
+        }
     };
 
     // private member variables
     std::vector<BoardCell> board;
     std::vector<int> blocksPerRow;
-    int currentHeight;
 
 public:
 
@@ -40,9 +44,11 @@ public:
 
     bool checkPositionLegal(int row, int col);
 
-    void removeFilledRows(int rowStart); // remove filled rows
+    int removeFilledRows(int rowStart); // remove filled rows
 
-    void setPiece(std::vector<int>& rows, std::vector<int>& cols, std::vector<Block>& blocks);
+    int setPiece(std::vector<int>& rows, std::vector<int>& cols, std::vector<Block>& blocks);
 
     void draw(sf::RenderWindow& window);
+
+    bool checkGameOver();
 };
