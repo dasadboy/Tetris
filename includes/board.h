@@ -24,10 +24,6 @@ class Board {
             this->isOccupied = src.isOccupied;
             this->block = newBlock;
         }
-        void reset() {
-            this->block = BoardCell::defaultBlock;
-            isOccupied = false;
-        }
     };
 
     // private member variables

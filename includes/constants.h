@@ -45,6 +45,7 @@ namespace COLOR {
 	const sf::Color COLOR_SPIECE = sf::Color(0, 0xff, 0, 0xff); // Green
 
 	const sf::Color COLOR_IPIECE = sf::Color(0, 0xff, 0xff, 0xff); // Cyan
+
 }
 
 namespace BOARD {

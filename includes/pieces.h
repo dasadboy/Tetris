@@ -51,10 +51,10 @@ public:
 
 template <class P>
 class PieceHolder : public Piece {
-public:
     static const std::vector<int> relRowPositions;
     static const std::vector<int> relColPositions;
     static const sf::Color color;
+public:
     PieceHolder(Board& b);
 
     virtual const int getBlockPositionRow(int blockNumber) {
