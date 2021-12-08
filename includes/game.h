@@ -13,9 +13,6 @@ class Game {
 	Board board;
 	Piece* currPiece;
 	bool upHeldDown;
-	sf::Clock movePieceLeftTimer;
-	sf::Clock movePieceRightTimer;
-	sf::Clock movePieceDownTimer;
 	sf::Clock passiveMoveDownTimer;
 	sf::RenderWindow window;
 	int score;
