@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pieces.h"
+#include <time.h>
 
 template <typename T>
 Piece* Create(Board& board) { return new T(board); }

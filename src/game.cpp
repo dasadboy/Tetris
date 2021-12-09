@@ -6,6 +6,7 @@ Game::Game() {
 	this->currPiece = nullptr;
 	this->upHeldDown = false;
 	this->score = 0;
+	srand(time(0));
 }
 
 Piece* Game::generateNewPiece() {
