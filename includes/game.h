@@ -16,6 +16,8 @@ class Game {
 	bool upHeldDown;
 	sf::Clock passiveMoveDownTimer;
 	sf::RenderWindow window;
+	sf::Text resultScreenText;
+	sf::Text scoreText;
 	int score;
 
 	Piece* generateNewPiece();

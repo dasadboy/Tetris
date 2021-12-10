@@ -6,6 +6,13 @@ Game::Game() {
 	this->currPiece = nullptr;
 	this->upHeldDown = false;
 	this->score = 0;
+	sf::Font font;
+	font.loadFromFile("../resources/resultScreenFont.ttf");
+	this->resultScreenText.setFont(font);
+	this->resultScreenText.setCharacterSize(48);
+	this->resultScreenText.setStyle(sf::Text::Bold);
+	this->scoreText.setFont(font);
+	this->scoreText.setCharacterSize(24);
 	srand(time(0));
 }
 
