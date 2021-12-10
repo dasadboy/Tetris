@@ -88,6 +88,8 @@ namespace DISPLAY {
 	const unsigned int SIZE_X = 200;
 
 	const unsigned int SIZE_Y = 400;
+	
+	const std::string RESULT_SCREEN_FONT = "resultScreenFont.ttf";
 }
 
 namespace BLOCK {
