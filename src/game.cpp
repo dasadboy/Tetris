@@ -6,13 +6,6 @@ Game::Game() {
 	this->currPiece = nullptr;
 	this->upHeldDown = false;
 	this->score = 0;
-	sf::Font font;
-	font.loadFromFile("../resources/resultScreenFont.ttf");
-	this->resultScreenText.setFont(font);
-	this->resultScreenText.setCharacterSize(48);
-	this->resultScreenText.setStyle(sf::Text::Bold);
-	this->scoreText.setFont(font);
-	this->scoreText.setCharacterSize(24);
 	srand(time(0));
 }
 
@@ -28,6 +21,7 @@ void Game::setPiece() {
 	this->score += pieceBeingSet->set();
 	delete pieceBeingSet;
 	if (board.checkGameOver()) {
+		displayResultScreen();
 		terminate();
 	}
 }
@@ -43,7 +37,44 @@ void Game::run() {
 		handlePiecePassiveMoveDown();
 		this->window.clear(sf::Color::Black);
 		drawScreen();
-		window.display();
+		this->window.display();
+	}
+}
+
+void Game::displayResultScreen() {
+	sf::Clock resultClock;
+
+	// result screen text
+	sf::Font gameOverFont;
+	gameOverFont.loadFromFile(RESULT_SCREEN::RESULT_SCREEN_FONT);
+	sf::Color gameOverColor(255, 255, 255, 0);
+	this->resultScreenText.setFont(gameOverFont);
+	this->resultScreenText.setCharacterSize(RESULT_SCREEN::GAME_OVER_TEXT_SIZE);
+	this->resultScreenText.setStyle(sf::Text::Bold);
+	this->resultScreenText.setString("Game Over");
+	this->resultScreenText.setPosition(RESULT_SCREEN::RESULT_SCREEN_HORIZONTAL_OFFSET, RESULT_SCREEN::GAME_OVER_TEXT_VERTICAL_OFFSET);
+
+	// score text
+	sf::Font scoreFont;
+	scoreFont.loadFromFile(RESULT_SCREEN::RESULT_SCREEN_FONT);
+	sf::Color scoreColor(255, 255, 255, 0);
+	this->scoreText.setFont(scoreFont);
+	this->scoreText.setCharacterSize(RESULT_SCREEN::SCORE_TEXT_SIZE);
+	this->scoreText.setString("Score: " + std::to_string(this->score));
+	this->scoreText.setFillColor(scoreColor);
+	this->scoreText.setPosition(RESULT_SCREEN::RESULT_SCREEN_HORIZONTAL_OFFSET, RESULT_SCREEN::SCORE_TEXT_VERTICAL_OFFSET);
+
+	// display
+	while (this->window.isOpen() && (resultClock.getElapsedTime().asSeconds() < TIME::RESULT_SCREEN_DURATION)) {
+		gameOverColor.a = ((std::min(resultClock.getElapsedTime().asMilliseconds(), TIME::RESULT_SCREEN_ANIMATION_DURATION) * 255) / TIME::RESULT_SCREEN_ANIMATION_DURATION);
+		this->resultScreenText.setFillColor(gameOverColor);
+		scoreColor.a = ((std::min(resultClock.getElapsedTime().asMilliseconds(), TIME::RESULT_SCREEN_ANIMATION_DURATION) * 255) / TIME::RESULT_SCREEN_ANIMATION_DURATION);
+		this->scoreText.setFillColor(scoreColor);
+		this->window.clear(sf::Color::Black);
+		this->window.draw(this->resultScreenText);
+		this->window.draw(this->scoreText);
+		this->window.display();
+		handleResultScreenEvents();
 	}
 }
 
@@ -80,6 +111,15 @@ void Game::handleEvents() {
 				if (event.key.code == sf::Keyboard::Up) {
 						this->upHeldDown = false;
 				}
+		}
+	}
+}
+
+void Game::handleResultScreenEvents() {
+	sf::Event event;
+	while (this->window.pollEvent(event)) {
+		if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed || event.type == sf::Event::MouseButtonPressed) {
+			terminate();
 		}
 	}
 }
