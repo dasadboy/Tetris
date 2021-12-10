@@ -26,6 +26,8 @@ class Game {
 
 	void handleEvents();
 
+	void handleResultScreenEvents();
+
 	void handlePiecePassiveMoveDown();
 
 	void handlePieceMoveDown();
@@ -49,6 +51,8 @@ public:
 	void init();
 
 	void run();
+
+	void displayResultScreen();
 
 	void terminate();
 
