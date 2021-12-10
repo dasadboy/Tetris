@@ -109,4 +109,8 @@ namespace TIME {
 
 	const float PIECE_MOVE_COOLDOWN = .2f;
 
+	const float RESULT_SCREEN_DURATION = 5.f;
+
+	const int RESULT_SCREEN_ANIMATION_DURATION = 1000; // In milliseconds
+
 }
