@@ -106,7 +106,7 @@ namespace BLOCK {
 
 namespace TIME {
 
-	const float PASSIVE_TIME_CUTOFF = 1.f;
+	const float INITIAL_PASSIVE_TIME_CUTOFF = 1.f;
 
 	const float PIECE_MOVE_COOLDOWN = .2f;
 
