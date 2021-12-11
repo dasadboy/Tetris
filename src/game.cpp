@@ -1,10 +1,13 @@
 #include "game.h"
 
+#define newSpeedFromScore() std::max( 0.2f, TIME::INITIAL_PASSIVE_TIME_CUTOFF - ( this->score / 10 ) * 0.8f )
+
 Game::Game() {
 	Board board = Board();
 	this->board = board;
 	this->currPiece = nullptr;
 	this->upHeldDown = false;
+	this->passiveMoveDownCutoff = TIME::INITIAL_PASSIVE_TIME_CUTOFF;
 	this->score = 0;
 	srand(time(0));
 }
@@ -19,6 +22,8 @@ void Game::setPiece() {
 	Piece* pieceBeingSet = this->currPiece;
 	this->currPiece = generateNewPiece();
 	this->score += pieceBeingSet->set();
+	this->passiveMoveDownCutoff = newSpeedFromScore();
+	std::cout << this->passiveMoveDownCutoff << std::endl;
 	delete pieceBeingSet;
 	if (board.checkGameOver()) {
 		displayResultScreen();
@@ -88,6 +93,7 @@ void Game::handleEvents() {
 		switch (event.type) {
 			case sf::Event::Closed:
 				terminate();
+				break;
 			case sf::Event::KeyPressed:
 				switch (event.key.code) {
 					case sf::Keyboard::Down:
@@ -111,6 +117,7 @@ void Game::handleEvents() {
 				if (event.key.code == sf::Keyboard::Up) {
 						this->upHeldDown = false;
 				}
+				break;
 		}
 	}
 }
@@ -125,7 +132,7 @@ void Game::handleResultScreenEvents() {
 }
 
 void Game::handlePiecePassiveMoveDown() {
-	if (this->passiveMoveDownTimer.getElapsedTime().asSeconds() > TIME::PASSIVE_TIME_CUTOFF) {
+	if (this->passiveMoveDownTimer.getElapsedTime().asSeconds() > this->passiveMoveDownCutoff) {
 		if (!this->currPiece->moveDown()) {
 			setPiece();
 		}

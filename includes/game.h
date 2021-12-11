@@ -14,6 +14,7 @@ class Game {
 	Board board;
 	Piece* currPiece;
 	bool upHeldDown;
+	float passiveMoveDownCutoff;
 	sf::Clock passiveMoveDownTimer;
 	sf::RenderWindow window;
 	sf::Text resultScreenText;
