@@ -1,6 +1,6 @@
 #include "game.h"
 
-#define newSpeedFromScore() std::max( 0.2f, TIME::INITIAL_PASSIVE_TIME_CUTOFF - ( this->score / 10 ) * 0.8f )
+#define newSpeedFromScore() std::max( 0.2f, TIME::INITIAL_PASSIVE_TIME_CUTOFF - ( this->score / 10 ) * 0.2f )
 
 Game::Game() {
 	Board board = Board();
