@@ -23,7 +23,6 @@ void Game::setPiece() {
 	this->currPiece = generateNewPiece();
 	this->score += pieceBeingSet->set();
 	this->passiveMoveDownCutoff = newSpeedFromScore();
-	std::cout << this->passiveMoveDownCutoff << std::endl;
 	delete pieceBeingSet;
 	if (board.checkGameOver()) {
 		displayResultScreen();
