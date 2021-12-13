@@ -68,9 +68,10 @@ void Game::displayResultScreen() {
 
 	// display
 	while (this->window.isOpen() && (resultClock.getElapsedTime().asMilliseconds() < TIME::RESULT_SCREEN_DURATION)) {
-		gameOverColor.a = ((std::min(resultClock.getElapsedTime().asMilliseconds(), TIME::RESULT_SCREEN_ANIMATION_DURATION) * 255) / TIME::RESULT_SCREEN_ANIMATION_DURATION);
+		int newAlpha = ((std::min(resultClock.getElapsedTime().asMilliseconds(), TIME::RESULT_SCREEN_ANIMATION_DURATION) * 255) / TIME::RESULT_SCREEN_ANIMATION_DURATION);
+		gameOverColor.a = newAlpha;
 		this->resultScreenText.setFillColor(gameOverColor);
-		scoreColor.a = ((std::min(resultClock.getElapsedTime().asMilliseconds(), TIME::RESULT_SCREEN_ANIMATION_DURATION) * 255) / TIME::RESULT_SCREEN_ANIMATION_DURATION);
+		scoreColor.a = newAlpha;
 		this->scoreText.setFillColor(scoreColor);
 		this->window.clear(sf::Color::Black);
 		this->window.draw(this->resultScreenText);

@@ -51,7 +51,7 @@ int Board::removeFilledRows(int rowStart) {
 		else {
 			// copy srcRow to currRow
 			int currCell = currRow * BOARD::TRUE_ROW_SIZE + translateCol(0), currCellEnd = currCell + BOARD::ROW_SIZE,
-				srcCell = srcRow * BOARD::TRUE_ROW_SIZE + translateCol(0), srcCellEnd = srcCell + BOARD::ROW_SIZE;
+				srcCell = srcRow * BOARD::TRUE_ROW_SIZE + translateCol(0);
 
 			this->blocksPerRow[currRow] = this->blocksPerRow[srcRow];
 
