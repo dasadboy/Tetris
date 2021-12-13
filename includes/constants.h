@@ -106,13 +106,17 @@ namespace BLOCK {
 
 namespace TIME {
 
-	const float INITIAL_PASSIVE_TIME_CUTOFF = 1.f;
+	const int INITIAL_PASSIVE_TIME_CUTOFF = 1000;
 
-	const float PIECE_MOVE_COOLDOWN = .2f;
+	const int PIECE_MOVE_COOLDOWN = 200;
 
-	const float RESULT_SCREEN_DURATION = 5.f;
+	const int RESULT_SCREEN_DURATION = 5000;
 
-	const int RESULT_SCREEN_ANIMATION_DURATION = 500; // In milliseconds
+	const int RESULT_SCREEN_ANIMATION_DURATION = 500;
+
+	const int MIN_PASSIVE_TIME_CUTOFF = 200;
+
+	const int PASSIVE_DECREMENT_AMOUNT = 200;
 
 }
 
