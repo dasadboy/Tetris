@@ -48,7 +48,7 @@ void Game::displayResultScreen() {
 
 	// result screen text
 	sf::Font gameOverFont;
-	gameOverFont.loadFromFile(RESULT_SCREEN::RESULT_SCREEN_FONT);
+	gameOverFont.loadFromFile(RESULT_SCREEN::FONT_FILE_PATH);
 	sf::Color gameOverColor(255, 255, 255, 0);
 	this->resultScreenText.setFont(gameOverFont);
 	this->resultScreenText.setCharacterSize(RESULT_SCREEN::GAME_OVER_TEXT_SIZE);
@@ -58,7 +58,7 @@ void Game::displayResultScreen() {
 
 	// score text
 	sf::Font scoreFont;
-	scoreFont.loadFromFile(RESULT_SCREEN::RESULT_SCREEN_FONT);
+	scoreFont.loadFromFile(RESULT_SCREEN::FONT_FILE_PATH);
 	sf::Color scoreColor(255, 255, 255, 0);
 	this->scoreText.setFont(scoreFont);
 	this->scoreText.setCharacterSize(RESULT_SCREEN::SCORE_TEXT_SIZE);

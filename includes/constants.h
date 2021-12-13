@@ -122,7 +122,7 @@ namespace TIME {
 
 namespace RESULT_SCREEN {
 
-	const std::string RESULT_SCREEN_FONT = "resources/resultScreenFont.ttf";
+	const std::string FONT_FILE_PATH = "resources/resultScreenFont.ttf";
 
 	const int GAME_OVER_TEXT_SIZE = 24;
 
@@ -133,7 +133,5 @@ namespace RESULT_SCREEN {
 	const int SCORE_TEXT_VERTICAL_OFFSET = 28;
 
 	const int RESULT_SCREEN_HORIZONTAL_OFFSET = 2;
-
-	const float EVENT_CLOSE_OFFSET = 500;
 
 }
