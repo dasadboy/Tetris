@@ -14,12 +14,16 @@ class Game {
 	Board board;
 	Piece* currPiece;
 	bool upHeldDown;
-	float passiveMoveDownCutoff;
+	int passiveMoveDownCutoff;
 	sf::Clock passiveMoveDownTimer;
 	sf::RenderWindow window;
 	sf::Text resultScreenText;
 	sf::Text scoreText;
 	int score;
+
+	inline int newSpeedFromScore() {
+		return std::max(200, TIME::INITIAL_PASSIVE_TIME_CUTOFF - (this->score / 10) * 200);
+	}
 
 	Piece* generateNewPiece();
 

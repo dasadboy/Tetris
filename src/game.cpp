@@ -1,7 +1,5 @@
 #include "game.h"
 
-#define newSpeedFromScore() std::max( 0.2f, TIME::INITIAL_PASSIVE_TIME_CUTOFF - ( this->score / 10 ) * 0.2f )
-
 Game::Game() {
 	Board board = Board();
 	this->board = board;
@@ -69,7 +67,7 @@ void Game::displayResultScreen() {
 	this->scoreText.setPosition(RESULT_SCREEN::RESULT_SCREEN_HORIZONTAL_OFFSET, RESULT_SCREEN::SCORE_TEXT_VERTICAL_OFFSET);
 
 	// display
-	while (this->window.isOpen() && (resultClock.getElapsedTime().asSeconds() < TIME::RESULT_SCREEN_DURATION)) {
+	while (this->window.isOpen() && (resultClock.getElapsedTime().asMilliseconds() < TIME::RESULT_SCREEN_DURATION)) {
 		gameOverColor.a = ((std::min(resultClock.getElapsedTime().asMilliseconds(), TIME::RESULT_SCREEN_ANIMATION_DURATION) * 255) / TIME::RESULT_SCREEN_ANIMATION_DURATION);
 		this->resultScreenText.setFillColor(gameOverColor);
 		scoreColor.a = ((std::min(resultClock.getElapsedTime().asMilliseconds(), TIME::RESULT_SCREEN_ANIMATION_DURATION) * 255) / TIME::RESULT_SCREEN_ANIMATION_DURATION);
@@ -131,7 +129,7 @@ void Game::handleResultScreenEvents() {
 }
 
 void Game::handlePiecePassiveMoveDown() {
-	if (this->passiveMoveDownTimer.getElapsedTime().asSeconds() > this->passiveMoveDownCutoff) {
+	if (this->passiveMoveDownTimer.getElapsedTime().asMilliseconds() > this->passiveMoveDownCutoff) {
 		if (!this->currPiece->moveDown()) {
 			setPiece();
 		}
