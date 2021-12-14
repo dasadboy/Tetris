@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include "board.h"
 
 class Piece {
@@ -41,7 +40,7 @@ public:
     virtual void updateBlocks();
 
     // sets piece on board
-    virtual void set();
+    virtual int set();
 
     // draws piece to screen
     virtual void draw(sf::RenderWindow& window);

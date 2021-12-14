@@ -1,7 +1,7 @@
 #include "blocks.h"
 
 
-#define translateRow2Disp(row) DISPLAY::SIZE_Y - row * BLOCK::BLOCK_SIZE + BLOCK::OUTLINE_SIZE
+#define translateRow2Disp(row) DISPLAY::SIZE_Y - (row + 1) * BLOCK::BLOCK_SIZE + BLOCK::OUTLINE_SIZE
 #define translateCol2Disp(col) col * BLOCK::BLOCK_SIZE + BLOCK::OUTLINE_SIZE
 
 Block::Block() {
@@ -21,7 +21,9 @@ Block::Block(int row, int col) {
 Block::Block(int row, int col, sf::Color& clr) {
 	this->block = BLOCK::COMMON_BLOCK;
 	this->block.setPosition(sf::Vector2f(translateCol2Disp(col), translateRow2Disp(row)));
+	this->block.setFillColor(clr);
 	this->block.setOutlineColor(sf::Color::White);
+	this->block.setOutlineThickness(BLOCK::OUTLINE_SIZE);
 }
 
 void Block::operator=(const Block& newBlock) {

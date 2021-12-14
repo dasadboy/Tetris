@@ -26,18 +26,21 @@ inline bool Piece::checkCollidesAtOffset(int rowOffset, int colOffset) {
 bool Piece::moveDown() {
 	bool canMove = !checkCollidesAtOffset(PIECES::MOVE_DOWN, 0);
 	this->positionRow += canMove * PIECES::MOVE_DOWN;
+	updateBlocks();
 	return canMove;
 }
 
 bool Piece::moveLeft() {
 	bool canMove = !checkCollidesAtOffset(0, PIECES::MOVE_LEFT);
 	this->positionCol += canMove * PIECES::MOVE_LEFT;
+	updateBlocks();
 	return canMove;
 }
 
 bool Piece::moveRight() {
 	bool canMove = !checkCollidesAtOffset(0, PIECES::MOVE_RIGHT);
 	this->positionCol += canMove * PIECES::MOVE_RIGHT;
+	updateBlocks();
 	return canMove;
 }
 
@@ -85,6 +88,7 @@ bool Piece::rotate() {
 		this->rotation = oldRotation;
 		return false;
 	}
+	updateBlocks();
 	return true;
 }
 
@@ -95,13 +99,13 @@ void Piece::updateBlocks() {
 	}
 }
 
-void Piece::set() {
+int Piece::set() {
 	std::vector<int> rows, cols;
 	for (int blockNumber = 0; blockNumber < PIECES::NUMBER_OF_BLOCKS; ++blockNumber) {
 		rows.push_back( getBlockPositionRow(blockNumber) );
 		cols.push_back( getBlockPositionCol(blockNumber) );
 	}
-	board.setPiece(rows, cols, this->blocks);
+	return board.setPiece(rows, cols, this->blocks);
 }
 
 void Piece::draw(sf::RenderWindow& window) {
@@ -186,7 +190,7 @@ ZPiece::ZPiece(Board& board) : PieceHolder(board) {}
 
 // SPiece
 
-template <> const std::vector<int> PieceHolder<SPiece>::relRowPositions = { 1, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, -1, 1, 0, 0, -1 };
+template <> const std::vector<int> PieceHolder<SPiece>::relRowPositions = { 0, 0, 1, 1, 1, 0, 0, -1, -1, -1, 0, 0, 1, 0, 0, -1 };
 
 template <> const std::vector<int> PieceHolder<SPiece>::relColPositions = { -1, 0, 0, 1, 0, 0, 1, 1, -1, 0, 0, 1, -1, -1, 0, 0 };
 

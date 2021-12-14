@@ -1,9 +1,6 @@
 #pragma once
 
 #include "blocks.h"
-#include <iostream>
-#include <algorithm>
-#include <vector>
 
 class Board {
     
@@ -13,6 +10,7 @@ class Board {
     };
 
     struct BoardCell {
+        static const Block defaultBlock;
         Block block;
         bool isOccupied;
         BoardCell() {
@@ -31,7 +29,6 @@ class Board {
     // private member variables
     std::vector<BoardCell> board;
     std::vector<int> blocksPerRow;
-    int currentHeight;
 
 public:
 
@@ -43,9 +40,11 @@ public:
 
     bool checkPositionLegal(int row, int col);
 
-    void removeFilledRows(int rowStart); // remove filled rows
+    int removeFilledRows(int rowStart); // remove filled rows
 
-    void setPiece(std::vector<int>& rows, std::vector<int>& cols, std::vector<Block>& blocks);
+    int setPiece(std::vector<int>& rows, std::vector<int>& cols, std::vector<Block>& blocks);
 
     void draw(sf::RenderWindow& window);
+
+    bool checkGameOver();
 };

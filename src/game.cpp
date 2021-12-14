@@ -5,23 +5,79 @@ Game::Game() {
 	this->board = board;
 	this->currPiece = nullptr;
 	this->upHeldDown = false;
+	this->passiveMoveDownCutoff = TIME::INITIAL_PASSIVE_TIME_CUTOFF;
+	this->score = 0;
+	srand(time(0));
 }
 
-void Game::generateNewPiece() {
-	delete this->currPiece;
-	this->currPiece = pieceTypes[rand() % PIECES::NUMBER_OF_PIECES](this->board);
-	this->currPiece->generateBlocks();
+Piece* Game::generateNewPiece() {
+	Piece* newPiece = pieceTypes[rand() % PIECES::NUMBER_OF_PIECES](this->board);
+	newPiece->generateBlocks();
+	return newPiece;
+}
+
+void Game::setPiece() {
+	Piece* pieceBeingSet = this->currPiece;
+	this->currPiece = generateNewPiece();
+	this->score += pieceBeingSet->set();
+	this->passiveMoveDownCutoff = newSpeedFromScore();
+	delete pieceBeingSet;
+	if (board.checkGameOver()) {
+		displayResultScreen();
+		terminate();
+	}
 }
 
 void Game::init() {
 	this->window.create(sf::VideoMode(200, 400), "Tetris");
-	generateNewPiece();
+	this->currPiece = generateNewPiece();
 }
 
-void Game::update() {
+void Game::run() {
 	while (this->window.isOpen()) {
 		handleEvents();
 		handlePiecePassiveMoveDown();
+		this->window.clear(sf::Color::Black);
+		drawScreen();
+		this->window.display();
+	}
+}
+
+void Game::displayResultScreen() {
+	sf::Clock resultClock;
+
+	// result screen text
+	sf::Font gameOverFont;
+	gameOverFont.loadFromFile(RESULT_SCREEN::FONT_FILE_PATH);
+	sf::Color gameOverColor(255, 255, 255, 0);
+	this->resultScreenText.setFont(gameOverFont);
+	this->resultScreenText.setCharacterSize(RESULT_SCREEN::GAME_OVER_TEXT_SIZE);
+	this->resultScreenText.setStyle(sf::Text::Bold);
+	this->resultScreenText.setString("Game Over");
+	this->resultScreenText.setPosition(RESULT_SCREEN::RESULT_SCREEN_HORIZONTAL_OFFSET, RESULT_SCREEN::GAME_OVER_TEXT_VERTICAL_OFFSET);
+
+	// score text
+	sf::Font scoreFont;
+	scoreFont.loadFromFile(RESULT_SCREEN::FONT_FILE_PATH);
+	sf::Color scoreColor(255, 255, 255, 0);
+	this->scoreText.setFont(scoreFont);
+	this->scoreText.setCharacterSize(RESULT_SCREEN::SCORE_TEXT_SIZE);
+	this->scoreText.setString("Score: " + std::to_string(this->score));
+	this->scoreText.setFillColor(scoreColor);
+	this->scoreText.setPosition(RESULT_SCREEN::RESULT_SCREEN_HORIZONTAL_OFFSET, RESULT_SCREEN::SCORE_TEXT_VERTICAL_OFFSET);
+
+	// display
+	while (this->window.isOpen() && (resultClock.getElapsedTime().asMilliseconds() < TIME::RESULT_SCREEN_DURATION)) {
+		int newAlpha = ((std::min(resultClock.getElapsedTime().asMilliseconds(), TIME::RESULT_SCREEN_ANIMATION_DURATION) * 255) / TIME::RESULT_SCREEN_ANIMATION_DURATION);
+		gameOverColor.a = newAlpha;
+		this->resultScreenText.setFillColor(gameOverColor);
+		scoreColor.a = newAlpha;
+		this->scoreText.setFillColor(scoreColor);
+		this->window.clear(sf::Color::Black);
+		this->window.draw(this->resultScreenText);
+		this->window.draw(this->scoreText);
+		this->window.display();
+		handleResultScreenEvents();
 	}
 }
 
@@ -35,6 +91,7 @@ void Game::handleEvents() {
 		switch (event.type) {
 			case sf::Event::Closed:
 				terminate();
+				break;
 			case sf::Event::KeyPressed:
 				switch (event.key.code) {
 					case sf::Keyboard::Down:
@@ -44,7 +101,7 @@ void Game::handleEvents() {
 						handlePieceMoveLeft();
 						break;
 					case sf::Keyboard::Right:
-						handlePieceMoveLeft();
+						handlePieceMoveRight();
 						break;
 					case sf::Keyboard::Up:
 						handlePieceRotate();
@@ -58,48 +115,47 @@ void Game::handleEvents() {
 				if (event.key.code == sf::Keyboard::Up) {
 						this->upHeldDown = false;
 				}
+				break;
+		}
+	}
+}
+
+void Game::handleResultScreenEvents() {
+	sf::Event event;
+	while (this->window.pollEvent(event)) {
+		if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed || event.type == sf::Event::MouseButtonPressed) {
+			terminate();
 		}
 	}
 }
 
 void Game::handlePiecePassiveMoveDown() {
-	if (this->passiveMoveDownTimer.getElapsedTime().asSeconds() > TIME::PASSIVE_TIME_CUTOFF) {
+	if (this->passiveMoveDownTimer.getElapsedTime().asMilliseconds() > this->passiveMoveDownCutoff) {
 		if (!this->currPiece->moveDown()) {
-			this->currPiece->set();
-			generateNewPiece();
+			setPiece();
 		}
 		this->passiveMoveDownTimer.restart();
 	}
 }
 
 void Game::handlePieceMoveDown() {
-	if (this->movePieceDownTimer.getElapsedTime().asSeconds() > TIME::PIECE_MOVE_COOLDOWN) {
-		if (!this->currPiece->moveDown()) {
-			this->currPiece->set();
-			generateNewPiece();
-		}
-		this->movePieceDownTimer.restart();
-		this->passiveMoveDownTimer.restart();
+	if (!this->currPiece->moveDown()) {
+		setPiece();
 	}
+	this->passiveMoveDownTimer.restart();
 }
 
 void Game::handlePieceMoveLeft() {
-	if (this->movePieceLeftTimer.getElapsedTime().asSeconds() > TIME::PIECE_MOVE_COOLDOWN) {
-		this->currPiece->moveLeft();
-		this->movePieceLeftTimer.restart();
-	}
+	this->currPiece->moveLeft();
 }
 
 void Game::handlePieceMoveRight() {
-	if (this->movePieceLeftTimer.getElapsedTime().asSeconds() > TIME::PIECE_MOVE_COOLDOWN) {
-		this->currPiece->moveLeft();
-		this->movePieceLeftTimer.restart();
-	}
+	this->currPiece->moveRight();
 }
 
 void Game::handlePieceDrop() {
 	this->currPiece->drop();
-	this->currPiece->set();
+	setPiece();
 	this->passiveMoveDownTimer.restart();
 }
 
@@ -119,6 +175,6 @@ void Game::usePiece(Piece* piece) {
 }
 
 void Game::drawScreen() {
-	this->currPiece->draw(window);
-	this->board.draw(window);
+	this->board.draw(this->window);
+	this->currPiece->draw(this->window);
 }
